@@ -1,0 +1,96 @@
+{
+  "common": {
+    "appName": "Denty",
+    "tagline": "Reserva tu cita dental online",
+    "clinics": "Clínicas",
+    "doctors": "Doctores",
+    "bookAppointment": "Reservar Cita",
+    "search": "Buscar",
+    "language": "Idioma",
+    "home": "Inicio",
+    "login": "Iniciar sesión",
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "tryAgain": "Intentar de nuevo",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "address": "Dirección",
+    "schedule": "Horario",
+    "services": "Servicios",
+    "price": "Precio",
+    "duration": "Duración",
+    "minutes": "min",
+    "noResults": "No se encontraron resultados",
+    "searchResults": "Resultados de Búsqueda",
+    "searchResultsFor": "Resultados para \"{{query}}\"",
+    "treatments": "Tratamientos"
+  },
+  "landing": {
+    "heroTitle": "Tu sonrisa empieza aquí",
+    "heroSubtitle": "Encuentra al dentista ideal, lee reseñas reales y reserva tu próxima cita al instante.",
+    "featuredClinics": "Clínicas Destacadas",
+    "howItWorks": "Cómo Funciona",
+    "step1Title": "Encuentra tu clínica",
+    "step1Description": "Explora clínicas dentales en tu zona y compara servicios y precios.",
+    "step2Title": "Elige tu doctor",
+    "step2Description": "Selecciona al especialista que mejor se adapte a tus necesidades y consulta su disponibilidad.",
+    "step3Title": "Reserva tu cita",
+    "step3Description": "Elige fecha y hora, rellena tus datos y listo. Confirmación por WhatsApp.",
+    "exploreClinics": "Explorar Clínicas",
+    "exploreDoctors": "Explorar Doctores",
+    "searchPlaceholder": "Buscar clínicas, doctores o tratamientos..."
+  },
+  "clinic": {
+    "workingHours": "Horario de Atención",
+    "ourDoctors": "Nuestros Doctores",
+    "ourServices": "Nuestros Servicios",
+    "closed": "Cerrado",
+    "contactInfo": "Información de Contacto"
+  },
+  "doctor": {
+    "specialization": "Especialización",
+    "biography": "Biografía",
+    "weeklySchedule": "Horario Semanal",
+    "servicesProvided": "Servicios que Ofrece",
+    "worksAt": "Trabaja en"
+  },
+  "treatment": {
+    "clinicsOffering": "Clínicas que ofrecen este tratamiento",
+    "specialistsIn": "Especialistas en este tratamiento"
+  },
+  "booking": {
+    "selectDoctor": "Selecciona un Doctor",
+    "selectService": "Selecciona un Servicio",
+    "selectDateTime": "Selecciona Fecha y Hora",
+    "yourInfo": "Tu Información",
+    "patientName": "Nombre Completo",
+    "patientPhone": "Número de Teléfono (WhatsApp)",
+    "patientEmail": "Correo electrónico (opcional)",
+    "notes": "Notas o motivo de la visita (opcional)",
+    "confirmBooking": "Confirmar Reserva",
+    "bookingConfirmed": "¡Cita Confirmada!",
+    "bookingConfirmedMessage": "Recibirás una confirmación por WhatsApp en breve.",
+    "availableSlots": "Horarios Disponibles",
+    "noSlotsAvailable": "No hay horarios disponibles para esta fecha",
+    "selectDate": "Selecciona una fecha"
+  },
+  "days": {
+    "0": "Domingo",
+    "1": "Lunes",
+    "2": "Martes",
+    "3": "Miércoles",
+    "4": "Jueves",
+    "5": "Viernes",
+    "6": "Sábado"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos del Servicio"
+  }
+}

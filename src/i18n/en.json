@@ -1,0 +1,96 @@
+{
+  "common": {
+    "appName": "Denty",
+    "tagline": "Book your dental appointment online",
+    "clinics": "Clinics",
+    "doctors": "Doctors",
+    "bookAppointment": "Book Appointment",
+    "search": "Search",
+    "language": "Language",
+    "home": "Home",
+    "login": "Login",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "tryAgain": "Try Again",
+    "back": "Back",
+    "next": "Next",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "schedule": "Schedule",
+    "services": "Services",
+    "price": "Price",
+    "duration": "Duration",
+    "minutes": "min",
+    "noResults": "No results found",
+    "searchResults": "Search Results",
+    "searchResultsFor": "Results for \"{{query}}\"",
+    "treatments": "Treatments"
+  },
+  "landing": {
+    "heroTitle": "Find your dentist and book your appointment",
+    "heroSubtitle": "Search among dental clinics, choose the best professional, and book your appointment in just a few clicks.",
+    "featuredClinics": "Featured Clinics",
+    "howItWorks": "How It Works",
+    "step1Title": "Find your clinic",
+    "step1Description": "Browse dental clinics in your area and compare services and prices.",
+    "step2Title": "Choose your doctor",
+    "step2Description": "Select the specialist that best fits your needs and check their availability.",
+    "step3Title": "Book your appointment",
+    "step3Description": "Pick a date and time, fill in your details, and you're done. Confirmation via WhatsApp.",
+    "exploreClinics": "Explore Clinics",
+    "exploreDoctors": "Explore Doctors",
+    "searchPlaceholder": "Search clinics, doctors, or treatments..."
+  },
+  "clinic": {
+    "workingHours": "Working Hours",
+    "ourDoctors": "Our Doctors",
+    "ourServices": "Our Services",
+    "closed": "Closed",
+    "contactInfo": "Contact Information"
+  },
+  "doctor": {
+    "specialization": "Specialization",
+    "biography": "Biography",
+    "weeklySchedule": "Weekly Schedule",
+    "servicesProvided": "Services Provided",
+    "worksAt": "Works at"
+  },
+  "treatment": {
+    "clinicsOffering": "Clinics offering this treatment",
+    "specialistsIn": "Specialists in this treatment"
+  },
+  "booking": {
+    "selectDoctor": "Select a Doctor",
+    "selectService": "Select a Service",
+    "selectDateTime": "Select Date & Time",
+    "yourInfo": "Your Information",
+    "patientName": "Full Name",
+    "patientPhone": "Phone Number (WhatsApp)",
+    "patientEmail": "Email (optional)",
+    "notes": "Notes or reason for visit (optional)",
+    "confirmBooking": "Confirm Booking",
+    "bookingConfirmed": "Appointment Confirmed!",
+    "bookingConfirmedMessage": "You will receive a confirmation via WhatsApp shortly.",
+    "availableSlots": "Available Time Slots",
+    "noSlotsAvailable": "No available slots for this date",
+    "selectDate": "Select a date"
+  },
+  "days": {
+    "0": "Sunday",
+    "1": "Monday",
+    "2": "Tuesday",
+    "3": "Wednesday",
+    "4": "Thursday",
+    "5": "Friday",
+    "6": "Saturday"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  }
+}
