@@ -3,11 +3,17 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getAdapter } from '@/adapters/factory'
 import type { AppointmentData, CreatedAppointment } from '@/adapters/types'
-import { mockClinics } from '@/data/mock'
+import { mockClinics, mockDoctors } from '@/data/mock'
+import { sendBookingNotifications } from './notifications'
+
+export interface CreatedAppointmentWithNotifications extends CreatedAppointment {
+  whatsappSent: boolean
+  emailSent: boolean
+}
 
 export const createAppointment = createServerFn({ method: 'POST' })
   .inputValidator((input: AppointmentData) => input)
-  .handler(async ({ data }): Promise<CreatedAppointment> => {
+  .handler(async ({ data }): Promise<CreatedAppointmentWithNotifications> => {
     const { clinicSlug } = data
 
     // Get clinic to determine which adapter to use
@@ -37,5 +43,31 @@ export const createAppointment = createServerFn({ method: 'POST' })
     const managementSystem = 'manual'
     const adapter = getAdapter(managementSystem)
 
-    return adapter.createAppointment(data)
+    const appointment = await adapter.createAppointment(data)
+
+    // Find doctor name for notifications
+    const doctor = mockDoctors.find((d) => d.slug === data.doctorSlug)
+    const doctorName = doctor?.name ?? data.doctorSlug
+
+    // Send notifications (non-blocking — failures don't affect the appointment)
+    const notificationResult = await sendBookingNotifications({
+      patientName: data.patientName,
+      patientPhone: data.patientPhone,
+      patientEmail: data.patientEmail,
+      notes: data.notes,
+      service: data.service,
+      date: data.date,
+      time: data.time,
+      clinicName: clinic.name,
+      clinicEmail: clinic.email,
+      clinicAddress: clinic.address,
+      clinicPhone: clinic.phone,
+      doctorName,
+    })
+
+    return {
+      ...appointment,
+      whatsappSent: notificationResult.whatsappSent,
+      emailSent: notificationResult.emailSent,
+    }
   })

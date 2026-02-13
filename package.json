@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@playwright/test": "^1.58.2",
+    "@react-email/components": "^1.0.7",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-devtools": "^0.7.0",
     "@tanstack/react-query": "^5.66.5",
@@ -34,6 +35,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-i18next": "^16.5.4",
+    "resend": "^6.9.2",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.6",
     "tw-animate-css": "^1.3.6",
