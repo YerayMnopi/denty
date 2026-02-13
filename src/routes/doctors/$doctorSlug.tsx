@@ -1,24 +1,15 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { ArrowLeft, Building2, CalendarCheck, Clock, Stethoscope, UserRound } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { mockDoctors, mockClinics } from '@/data/mock'
 import { Button } from '@/components/ui/button'
-import {
-  UserRound,
-  Building2,
-  ArrowLeft,
-  Clock,
-  CalendarCheck,
-  Stethoscope,
-} from 'lucide-react'
+import { mockClinics, mockDoctors } from '@/data/mock'
 
 export const Route = createFileRoute('/doctors/$doctorSlug')({
   component: DoctorDetailPage,
   head: ({ params }) => {
     const doctor = mockDoctors.find((d) => d.slug === params.doctorSlug)
     return {
-      meta: [
-        { title: doctor ? `${doctor.name} - Denty` : 'Doctor - Denty' },
-      ],
+      meta: [{ title: doctor ? `${doctor.name} - Denty` : 'Doctor - Denty' }],
     }
   },
 })
@@ -68,9 +59,7 @@ function DoctorDetailPage() {
           <UserRound className="h-10 w-10" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            {doctor.name}
-          </h1>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{doctor.name}</h1>
           <p className="mt-1 text-lg text-muted-foreground">
             {doctor.specialization[lang] ?? doctor.specialization.es}
           </p>
@@ -95,18 +84,14 @@ function DoctorDetailPage() {
       {/* Bio */}
       <section className="mb-12">
         <h2 className="mb-3 text-xl font-semibold">{t('doctor.biography')}</h2>
-        <p className="max-w-3xl text-muted-foreground">
-          {doctor.bio[lang] ?? doctor.bio.es}
-        </p>
+        <p className="max-w-3xl text-muted-foreground">{doctor.bio[lang] ?? doctor.bio.es}</p>
       </section>
 
       {/* Schedule & Services */}
       <div className="mb-12 grid gap-6 lg:grid-cols-2">
         {/* Weekly Schedule */}
         <div className="rounded-xl border bg-card p-6">
-          <h2 className="mb-4 text-lg font-semibold">
-            {t('doctor.weeklySchedule')}
-          </h2>
+          <h2 className="mb-4 text-lg font-semibold">{t('doctor.weeklySchedule')}</h2>
           <table className="w-full text-sm">
             <tbody>
               {dayNames.map((day) => {
@@ -133,15 +118,10 @@ function DoctorDetailPage() {
 
         {/* Services */}
         <div className="rounded-xl border bg-card p-6">
-          <h2 className="mb-4 text-lg font-semibold">
-            {t('doctor.servicesProvided')}
-          </h2>
+          <h2 className="mb-4 text-lg font-semibold">{t('doctor.servicesProvided')}</h2>
           <div className="space-y-3">
             {doctor.services.map((service) => (
-              <div
-                key={service}
-                className="flex items-center gap-3 text-sm"
-              >
+              <div key={service} className="flex items-center gap-3 text-sm">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Stethoscope className="h-4 w-4" />
                 </div>

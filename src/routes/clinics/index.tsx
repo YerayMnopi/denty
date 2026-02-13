@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
+import { ArrowRight, Building2, MapPin, Search, UserRound } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { mockClinics, mockDoctors } from '@/data/mock'
-import { Building2, MapPin, UserRound, ArrowRight, Search } from 'lucide-react'
 
 export const Route = createFileRoute('/clinics/')({
   component: ClinicsPage,
@@ -19,20 +19,13 @@ function ClinicsPage() {
   const filtered = mockClinics.filter((c) => {
     if (!query) return true
     const q = query.toLowerCase()
-    return (
-      c.name.toLowerCase().includes(q) ||
-      c.city.toLowerCase().includes(q)
-    )
+    return c.name.toLowerCase().includes(q) || c.city.toLowerCase().includes(q)
   })
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="mb-2 text-3xl font-bold tracking-tight">
-        {t('common.clinics')}
-      </h1>
-      <p className="mb-8 text-muted-foreground">
-        {t('clinic.subtitle')}
-      </p>
+      <h1 className="mb-2 text-3xl font-bold tracking-tight">{t('common.clinics')}</h1>
+      <p className="mb-8 text-muted-foreground">{t('clinic.subtitle')}</p>
 
       {/* Search */}
       <div className="relative mb-8 max-w-md">
@@ -52,9 +45,7 @@ function ClinicsPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((clinic) => {
-            const doctorCount = mockDoctors.filter(
-              (d) => d.clinicSlug === clinic.slug,
-            ).length
+            const doctorCount = mockDoctors.filter((d) => d.clinicSlug === clinic.slug).length
             return (
               <Link
                 key={clinic.slug}
@@ -66,9 +57,7 @@ function ClinicsPage() {
                     <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                       <Building2 className="h-4 w-4" />
                     </div>
-                    <h3 className="font-semibold group-hover:text-primary">
-                      {clinic.name}
-                    </h3>
+                    <h3 className="font-semibold group-hover:text-primary">{clinic.name}</h3>
                   </div>
                   <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
                 </div>

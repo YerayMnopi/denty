@@ -1,5 +1,5 @@
-import { defineConfig } from 'vitest/config'
 import { fileURLToPath, URL } from 'url'
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   resolve: {
@@ -15,11 +15,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'lcov', 'html'],
       include: ['src/**/*.{ts,tsx}'],
-      exclude: [
-        'src/routeTree.gen.ts',
-        'src/**/*.test.{ts,tsx}',
-        'src/**/*.spec.{ts,tsx}',
-      ],
+      exclude: ['src/routeTree.gen.ts', 'src/**/*.test.{ts,tsx}', 'src/**/*.spec.{ts,tsx}'],
       // TODO: Enable thresholds once coverage improves
       // thresholds: {
       //   lines: 90,

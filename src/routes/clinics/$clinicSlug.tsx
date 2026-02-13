@@ -1,19 +1,19 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
-import { mockClinics, mockDoctors } from '@/data/mock'
-import { Button } from '@/components/ui/button'
 import {
-  Building2,
-  UserRound,
   ArrowLeft,
-  Phone,
-  Mail,
-  Globe,
-  MapPin,
-  Clock,
   Banknote,
+  Building2,
   CalendarCheck,
+  Clock,
+  Globe,
+  Mail,
+  MapPin,
+  Phone,
+  UserRound,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { Button } from '@/components/ui/button'
+import { mockClinics, mockDoctors } from '@/data/mock'
 
 export const Route = createFileRoute('/clinics/$clinicSlug')({
   component: ClinicDetailPage,
@@ -71,9 +71,7 @@ function ClinicDetailPage() {
             <Building2 className="h-6 w-6" />
           </div>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {clinic.name}
-        </h1>
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{clinic.name}</h1>
         <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
           {clinic.description[lang] ?? clinic.description.es}
         </p>
@@ -91,9 +89,7 @@ function ClinicDetailPage() {
       <div className="mb-12 grid gap-6 lg:grid-cols-2">
         {/* Contact */}
         <div className="rounded-xl border bg-card p-6">
-          <h2 className="mb-4 text-lg font-semibold">
-            {t('clinic.contactInfo')}
-          </h2>
+          <h2 className="mb-4 text-lg font-semibold">{t('clinic.contactInfo')}</h2>
           <div className="space-y-3 text-sm">
             <div className="flex items-center gap-3">
               <MapPin className="h-4 w-4 text-muted-foreground" />
@@ -129,9 +125,7 @@ function ClinicDetailPage() {
 
         {/* Working Hours */}
         <div className="rounded-xl border bg-card p-6">
-          <h2 className="mb-4 text-lg font-semibold">
-            {t('clinic.workingHours')}
-          </h2>
+          <h2 className="mb-4 text-lg font-semibold">{t('clinic.workingHours')}</h2>
           <table className="w-full text-sm">
             <tbody>
               {dayNames.map((day) => {
@@ -140,9 +134,7 @@ function ClinicDetailPage() {
                   <tr key={day} className="border-b last:border-0">
                     <td className="py-2 font-medium">{t(`days.${day}`)}</td>
                     <td className="py-2 text-right text-muted-foreground">
-                      {hours
-                        ? `${hours.open} - ${hours.close}`
-                        : t('clinic.closed')}
+                      {hours ? `${hours.open} - ${hours.close}` : t('clinic.closed')}
                     </td>
                   </tr>
                 )
@@ -160,13 +152,8 @@ function ClinicDetailPage() {
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {clinic.serviceDetails.map((service) => (
-            <div
-              key={service.name.es}
-              className="rounded-xl border bg-card p-5"
-            >
-              <h3 className="font-semibold">
-                {service.name[lang] ?? service.name.es}
-              </h3>
+            <div key={service.name.es} className="rounded-xl border bg-card p-5">
+              <h3 className="font-semibold">{service.name[lang] ?? service.name.es}</h3>
               <div className="mt-2 flex items-center gap-4 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <Clock className="h-3.5 w-3.5" />
@@ -204,12 +191,9 @@ function ClinicDetailPage() {
                     <UserRound className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-semibold group-hover:text-primary">
-                      {doctor.name}
-                    </h3>
+                    <h3 className="font-semibold group-hover:text-primary">{doctor.name}</h3>
                     <p className="text-sm text-muted-foreground">
-                      {doctor.specialization[lang] ??
-                        doctor.specialization.es}
+                      {doctor.specialization[lang] ?? doctor.specialization.es}
                     </p>
                   </div>
                 </div>

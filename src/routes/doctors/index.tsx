@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
+import { ArrowRight, Building2, Search, UserRound } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { mockDoctors } from '@/data/mock'
-import { UserRound, Building2, ArrowRight, Search } from 'lucide-react'
 
 export const Route = createFileRoute('/doctors/')({
   component: DoctorsPage,
@@ -27,12 +27,8 @@ function DoctorsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="mb-2 text-3xl font-bold tracking-tight">
-        {t('common.doctors')}
-      </h1>
-      <p className="mb-8 text-muted-foreground">
-        {t('doctor.subtitle')}
-      </p>
+      <h1 className="mb-2 text-3xl font-bold tracking-tight">{t('common.doctors')}</h1>
+      <p className="mb-8 text-muted-foreground">{t('doctor.subtitle')}</p>
 
       {/* Search */}
       <div className="relative mb-8 max-w-md">
@@ -63,9 +59,7 @@ function DoctorsPage() {
                     <UserRound className="h-4 w-4" />
                   </div>
                   <div>
-                    <h3 className="font-semibold group-hover:text-primary">
-                      {doctor.name}
-                    </h3>
+                    <h3 className="font-semibold group-hover:text-primary">{doctor.name}</h3>
                     <p className="text-xs text-muted-foreground">
                       {doctor.specialization[lang] ?? doctor.specialization.es}
                     </p>

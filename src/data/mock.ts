@@ -111,7 +111,11 @@ export const mockClinics: MockClinic[] = [
       { day: 6, open: '10:00', close: '13:00' },
     ],
     serviceDetails: [
-      { name: { es: 'Ortodoncia invisible', en: 'Invisible Orthodontics' }, duration: 30, price: '3.000€' },
+      {
+        name: { es: 'Ortodoncia invisible', en: 'Invisible Orthodontics' },
+        duration: 30,
+        price: '3.000€',
+      },
       { name: { es: 'Implantes', en: 'Implants' }, duration: 90, price: '1.500€' },
       { name: { es: 'Odontopediatría', en: 'Pediatric Dentistry' }, duration: 30, price: '60€' },
       { name: { es: 'Cirugía oral', en: 'Oral Surgery' }, duration: 90, price: '400€' },
