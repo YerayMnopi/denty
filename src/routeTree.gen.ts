@@ -14,7 +14,8 @@ import { Route as DoctorsIndexRouteImport } from './routes/doctors/index'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as TreatmentsTreatmentSlugRouteImport } from './routes/treatments/$treatmentSlug'
-import { Route as TreatmentsIndexRouteImport } from './routes/treatments/index'
+import { Route as DoctorsDoctorSlugRouteImport } from './routes/doctors/$doctorSlug'
+import { Route as ClinicsClinicSlugRouteImport } from './routes/clinics/$clinicSlug'
 
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
@@ -46,10 +47,22 @@ const TreatmentsTreatmentSlugRoute = TreatmentsTreatmentSlugRouteImport.update({
   path: '/treatments/$treatmentSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DoctorsDoctorSlugRoute = DoctorsDoctorSlugRouteImport.update({
+  id: '/doctors/$doctorSlug',
+  path: '/doctors/$doctorSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClinicsClinicSlugRoute = ClinicsClinicSlugRouteImport.update({
+  id: '/clinics/$clinicSlug',
+  path: '/clinics/$clinicSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
+  '/clinics/$clinicSlug': typeof ClinicsClinicSlugRoute
+  '/doctors/$doctorSlug': typeof DoctorsDoctorSlugRoute
   '/treatments/$treatmentSlug': typeof TreatmentsTreatmentSlugRoute
   '/clinics/': typeof ClinicsIndexRoute
   '/doctors/': typeof DoctorsIndexRoute
@@ -58,6 +71,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
+  '/clinics/$clinicSlug': typeof ClinicsClinicSlugRoute
+  '/doctors/$doctorSlug': typeof DoctorsDoctorSlugRoute
   '/treatments/$treatmentSlug': typeof TreatmentsTreatmentSlugRoute
   '/clinics': typeof ClinicsIndexRoute
   '/doctors': typeof DoctorsIndexRoute
@@ -67,6 +82,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
+  '/clinics/$clinicSlug': typeof ClinicsClinicSlugRoute
+  '/doctors/$doctorSlug': typeof DoctorsDoctorSlugRoute
   '/treatments/$treatmentSlug': typeof TreatmentsTreatmentSlugRoute
   '/clinics/': typeof ClinicsIndexRoute
   '/doctors/': typeof DoctorsIndexRoute
@@ -77,16 +94,28 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/search'
+    | '/clinics/$clinicSlug'
+    | '/doctors/$doctorSlug'
     | '/treatments/$treatmentSlug'
     | '/clinics/'
     | '/doctors/'
     | '/treatments/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/search' | '/treatments/$treatmentSlug' | '/clinics' | '/doctors' | '/treatments'
+  to:
+    | '/'
+    | '/search'
+    | '/clinics/$clinicSlug'
+    | '/doctors/$doctorSlug'
+    | '/treatments/$treatmentSlug'
+    | '/clinics'
+    | '/doctors'
+    | '/treatments'
   id:
     | '__root__'
     | '/'
     | '/search'
+    | '/clinics/$clinicSlug'
+    | '/doctors/$doctorSlug'
     | '/treatments/$treatmentSlug'
     | '/clinics/'
     | '/doctors/'
@@ -96,6 +125,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SearchRoute: typeof SearchRoute
+  ClinicsClinicSlugRoute: typeof ClinicsClinicSlugRoute
+  DoctorsDoctorSlugRoute: typeof DoctorsDoctorSlugRoute
   TreatmentsTreatmentSlugRoute: typeof TreatmentsTreatmentSlugRoute
   ClinicsIndexRoute: typeof ClinicsIndexRoute
   DoctorsIndexRoute: typeof DoctorsIndexRoute
@@ -146,12 +177,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TreatmentsTreatmentSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/doctors/$doctorSlug': {
+      id: '/doctors/$doctorSlug'
+      path: '/doctors/$doctorSlug'
+      fullPath: '/doctors/$doctorSlug'
+      preLoaderRoute: typeof DoctorsDoctorSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clinics/$clinicSlug': {
+      id: '/clinics/$clinicSlug'
+      path: '/clinics/$clinicSlug'
+      fullPath: '/clinics/$clinicSlug'
+      preLoaderRoute: typeof ClinicsClinicSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SearchRoute: SearchRoute,
+  ClinicsClinicSlugRoute: ClinicsClinicSlugRoute,
+  DoctorsDoctorSlugRoute: DoctorsDoctorSlugRoute,
   TreatmentsTreatmentSlugRoute: TreatmentsTreatmentSlugRoute,
   ClinicsIndexRoute: ClinicsIndexRoute,
   DoctorsIndexRoute: DoctorsIndexRoute,
@@ -160,13 +207,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { createStart } from '@tanstack/react-start'
-import type { getRouter } from './router.tsx'
-
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
