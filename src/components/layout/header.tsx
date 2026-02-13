@@ -1,8 +1,8 @@
 import { Link } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
-import { LanguageSwitcher } from '@/components/language-switcher'
 import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { LanguageSwitcher } from '@/components/language-switcher'
 import { Button } from '@/components/ui/button'
 
 export function Header() {
@@ -17,9 +17,7 @@ export function Header() {
           <span className="text-2xl" role="img" aria-label="tooth">
             🦷
           </span>
-          <span className="text-xl font-bold tracking-tight">
-            {t('common.appName')}
-          </span>
+          <span className="text-xl font-bold tracking-tight">{t('common.appName')}</span>
         </Link>
 
         {/* Desktop Nav */}

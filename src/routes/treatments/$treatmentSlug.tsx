@@ -1,15 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { ArrowLeft, Banknote, Building2, Clock, Stethoscope, UserRound } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { mockTreatments, mockClinics, mockDoctors } from '@/data/mock'
 import { Button } from '@/components/ui/button'
-import {
-  Clock,
-  Banknote,
-  Building2,
-  UserRound,
-  ArrowLeft,
-  Stethoscope,
-} from 'lucide-react'
+import { mockClinics, mockDoctors, mockTreatments } from '@/data/mock'
 
 export const Route = createFileRoute('/treatments/$treatmentSlug')({
   component: TreatmentPage,
@@ -18,9 +11,7 @@ export const Route = createFileRoute('/treatments/$treatmentSlug')({
     return {
       meta: [
         {
-          title: treatment
-            ? `${treatment.name.en} - Denty`
-            : 'Treatment - Denty',
+          title: treatment ? `${treatment.name.en} - Denty` : 'Treatment - Denty',
         },
       ],
     }
@@ -137,9 +128,7 @@ function TreatmentPage() {
         <section className="mb-12">
           <div className="mb-4 flex items-center gap-2">
             <Building2 className="h-5 w-5 text-primary" />
-            <h2 className="text-xl font-semibold">
-              {t('treatment.clinicsOffering')}
-            </h2>
+            <h2 className="text-xl font-semibold">{t('treatment.clinicsOffering')}</h2>
             <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
               {relatedClinics.length}
             </span>
@@ -151,9 +140,7 @@ function TreatmentPage() {
                 to={`/clinics/${clinic.slug}`}
                 className="group rounded-xl border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-md"
               >
-                <h3 className="font-semibold group-hover:text-primary">
-                  {clinic.name}
-                </h3>
+                <h3 className="font-semibold group-hover:text-primary">{clinic.name}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{clinic.city}</p>
                 <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
                   {clinic.description[lang] ?? clinic.description.es}
@@ -169,9 +156,7 @@ function TreatmentPage() {
         <section className="mb-12">
           <div className="mb-4 flex items-center gap-2">
             <UserRound className="h-5 w-5 text-primary" />
-            <h2 className="text-xl font-semibold">
-              {t('treatment.specialistsIn')}
-            </h2>
+            <h2 className="text-xl font-semibold">{t('treatment.specialistsIn')}</h2>
             <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
               {relatedDoctors.length}
             </span>
@@ -188,9 +173,7 @@ function TreatmentPage() {
                     <UserRound className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-semibold group-hover:text-primary">
-                      {doctor.name}
-                    </h3>
+                    <h3 className="font-semibold group-hover:text-primary">{doctor.name}</h3>
                     <p className="text-sm text-muted-foreground">
                       {doctor.specialization[lang] ?? doctor.specialization.es}
                     </p>

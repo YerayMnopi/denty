@@ -13,12 +13,8 @@ function DoctorsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="mb-8 text-3xl font-bold tracking-tight">
-        {t('common.doctors')}
-      </h1>
-      <p className="text-muted-foreground">
-        {t('common.noResults')}
-      </p>
+      <h1 className="mb-8 text-3xl font-bold tracking-tight">{t('common.doctors')}</h1>
+      <p className="text-muted-foreground">{t('common.noResults')}</p>
     </div>
   )
 }

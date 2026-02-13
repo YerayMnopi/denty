@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
-import { Building2, UserRound, Stethoscope, MapPin, ArrowRight, Clock, Banknote } from 'lucide-react'
+import {
+  ArrowRight,
+  Banknote,
+  Building2,
+  Clock,
+  MapPin,
+  Stethoscope,
+  UserRound,
+} from 'lucide-react'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { mockClinics, mockDoctors, mockTreatments } from '@/data/mock'
 
 interface SearchParams {
@@ -18,9 +26,7 @@ export const Route = createFileRoute('/search')({
     return {
       meta: [
         {
-          title: search?.q
-            ? `"${search.q}" - Search - Denty`
-            : 'Search - Denty',
+          title: search?.q ? `"${search.q}" - Search - Denty` : 'Search - Denty',
         },
       ],
     }
@@ -69,9 +75,7 @@ function SearchPage() {
       {/* Header */}
       <div className="mb-10">
         <h1 className="text-3xl font-bold tracking-tight">
-          {hasQuery
-            ? t('common.searchResultsFor', { query: q })
-            : t('common.searchResults')}
+          {hasQuery ? t('common.searchResultsFor', { query: q }) : t('common.searchResults')}
         </h1>
         {hasQuery && (
           <p className="mt-2 text-sm text-muted-foreground">
