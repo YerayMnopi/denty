@@ -50,7 +50,8 @@ function DoctorsPage() {
           {filtered.map((doctor) => (
             <Link
               key={doctor.slug}
-              to={`/doctors/${doctor.slug}`}
+              to="/doctors/$doctorSlug"
+              params={{ doctorSlug: doctor.slug }}
               className="group rounded-xl border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-md"
             >
               <div className="flex items-center justify-between">
