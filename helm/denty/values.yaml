@@ -1,0 +1,72 @@
+# Default values for denty
+
+replicaCount: 2
+
+image:
+  repository: ghcr.io/yeraymnopi/denty
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: denty.es
+      paths:
+        - path: /
+          pathType: Prefix
+    - host: www.denty.es
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: denty-tls
+      hosts:
+        - denty.es
+        - www.denty.es
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 3000
+  initialDelaySeconds: 10
+  periodSeconds: 30
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 3000
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+env:
+  NODE_ENV: production
+  PORT: "3000"
+
+secrets:
+  # Base64-encoded. Override per environment.
+  MONGODB_URI: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+
+namespace: denty

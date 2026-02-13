@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: denty-config
+  namespace: denty
+data:
+  NODE_ENV: production
+  PORT: "3000"
+  # Add application-specific env vars here
+  # NEXT_PUBLIC_SITE_URL: https://denty.es
