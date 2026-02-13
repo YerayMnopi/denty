@@ -31,9 +31,7 @@ function ClinicsPage() {
         {t('common.clinics')}
       </h1>
       <p className="mb-8 text-muted-foreground">
-        {lang === 'es'
-          ? 'Encuentra la clínica dental ideal cerca de ti.'
-          : 'Find the ideal dental clinic near you.'}
+        {t('clinic.subtitle')}
       </p>
 
       {/* Search */}
@@ -43,11 +41,8 @@ function ClinicsPage() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder={
-            lang === 'es'
-              ? 'Buscar por nombre o ciudad...'
-              : 'Search by name or city...'
-          }
+          placeholder={t('clinic.searchPlaceholder')}
+          aria-label={t('clinic.searchPlaceholder')}
           className="w-full rounded-lg border bg-background py-2 pl-10 pr-4 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
         />
       </div>

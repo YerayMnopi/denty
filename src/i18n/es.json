@@ -50,14 +50,18 @@
     "ourDoctors": "Nuestros Doctores",
     "ourServices": "Nuestros Servicios",
     "closed": "Cerrado",
-    "contactInfo": "Información de Contacto"
+    "contactInfo": "Información de Contacto",
+    "subtitle": "Encuentra la clínica dental ideal cerca de ti.",
+    "searchPlaceholder": "Buscar por nombre o ciudad..."
   },
   "doctor": {
     "specialization": "Especialización",
     "biography": "Biografía",
     "weeklySchedule": "Horario Semanal",
     "servicesProvided": "Servicios que Ofrece",
-    "worksAt": "Trabaja en"
+    "worksAt": "Trabaja en",
+    "subtitle": "Encuentra al especialista dental que necesitas.",
+    "searchPlaceholder": "Buscar por nombre o especialización..."
   },
   "treatment": {
     "clinicsOffering": "Clínicas que ofrecen este tratamiento",

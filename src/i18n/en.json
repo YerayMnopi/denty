@@ -50,14 +50,18 @@
     "ourDoctors": "Our Doctors",
     "ourServices": "Our Services",
     "closed": "Closed",
-    "contactInfo": "Contact Information"
+    "contactInfo": "Contact Information",
+    "subtitle": "Find the ideal dental clinic near you.",
+    "searchPlaceholder": "Search by name or city..."
   },
   "doctor": {
     "specialization": "Specialization",
     "biography": "Biography",
     "weeklySchedule": "Weekly Schedule",
     "servicesProvided": "Services Provided",
-    "worksAt": "Works at"
+    "worksAt": "Works at",
+    "subtitle": "Find the dental specialist you need.",
+    "searchPlaceholder": "Search by name or specialization..."
   },
   "treatment": {
     "clinicsOffering": "Clinics offering this treatment",

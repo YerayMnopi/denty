@@ -31,9 +31,7 @@ function DoctorsPage() {
         {t('common.doctors')}
       </h1>
       <p className="mb-8 text-muted-foreground">
-        {lang === 'es'
-          ? 'Encuentra al especialista dental que necesitas.'
-          : 'Find the dental specialist you need.'}
+        {t('doctor.subtitle')}
       </p>
 
       {/* Search */}
@@ -43,11 +41,8 @@ function DoctorsPage() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder={
-            lang === 'es'
-              ? 'Buscar por nombre o especialización...'
-              : 'Search by name or specialization...'
-          }
+          placeholder={t('doctor.searchPlaceholder')}
+          aria-label={t('doctor.searchPlaceholder')}
           className="w-full rounded-lg border bg-background py-2 pl-10 pr-4 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
         />
       </div>
