@@ -9,13 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ClinicsIndexRouteImport } from './routes/clinics/index'
-import { Route as DoctorsIndexRouteImport } from './routes/doctors/index'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as TreatmentsIndexRouteImport } from './routes/treatments/index'
+import { Route as DoctorsIndexRouteImport } from './routes/doctors/index'
+import { Route as ClinicsIndexRouteImport } from './routes/clinics/index'
 import { Route as TreatmentsTreatmentSlugRouteImport } from './routes/treatments/$treatmentSlug'
 import { Route as DoctorsDoctorSlugRouteImport } from './routes/doctors/$doctorSlug'
 import { Route as ClinicsClinicSlugRouteImport } from './routes/clinics/$clinicSlug'
+import { Route as BookClinicSlugRouteImport } from './routes/book/$clinicSlug'
 
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
@@ -57,10 +59,16 @@ const ClinicsClinicSlugRoute = ClinicsClinicSlugRouteImport.update({
   path: '/clinics/$clinicSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BookClinicSlugRoute = BookClinicSlugRouteImport.update({
+  id: '/book/$clinicSlug',
+  path: '/book/$clinicSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
+  '/book/$clinicSlug': typeof BookClinicSlugRoute
   '/clinics/$clinicSlug': typeof ClinicsClinicSlugRoute
   '/doctors/$doctorSlug': typeof DoctorsDoctorSlugRoute
   '/treatments/$treatmentSlug': typeof TreatmentsTreatmentSlugRoute
@@ -71,6 +79,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
+  '/book/$clinicSlug': typeof BookClinicSlugRoute
   '/clinics/$clinicSlug': typeof ClinicsClinicSlugRoute
   '/doctors/$doctorSlug': typeof DoctorsDoctorSlugRoute
   '/treatments/$treatmentSlug': typeof TreatmentsTreatmentSlugRoute
@@ -82,6 +91,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/search': typeof SearchRoute
+  '/book/$clinicSlug': typeof BookClinicSlugRoute
   '/clinics/$clinicSlug': typeof ClinicsClinicSlugRoute
   '/doctors/$doctorSlug': typeof DoctorsDoctorSlugRoute
   '/treatments/$treatmentSlug': typeof TreatmentsTreatmentSlugRoute
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/search'
+    | '/book/$clinicSlug'
     | '/clinics/$clinicSlug'
     | '/doctors/$doctorSlug'
     | '/treatments/$treatmentSlug'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/search'
+    | '/book/$clinicSlug'
     | '/clinics/$clinicSlug'
     | '/doctors/$doctorSlug'
     | '/treatments/$treatmentSlug'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/search'
+    | '/book/$clinicSlug'
     | '/clinics/$clinicSlug'
     | '/doctors/$doctorSlug'
     | '/treatments/$treatmentSlug'
@@ -125,6 +138,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SearchRoute: typeof SearchRoute
+  BookClinicSlugRoute: typeof BookClinicSlugRoute
   ClinicsClinicSlugRoute: typeof ClinicsClinicSlugRoute
   DoctorsDoctorSlugRoute: typeof DoctorsDoctorSlugRoute
   TreatmentsTreatmentSlugRoute: typeof TreatmentsTreatmentSlugRoute
@@ -191,12 +205,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClinicsClinicSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/book/$clinicSlug': {
+      id: '/book/$clinicSlug'
+      path: '/book/$clinicSlug'
+      fullPath: '/book/$clinicSlug'
+      preLoaderRoute: typeof BookClinicSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SearchRoute: SearchRoute,
+  BookClinicSlugRoute: BookClinicSlugRoute,
   ClinicsClinicSlugRoute: ClinicsClinicSlugRoute,
   DoctorsDoctorSlugRoute: DoctorsDoctorSlugRoute,
   TreatmentsTreatmentSlugRoute: TreatmentsTreatmentSlugRoute,
@@ -207,3 +229,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

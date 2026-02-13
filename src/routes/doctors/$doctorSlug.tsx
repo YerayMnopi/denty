@@ -73,9 +73,15 @@ function DoctorDetailPage() {
             </Link>
           )}
           <div className="mt-4">
-            <Button>
-              <CalendarCheck className="mr-2 h-4 w-4" />
-              {t('common.bookAppointment')}
+            <Button asChild>
+              <Link
+                to="/book/$clinicSlug"
+                params={{ clinicSlug: doctor.clinicSlug }}
+                search={{ doctor: doctor.slug }}
+              >
+                <CalendarCheck className="mr-2 h-4 w-4" />
+                {t('common.bookAppointment')}
+              </Link>
             </Button>
           </div>
         </div>

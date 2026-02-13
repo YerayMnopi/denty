@@ -72,6 +72,7 @@
     "selectService": "Selecciona un Servicio",
     "selectDateTime": "Selecciona Fecha y Hora",
     "yourInfo": "Tu Información",
+    "confirmation": "Confirmación",
     "patientName": "Nombre Completo",
     "patientPhone": "Número de Teléfono (WhatsApp)",
     "patientEmail": "Correo electrónico (opcional)",
@@ -81,7 +82,26 @@
     "bookingConfirmedMessage": "Recibirás una confirmación por WhatsApp en breve.",
     "availableSlots": "Horarios Disponibles",
     "noSlotsAvailable": "No hay horarios disponibles para esta fecha",
-    "selectDate": "Selecciona una fecha"
+    "selectDate": "Selecciona una fecha",
+    "fieldRequired": "Este campo es obligatorio",
+    "dateLabel": "Fecha",
+    "timeLabel": "Hora",
+    "whatsappNote": "Recibirás un mensaje de confirmación por WhatsApp",
+    "backToClinic": "Volver a la clínica",
+    "months": {
+      "january": "Enero",
+      "february": "Febrero",
+      "march": "Marzo",
+      "april": "Abril",
+      "may": "Mayo",
+      "june": "Junio",
+      "july": "Julio",
+      "august": "Agosto",
+      "september": "Septiembre",
+      "october": "Octubre",
+      "november": "Noviembre",
+      "december": "Diciembre"
+    }
   },
   "days": {
     "0": "Domingo",
