@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { ArrowRight, Banknote, Clock, Stethoscope } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { mockTreatments } from '@/data/mock'
-import { Stethoscope, Clock, Banknote, ArrowRight } from 'lucide-react'
 
 export const Route = createFileRoute('/treatments/')({
   component: TreatmentsPage,
@@ -24,20 +24,15 @@ function TreatmentsPage() {
   }
 
   // Group treatments by category
-  const grouped = mockTreatments.reduce<Record<string, typeof mockTreatments>>(
-    (acc, treatment) => {
-      if (!acc[treatment.category]) acc[treatment.category] = []
-      acc[treatment.category].push(treatment)
-      return acc
-    },
-    {},
-  )
+  const grouped = mockTreatments.reduce<Record<string, typeof mockTreatments>>((acc, treatment) => {
+    if (!acc[treatment.category]) acc[treatment.category] = []
+    acc[treatment.category].push(treatment)
+    return acc
+  }, {})
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="mb-2 text-3xl font-bold tracking-tight">
-        {t('common.treatments')}
-      </h1>
+      <h1 className="mb-2 text-3xl font-bold tracking-tight">{t('common.treatments')}</h1>
       <p className="mb-10 text-muted-foreground">
         {lang === 'es'
           ? 'Explora los tratamientos dentales disponibles en nuestras clínicas.'

@@ -1,7 +1,7 @@
-import { useNavigate, Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
+import { Building2, Search, Stethoscope, UserRound, X } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Search, Building2, UserRound, Stethoscope, X } from 'lucide-react'
-import { useState, useMemo, useRef, useEffect } from 'react'
 import { mockClinics, mockDoctors, mockTreatments } from '@/data/mock'
 
 interface SearchResult {
@@ -202,9 +202,7 @@ export function HeroSearch() {
           role="listbox"
         >
           {results.length === 0 ? (
-            <div className="px-5 py-4 text-sm text-muted-foreground">
-              {t('common.noResults')}
-            </div>
+            <div className="px-5 py-4 text-sm text-muted-foreground">{t('common.noResults')}</div>
           ) : (
             <div className="max-h-80 overflow-y-auto py-2">
               {Object.entries(grouped).map(([type, items]) => (

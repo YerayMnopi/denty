@@ -9,11 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SearchRouteImport } from './routes/search'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as TreatmentsIndexRouteImport } from './routes/treatments/index'
-import { Route as DoctorsIndexRouteImport } from './routes/doctors/index'
 import { Route as ClinicsIndexRouteImport } from './routes/clinics/index'
+import { Route as DoctorsIndexRouteImport } from './routes/doctors/index'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as TreatmentsTreatmentSlugRouteImport } from './routes/treatments/$treatmentSlug'
 import { Route as DoctorsDoctorSlugRouteImport } from './routes/doctors/$doctorSlug'
 import { Route as ClinicsClinicSlugRouteImport } from './routes/clinics/$clinicSlug'

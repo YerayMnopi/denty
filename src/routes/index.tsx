@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { CalendarCheck, Search, UserRound } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Search, CalendarCheck, UserRound } from 'lucide-react'
 import { HeroSearch } from '@/components/hero-search'
 
 export const Route = createFileRoute('/')({
