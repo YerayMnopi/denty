@@ -48,7 +48,8 @@ function TreatmentsPage() {
             {treatments.map((treatment) => (
               <Link
                 key={treatment.slug}
-                to={`/treatments/${treatment.slug}`}
+                to="/treatments/$treatmentSlug"
+                params={{ treatmentSlug: treatment.slug }}
                 className="group rounded-xl border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-md"
               >
                 <div className="flex items-center justify-between">

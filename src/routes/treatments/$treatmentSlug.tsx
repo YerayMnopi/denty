@@ -137,7 +137,8 @@ function TreatmentPage() {
             {relatedClinics.map((clinic) => (
               <Link
                 key={clinic.slug}
-                to={`/clinics/${clinic.slug}`}
+                to="/clinics/$clinicSlug"
+                params={{ clinicSlug: clinic.slug }}
                 className="group rounded-xl border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-md"
               >
                 <h3 className="font-semibold group-hover:text-primary">{clinic.name}</h3>
@@ -165,7 +166,8 @@ function TreatmentPage() {
             {relatedDoctors.map((doctor) => (
               <Link
                 key={doctor.slug}
-                to={`/doctors/${doctor.slug}`}
+                to="/doctors/$doctorSlug"
+                params={{ doctorSlug: doctor.slug }}
                 className="group rounded-xl border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-md"
               >
                 <div className="flex items-center gap-3">
