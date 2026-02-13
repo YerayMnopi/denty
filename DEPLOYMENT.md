@@ -24,6 +24,48 @@ Runs on push to `main` after CI passes:
 2. Push to GitHub Container Registry (ghcr.io)
 3. Deploy to Kubernetes with rolling update
 
+## Helm Chart
+
+The recommended way to deploy Denty is via the Helm chart in `helm/denty/`.
+
+### Install (first deploy)
+```bash
+kubectl create namespace denty
+helm install denty ./helm/denty \
+  --namespace denty \
+  --set image.tag=<commit-sha> \
+  --set secrets.MONGODB_URI=<your-uri>
+```
+
+### Upgrade (subsequent deploys)
+```bash
+helm upgrade denty ./helm/denty \
+  --namespace denty \
+  --set image.tag=<commit-sha>
+```
+
+### Staging environment
+```bash
+helm install denty-staging ./helm/denty \
+  --namespace denty-staging --create-namespace \
+  -f helm/denty/values-staging.yaml \
+  --set image.tag=<commit-sha> \
+  --set secrets.MONGODB_URI=<staging-uri>
+```
+
+### Useful commands
+```bash
+helm list -n denty                    # List releases
+helm history denty -n denty           # Release history
+helm rollback denty <revision> -n denty  # Rollback
+helm template denty ./helm/denty      # Preview rendered manifests
+helm uninstall denty -n denty         # Remove
+```
+
+## Raw Kubernetes Manifests
+
+Raw manifests are also available in `k8s/` for reference or non-Helm workflows.
+
 ## Kubernetes Setup
 
 ### Prerequisites
