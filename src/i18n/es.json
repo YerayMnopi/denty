@@ -117,6 +117,16 @@
     "5": "Viernes",
     "6": "Sábado"
   },
+  "chat": {
+    "title": "Asistente Dental",
+    "openChat": "Abrir chat",
+    "close": "Cerrar chat",
+    "minimize": "Minimizar chat",
+    "send": "Enviar",
+    "inputPlaceholder": "Escribe tu mensaje...",
+    "welcomeMessage": "👋 ¡Hola! Soy tu asistente dental. ¿En qué puedo ayudarte?",
+    "errorMessage": "Lo siento, algo salió mal. Inténtalo de nuevo."
+  },
   "footer": {
     "rights": "Todos los derechos reservados.",
     "privacy": "Política de Privacidad",
