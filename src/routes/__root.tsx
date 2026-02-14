@@ -1,6 +1,13 @@
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router'
+import {
+  createRootRouteWithContext,
+  HeadContent,
+  Outlet,
+  Scripts,
+  useRouterState,
+} from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import { ChatWidget } from '../components/chat-widget'
 import { Footer } from '../components/layout/footer'
 
 import { Header } from '../components/layout/header'
@@ -50,7 +57,16 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   shellComponent: RootDocument,
 })
 
+function useClinicSlugFromPath(): string | undefined {
+  const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const clinicMatch = pathname.match(/^\/clinics\/([^/]+)$/)
+  const bookMatch = pathname.match(/^\/book\/([^/]+)/)
+  return clinicMatch?.[1] || bookMatch?.[1] || undefined
+}
+
 function RootComponent() {
+  const clinicSlug = useClinicSlugFromPath()
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -58,6 +74,7 @@ function RootComponent() {
         <Outlet />
       </main>
       <Footer />
+      <ChatWidget clinicSlug={clinicSlug} />
     </div>
   )
 }
