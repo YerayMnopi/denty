@@ -88,6 +88,11 @@
     "timeLabel": "Time",
     "whatsappNote": "You will receive a confirmation message via WhatsApp",
     "backToClinic": "Back to clinic",
+    "whatsappSentSuccess": "A WhatsApp confirmation has been sent.",
+    "whatsappSentFail": "WhatsApp confirmation could not be sent.",
+    "emailSentSuccess": "A confirmation email has been sent.",
+    "emailSentFail": "Confirmation email could not be sent.",
+    "notificationStatus": "Notification status",
     "months": {
       "january": "January",
       "february": "February",

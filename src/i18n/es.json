@@ -88,6 +88,11 @@
     "timeLabel": "Hora",
     "whatsappNote": "Recibirás un mensaje de confirmación por WhatsApp",
     "backToClinic": "Volver a la clínica",
+    "whatsappSentSuccess": "Se ha enviado una confirmación por WhatsApp.",
+    "whatsappSentFail": "No se pudo enviar la confirmación por WhatsApp.",
+    "emailSentSuccess": "Se ha enviado un correo de confirmación.",
+    "emailSentFail": "No se pudo enviar el correo de confirmación.",
+    "notificationStatus": "Estado de notificaciones",
     "months": {
       "january": "Enero",
       "february": "Febrero",
