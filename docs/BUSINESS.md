@@ -1,249 +1,276 @@
 # Denty — Business Strategy
 
-## 1. Monetization Models
+## 1. Positioning
 
-### 1.1 Freemium SaaS for Clinics
+**Denty is an AI employee for dental clinics.**
 
-**Free tier** — Get clinics onboarded with zero friction:
-- Clinic profile page on denty.es
-- Up to 2 doctors listed
-- Basic appointment booking (up to 50/month)
-- Standard search visibility
+Not a SaaS platform. Not a booking widget. A digital team member that works 24/7, manages appointments, talks to patients, maintains the website, handles social media, and never calls in sick.
 
-**Pro** — €49/month:
-- Unlimited doctors and appointments
-- Priority listing in search results
-- Analytics dashboard (bookings, conversion rates, patient demographics)
-- Custom clinic branding (logo, colors on profile)
-- WhatsApp appointment reminders for patients
-- Email notifications with clinic branding
+**The pitch:** "For less than a part-time receptionist, get a full-time digital employee that never sleeps."
 
-**Premium** — €99/month:
-- Everything in Pro
-- AI chatbot customized with clinic-specific info (treatments, pricing, FAQs)
-- Integration with management software (Gesden, Klinicare)
-- Automated follow-up messages (post-visit feedback, recall reminders)
-- Multi-location support
-- Priority customer support
-
-**Enterprise** — Custom pricing:
-- White-label solution (own domain, full branding)
-- API access
-- Custom integrations
-- Dedicated account manager
-- SLA guarantees
-
-### 1.2 Commission Model (Hybrid)
-
-For clinics on the Free tier, charge a small commission per confirmed booking:
-- **€1-2 per booking** (competitive vs. Doctoralia's higher fees)
-- Commission drops to €0 on paid plans — strong incentive to upgrade
-- Track and bill monthly
-
-### 1.3 Premium Features (À la carte)
-
-Clinics can add individual features without upgrading:
-- **AI Chatbot**: €29/month add-on
-- **Management software integration**: €19/month add-on
-- **Featured listing** (top of search): €15/month per city
-- **Promoted treatments**: €5/month per treatment highlight
-
-### 1.4 Future Revenue Streams
-
-- **Dental supply marketplace**: Connect clinics with suppliers (affiliate/commission)
-- **Insurance partnerships**: Referral fees from dental insurance providers
-- **Dental tourism packages**: Partner with travel agencies for international patients
-- **Training/certification**: Host continuing education content for dental professionals
+**Key reframe:**
+| Old thinking | Denty thinking |
+|-------------|---------------|
+| "Another software subscription" (€49/mo) | "A digital employee" (€199-499/mo) |
+| "I need to learn a new tool" | "I just talk to it like a person" |
+| "It replaces my booking system" | "It runs alongside my existing systems" |
+| "Features and dashboards" | "Results and time saved" |
 
 ---
 
-## 2. Marketing Strategy
+## 2. Pricing
 
-### 2.1 SEO (Primary Channel)
+### 2.1 Plans
 
-Denty's architecture is already SEO-optimized with SSR (TanStack Start + Nitro). Key strategies:
+**Starter — €199/month**
+- 🤖 AI booking agent (WhatsApp + web chat)
+- 📅 Appointment management & reminders (24h + 1h)
+- 🔄 Sync with existing management software (Gesden, Klinicare)
+- 🌐 Basic clinic website (auto-generated, denty.es subdomain)
+- 📊 Weekly appointment summary by email
+- Up to 3 doctors
+- Up to 200 appointments/month
 
-**Programmatic SEO:**
-- Auto-generate pages: `/clinics/[city]`, `/treatments/[treatment]`, `/doctors/[specialty]-[city]`
-- Target long-tail: "dentista en Madrid centro", "implantes dentales precio Barcelona"
-- Schema markup (LocalBusiness, MedicalBusiness, Dentist) on all pages
-- Internal linking between treatments → clinics → doctors
+**Professional — €349/month**
+- Everything in Starter, plus:
+- 📱 Instagram DM auto-responses
+- 👥 Patient CRM (profiles, history, segments)
+- 🔁 Automated follow-ups & recall campaigns
+- 📸 Social media content generation (4 posts/month)
+- 🌐 Full website with custom domain & blog
+- ⭐ Google Reviews monitoring & response suggestions
+- Unlimited doctors
+- Unlimited appointments
 
-**Content SEO:**
-- Dental health blog (`/blog`): "¿Cuánto cuestan los implantes dentales?", "Ortodoncia invisible vs brackets"
-- Treatment guides with clinic CTAs
-- City-specific landing pages: "Mejores clínicas dentales en Valencia"
+**Enterprise — €499/month**
+- Everything in Professional, plus:
+- 🏥 Multi-location support (up to 5 clinics)
+- 🔌 Custom integrations (API access)
+- 📞 Priority support (dedicated account manager)
+- 📊 Advanced analytics & AI business insights
+- 🎨 Custom agent personality & branding
+- 📸 Social media management (12 posts/month + stories)
+- SLA guarantee (99.9% uptime)
 
-**Technical SEO:**
-- Fast Core Web Vitals (SSR + static generation where possible)
-- Sitemap generation, robots.txt optimization
-- hreflang for ES/EN content
+### 2.2 No Free Tier
 
-### 2.2 Local SEO
+Unlike the old SaaS model, there is no free tier. Denty is a premium product positioned as an employee, not a tool. However:
 
-- Google Business Profile optimization for partner clinics
-- Encourage patient reviews (post-appointment prompt via WhatsApp)
-- Local citations on dental directories
-- NAP consistency across platforms
+- **14-day free trial** on any plan (no credit card required for Starter).
+- **Money-back guarantee**: Full refund within 30 days if not satisfied.
+- **Onboarding included**: Denty sets itself up through conversation — no implementation cost.
 
-### 2.3 Paid Acquisition
+### 2.3 Add-ons
 
-**Google Ads** (high-intent keywords):
-- "dentista cerca de mí" — CPC ~€1-3
-- "clínica dental [ciudad]" — CPC ~€0.5-2
-- "precio [tratamiento] dental" — CPC ~€0.5-1.5
-- Target: €500-1000/month initial budget, optimize for cost-per-booking
-
-**Social Media Ads:**
-- Instagram/Facebook: Before/after treatment visuals, clinic highlights
-- Target: Adults 25-55 in urban Spain
-- Budget: €300-500/month
-
-### 2.4 Partnerships
-
-- **Dental associations**: COEM (Madrid), COEC (Cataluña) — official recommendation
-- **Dental schools**: Partner with universities for student clinics
-- **Insurance companies**: Integration with Sanitas, Adeslas dental plans
-- **Management software vendors**: Co-marketing with Gesden, Klinicare
-
-### 2.5 Referral Program
-
-- **For clinics**: Refer another clinic → 1 month free Pro
-- **For patients**: Refer a friend → priority booking / small discount on first visit
-- Referral tracking built into the platform
-
-### 2.6 Social Media (Organic)
-
-- Instagram: Treatment education, clinic spotlights, patient testimonials
-- TikTok: Quick dental tips, myth-busting, "day in a dental clinic"
-- LinkedIn: B2B content targeting clinic owners and dental professionals
+- **Extra locations**: €99/month per additional clinic (Enterprise)
+- **Custom integration development**: From €500 one-time
+- **White-label**: Custom pricing (remove Denty branding entirely)
 
 ---
 
 ## 3. Competitive Analysis
 
-### 3.1 Direct Competitors
+### 3.1 The Real Competition
 
-| Platform | Strengths | Weaknesses | Pricing |
-|----------|-----------|------------|---------|
-| **Doctoralia** | Market leader, strong SEO, reviews | Expensive for clinics (€150+/mo), generic (not dental-specific) | From €150/mo |
-| **Miodontólogo** | Dental-specific, price comparison | Outdated UX, limited tech, weak mobile | Commission-based |
-| **TopDoctors** | Premium positioning, specialist focus | Not dental-focused, expensive | From €200/mo |
-| **Clínica Cloud** | Management software included | Overly complex, weak patient-facing UX | From €80/mo |
+Denty doesn't compete with Doctoralia or booking platforms. Denty competes with **hiring a human**.
 
-### 3.2 How Denty Differentiates
+| | Part-time receptionist | Full-time receptionist | Denty Starter | Denty Professional |
+|---|---|---|---|---|
+| **Monthly cost** | €800-1,200 | €1,500-2,200 | €199 | €349 |
+| **Availability** | 4-6h/day | 8h/day | **24/7** | **24/7** |
+| **Sick days** | Yes | Yes | **Never** | **Never** |
+| **Vacations** | Yes | Yes | **Never** | **Never** |
+| **Languages** | 1-2 | 1-2 | **Unlimited** | **Unlimited** |
+| **WhatsApp at 2am** | No | No | **Yes** | **Yes** |
+| **Patient follow-ups** | Inconsistent | Manual | **Automated** | **Automated** |
+| **Website maintenance** | No | No | **Basic** | **Full** |
+| **Social media** | No | No | No | **Yes** |
+| **Scales instantly** | No | No | **Yes** | **Yes** |
 
-1. **Dental-only focus**: Unlike Doctoralia (generic healthcare), every feature is built for dental workflows
-2. **AI-powered**: Chatbot that understands dental terminology, treatments, and can answer patient questions 24/7
-3. **Affordable**: Free tier + Pro at €49 vs competitors at €150+
-4. **Modern tech stack**: Fast, mobile-first, great UX (TanStack Start + SSR)
-5. **Management software integration**: Sync with existing tools (not replace them)
-6. **WhatsApp-first communication**: How Spain actually communicates
-7. **No patient account required**: Phone number only = zero friction booking
-8. **Bilingual**: ES/EN from day one (tourism, expat community)
+### 3.2 vs Software Competitors
+
+| Platform | What they are | Pricing | Why Denty wins |
+|----------|--------------|---------|---------------|
+| **Doctoralia** | Marketplace/directory | €150+/mo | Denty is proactive, not passive. Patients don't need to find you on a marketplace. |
+| **Clínica Cloud** | Management software | €80+/mo | Denty works WITH existing software, doesn't replace it. Plus does patient communication. |
+| **Miodontólogo** | Price comparison | Commission | Commoditizes clinics on price. Denty builds relationships. |
+| **Generic chatbots** | Rule-based bots | €30-100/mo | Denty understands dental context, manages full workflows, not just Q&A. |
 
 ### 3.3 SWOT
 
 | | Positive | Negative |
 |---|---------|----------|
-| **Internal** | Modern tech, low cost, dental focus, AI features | New brand, small team, no market presence yet |
-| **External** | Underserved market, clinics frustrated with Doctoralia pricing | Doctoralia's SEO dominance, slow clinic adoption |
+| **Internal** | AI-native architecture, dental-specific, conversational UX, low operational cost per clinic | New brand, small team, no market presence yet |
+| **External** | AI adoption accelerating, clinics overwhelmed with admin, no dental-specific AI agent exists | Dentists can be tech-conservative, trust takes time, WhatsApp API costs |
 
 ---
 
 ## 4. Revenue Projections
 
-### 4.1 Simple Framework
+### 4.1 Framework
 
 ```
-Monthly Revenue = (Free clinics × commission) + (Pro clinics × €49) + (Premium clinics × €99)
+Monthly Revenue = (Starter × €199) + (Professional × €349) + (Enterprise × €499)
 ```
 
 ### 4.2 Conservative Scenario (Year 1-3)
 
 | Metric | Month 6 | Month 12 | Month 24 | Month 36 |
 |--------|---------|----------|----------|----------|
-| Total clinics | 50 | 150 | 500 | 1,200 |
-| Free tier | 35 | 90 | 250 | 500 |
-| Pro tier | 12 | 45 | 180 | 480 |
-| Premium tier | 3 | 15 | 70 | 220 |
-| Avg bookings/free clinic | 30 | 35 | 40 | 40 |
-| **Commission revenue** | €1,050 | €3,150 | €10,000 | €20,000 |
-| **Pro revenue** | €588 | €2,205 | €8,820 | €23,520 |
-| **Premium revenue** | €297 | €1,485 | €6,930 | €21,780 |
-| **Monthly revenue** | **€1,935** | **€6,840** | **€25,750** | **€65,300** |
-| **Annual run rate** | €23k | €82k | €309k | €784k |
+| **Total clinics** | 30 | 100 | 350 | 800 |
+| Starter | 20 | 55 | 175 | 350 |
+| Professional | 8 | 35 | 130 | 320 |
+| Enterprise | 2 | 10 | 45 | 130 |
+| **Monthly revenue** | €6,766 | €23,235 | €80,830 | **€194,420** |
+| **Annual run rate** | €81k | €279k | €970k | **€2.3M** |
 
 ### 4.3 Key Assumptions
 
-- 25% conversion Free → Pro within 6 months
-- 15% conversion Pro → Premium within 12 months
-- Average clinic churn: 5% monthly on Free, 3% on paid plans
-- Commission: €1/booking average
-- Growth driven primarily by SEO + word-of-mouth after initial acquisition push
+- Higher ARPU (€199-499 vs €49-99) means fewer clinics needed for same revenue.
+- 30% convert from Starter → Professional within 12 months (they see the value).
+- 20% convert from Professional → Enterprise within 12 months.
+- Monthly churn: 4% Starter, 2% Professional, 1% Enterprise (high-value = sticky).
+- Trial → Paid conversion: 40% (conversational onboarding reduces friction).
+- Average time to first value: <1 hour (agent is operational after onboarding conversation).
 
 ### 4.4 Unit Economics
 
-- **CAC (Customer Acquisition Cost)**: Target €50-100 per clinic (blended)
-- **LTV (Pro clinic, 18-month avg)**: €49 × 18 = €882
-- **LTV/CAC ratio**: 8.8-17.6x (healthy)
-- **Payback period**: 1-2 months
+| Metric | Value |
+|--------|-------|
+| **ARPU** (blended) | ~€280/month |
+| **CAC** (blended) | €200-400 |
+| **LTV** (24-month avg, 3% churn) | €280 × 24 × 0.97^12 ≈ €4,800 |
+| **LTV/CAC** | 12-24x |
+| **Payback period** | 1-2 months |
+| **Gross margin** | ~85% (OpenAI API + WhatsApp API costs ~15%) |
+
+### 4.5 Cost Structure (Per Clinic/Month)
+
+| Cost | Estimate |
+|------|----------|
+| OpenAI API (GPT-4) | €15-30 (depends on conversation volume) |
+| WhatsApp Business API | €5-15 (per-conversation pricing) |
+| Infrastructure (MongoDB, hosting) | €2-5 |
+| **Total COGS per clinic** | **€22-50** |
+| **Gross margin** | **€149-477 per clinic** |
 
 ---
 
-## 5. Growth Phases
+## 5. Growth Strategy
 
 ### Phase 1: Launch & Validate (Months 0-6)
-**Market**: Madrid + Barcelona
+**Market**: Madrid + Barcelona (20-30 clinics)
 
-- Launch MVP with free clinic onboarding
-- Onboard 50 clinics through direct outreach (cold email, LinkedIn, clinic visits)
-- Validate product-market fit with early adopters
-- Iterate on booking flow and clinic dashboard
-- Establish SEO foundations (target 1,000 organic monthly visits by month 6)
-- **Goal**: 50 clinics, €1,900 MRR
+- Direct outreach: Visit dental clinics, demonstrate Denty in person.
+- Target: Small clinics (1-3 dentists) overwhelmed with phone calls and WhatsApp messages.
+- **The demo**: Set up Denty for a clinic live in 15 minutes during the visit.
+- Validate: Do clinics actually use it? Do patients engage? What's the retention?
+- Iterate rapidly on agent quality and conversation flows.
+- **Goal**: 30 clinics, €6.7k MRR, <4% monthly churn.
 
 ### Phase 2: Grow Spain (Months 6-18)
-**Market**: Expand to Valencia, Sevilla, Málaga, Bilbao
+**Market**: All major Spanish cities
 
-- Launch paid acquisition (Google Ads)
-- Activate referral program
-- Release AI chatbot (Premium feature)
-- Launch management software integrations
-- Hire first sales rep for clinic outreach
-- Target dental association partnerships
-- **Goal**: 300 clinics, €10,000 MRR
+- Hire 1-2 dental sales reps (ideally former dental industry).
+- Launch referral program: Clinic refers clinic → 1 month free.
+- Content marketing: "The AI receptionist" case studies, video testimonials.
+- Partner with dental associations (COEM, COEC).
+- Attend dental trade shows and conferences (Expodental, etc.).
+- SEO: Rank for "asistente IA clínica dental", "recepcionista virtual dentista".
+- **Goal**: 100 clinics, €23k MRR.
 
-### Phase 3: Dominate Spain (Months 18-36)
-**Market**: All Spanish cities with 100k+ population
+### Phase 3: Dominate Dental Spain (Months 18-36)
+**Market**: All of Spain
 
-- Full content marketing engine (blog, guides, videos)
-- Launch dental tourism features (international patients)
-- Enterprise/white-label offering
-- Build brand recognition as "the dental booking platform"
-- **Goal**: 1,200 clinics, €65,000 MRR
+- Word-of-mouth should be primary growth driver by now.
+- Launch Enterprise for clinic chains.
+- Advanced features: AI business insights, predictive analytics.
+- Build case studies: "Clínica X increased patient retention 40% with Denty".
+- PR: Tech media, dental industry media.
+- **Goal**: 800 clinics, €194k MRR.
 
-### Phase 4: International Expansion (Month 36+)
-**Markets**: Portugal, LATAM (Mexico, Colombia, Argentina)
+### Phase 4: Vertical Expansion (Month 36+)
+**Markets**: Other verticals, then international
 
-- Localize for Portuguese, LATAM Spanish
-- Adapt to local healthcare regulations
-- Partner with local dental associations
-- **Goal**: 3,000+ clinics across markets
+- **Medical clinics** (dermatology, ophthalmology, physiotherapy) — same architecture, new knowledge base.
+- **Veterinary clinics** — surprisingly similar workflow.
+- **Beauty & wellness** (hair salons, spas, aesthetics).
+- **International**: Portugal, LATAM (Mexico, Colombia).
+- The agent architecture is vertical-agnostic by design.
 
 ---
 
-## 6. Key Metrics to Track
+## 6. Marketing Strategy
+
+### 6.1 Primary Channels
+
+**Direct sales** (Phase 1-2):
+- In-person clinic visits with live demos.
+- The product sells itself when dentists see it handle a real conversation.
+- LinkedIn outreach to clinic owners.
+
+**Dental industry** (Phase 2+):
+- Dental conferences and trade shows (Expodental Madrid, etc.).
+- Dental association partnerships and endorsements.
+- Dental Facebook groups and forums (huge in Spain).
+- Dental industry publications and newsletters.
+
+**Content marketing** (Phase 2+):
+- Case studies: Real numbers from real clinics.
+- Video: "Watch Denty handle 50 patient messages while the clinic sleeps".
+- Blog: Practice management tips, patient communication best practices.
+- YouTube: "Day in the life of a clinic with Denty".
+
+**SEO** (ongoing):
+- Clinic directory pages still valuable for organic traffic.
+- Target: "IA para clínicas dentales", "asistente virtual dentista", "automatizar citas dentista".
+- Generated clinic websites contribute to overall domain authority.
+
+### 6.2 The Sales Pitch
+
+**For the dentist who does everything:**
+> "You went to dental school to fix teeth, not to answer WhatsApp at midnight. Denty handles the admin so you can focus on patients."
+
+**For the clinic manager:**
+> "Your receptionist handles 40 calls a day. Denty handles 400 conversations a day. At 2am. On weekends. For €199/month."
+
+**For the clinic owner thinking about hiring:**
+> "Before you hire another receptionist at €1,500/month, try Denty for €199/month. 14 days free, no commitment."
+
+### 6.3 Social Proof Strategy
+
+- Record onboarding conversations (with permission) → show how easy setup is.
+- Track and publish metrics: "Average clinic saves 15 hours/week on admin".
+- Patient satisfaction scores from follow-up conversations.
+- Google Reviews improvement tracking.
+
+---
+
+## 7. Key Metrics
 
 | Metric | Target |
 |--------|--------|
-| Clinic sign-up rate | 20+ per month (Phase 2) |
-| Free → Pro conversion | 25% within 6 months |
-| Monthly churn (paid) | < 3% |
-| Bookings per clinic | 40+ per month |
-| Patient booking completion rate | > 60% |
-| SEO organic traffic | 10k monthly visits (Month 12) |
-| CAC | < €100 |
-| LTV/CAC | > 5x |
-| NPS (clinics) | > 50 |
-| NPS (patients) | > 60 |
+| Trial → Paid conversion | > 40% |
+| Monthly churn (Starter) | < 4% |
+| Monthly churn (Professional) | < 2% |
+| Agent response time | < 5 seconds |
+| Patient booking completion rate | > 70% (conversational) |
+| Conversations per clinic/month | 200+ |
+| Time to first value (onboarding) | < 1 hour |
+| NPS (clinics) | > 60 |
+| ARPU | > €280 |
+| LTV/CAC | > 10x |
+| Gross margin | > 80% |
+
+---
+
+## 8. Risks & Mitigations
+
+| Risk | Mitigation |
+|------|-----------|
+| AI hallucinations (wrong medical info) | Strict guardrails, clinic-specific knowledge only, never diagnose |
+| WhatsApp API costs spike | Optimize conversation efficiency, batch messages where possible |
+| Dentists don't trust AI | Start with booking only (safe), build trust, expand capabilities |
+| OpenAI API reliability/cost | Abstract LLM layer, support multiple providers (Anthropic, local models) |
+| GDPR/patient data concerns | Data isolation per clinic, encryption at rest, clear privacy policy, DPA |
+| Slow adoption by conservative industry | Focus on time-saving ROI, not tech features. Show, don't tell. |

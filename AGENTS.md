@@ -1,14 +1,15 @@
 # AGENTS.md — Denty Development Guide
 
 ## Project Overview
-Denty is a dental appointment booking platform. See `PRD.md` for the full product spec.
+Denty is an **AI agent for dental clinics**. Each clinic gets its own Denty — an always-on digital employee that manages appointments, talks to patients via WhatsApp/Instagram/web chat, maintains the clinic website, handles social media, and automates patient relationships. Think "OpenClaw for dental clinics." See `PRD.md` for the full product spec and `docs/BUSINESS.md` for business strategy.
 
 ## Tech Stack
 - **Framework:** TanStack Start (SSR) with TanStack Router + TanStack Query
 - **Database:** MongoDB with official Node.js driver (no Mongoose, no Prisma)
 - **UI:** shadcn/ui + Tailwind CSS v4 + Radix UI
-- **AI Chatbot:** OpenAI GPT-4 via `openai` SDK
+- **AI Core:** OpenAI GPT-4 via `openai` SDK (agent engine with function calling)
 - **WhatsApp:** WhatsApp Business Cloud API (Meta)
+- **Instagram:** Instagram Messaging API (Meta)
 - **Email:** Resend + React Email
 - **i18n:** i18next + react-i18next (Spanish + English)
 - **Linter/Formatter:** Biome.js
@@ -19,12 +20,14 @@ Denty is a dental appointment booking platform. See `PRD.md` for the full produc
 ```
 src/
 ├── routes/          # File-based routing (TanStack Router)
+├── agent/           # Agent core (engine, router, context, tools, personality)
+├── channels/        # Channel adapters (WhatsApp, Instagram, web chat)
 ├── components/      # React components
 │   ├── ui/          # shadcn/ui primitives
 │   └── layout/      # Header, Footer
 ├── server/          # Server functions (TanStack Start)
 ├── lib/             # Utilities, DB connection, collection types
-├── adapters/        # Clinic management system adapters
+├── adapters/        # Clinic management system adapters (Gesden, Klinicare, Manual)
 ├── data/            # Mock data (will be replaced by MongoDB)
 ├── i18n/            # Translation files (es.json, en.json)
 ├── emails/          # React Email templates
@@ -32,6 +35,12 @@ src/
 ```
 
 ## Key Conventions
+
+### Agent Architecture
+- Each clinic = one agent instance with its own data, personality, and channels
+- Agent uses OpenAI function calling to perform actions (book, remind, update website, etc.)
+- Channel adapters normalize messages from WhatsApp/Instagram/Web into a common format
+- Admin interactions are conversational first, web dashboard as visual fallback
 
 ### Routing
 - File-based routing via TanStack Router
@@ -49,6 +58,7 @@ src/
 - Use `getDb()` from `src/lib/db.ts` for connections
 - No Mongoose, no Prisma — use the official MongoDB driver directly
 - Type collections with TypeScript interfaces
+- Key collections: `clinics`, `doctors`, `appointments`, `agents`, `patients`, `conversations`
 
 ### Styling
 - Tailwind CSS v4 (uses `@theme` in CSS, not `tailwind.config.js`)
@@ -78,12 +88,13 @@ See `.env.example` for required variables:
 - `MONGODB_URI` — MongoDB connection string
 - `WHATSAPP_TOKEN` — WhatsApp Business API token
 - `WHATSAPP_PHONE_NUMBER_ID` — WhatsApp sender phone number ID
-- `OPENAI_API_KEY` — OpenAI API key
+- `INSTAGRAM_ACCESS_TOKEN` — Instagram Messaging API token
+- `OPENAI_API_KEY` — OpenAI API key (agent engine)
 - `RESEND_API_KEY` — Resend email API key
 - `JWT_SECRET` — Admin JWT signing secret
 
 ## Implementation Status
-See `PRD.md` Section 11 for phases. Check git log for current progress.
+See `PRD.md` Section 12 for phases. Check git log for current progress.
 
 ## Deployment
 See `DEPLOYMENT.md` for Docker, Kubernetes, and Helm setup.

@@ -2,33 +2,46 @@
 
 ## 1. Overview
 
-Denty is a dental appointment booking platform that connects patients with dental clinics. Patients can browse clinics and doctors, book appointments through an interactive calendar, and receive confirmations via WhatsApp. Clinics receive appointment notifications via email. An AI-powered chatbot helps patients with questions about treatments, schedules, and appointment management.
+Denty is an **AI agent for dental clinics**. Each clinic gets its own Denty — an always-on digital employee that manages appointments, talks to patients, maintains the clinic's website, handles social media, and keeps the practice running smoothly 24/7.
 
-The system is designed to integrate with existing dental clinic management software (Gesden, Klinicare, and others) through an adapter-based architecture, ensuring appointment availability stays in sync with whatever system a clinic already uses.
+Patients interact with Denty through **conversation** — via WhatsApp, Instagram DMs, or web chat — to book appointments, ask questions, get reminders, and more. Clinic owners talk to Denty like they'd talk to a human assistant: "Block next Friday afternoon", "Send a reminder to patients who haven't visited in 6 months", "Post something about our new whitening offer".
+
+The system is designed with a **"start dental, build generic"** philosophy. The architecture supports any service business vertical, but the product, language, and workflows are purpose-built for dental clinics first.
+
+Think of it as **"OpenClaw for dental clinics"** — each clinic is one agent instance with its own data, personality, connected channels, and capabilities.
 
 ## 2. Goals
 
-- Allow patients to book dental appointments online without creating an account (phone number only).
-- Provide each clinic and doctor with a dedicated public page.
-- Keep appointment availability in sync with external management systems (Gesden, Klinicare).
-- Send appointment confirmations to patients via WhatsApp.
-- Send appointment notifications to clinics via email.
-- Offer an AI chatbot that can answer questions about treatments, clinic info, and help manage appointments.
-- Support multi-language (Spanish and English).
-- Provide clinics with a simple admin panel to manage doctors, appointments, and integration settings.
+- Provide each dental clinic with its own **AI agent** that acts as a digital employee.
+- Enable **conversational appointment booking** — patients book by chatting on WhatsApp, Instagram, or web, not by navigating forms.
+- Keep appointment availability in sync with external management systems (Gesden, Klinicare) through an adapter layer.
+- Automate **patient relationship management**: follow-ups, reminders, recall campaigns, birthday messages.
+- **Generate and maintain** a professional clinic website with SEO optimization.
+- Manage the clinic's **social media presence**: content generation, DM responses, review management.
+- Offer **24/7 availability** — the agent never sleeps, never calls in sick, never takes vacation.
+- Support multi-language (Spanish and English), with agent personality adapting to each clinic's tone.
+- Replace the traditional admin panel with a **conversational admin interface** — the dentist manages their clinic by talking to Denty.
 
 ## 3. Target Users
 
 ### Patients
-- People looking to book a dental appointment.
-- Do not need an account. Only a phone number is required to book.
-- May optionally provide an email address.
-- After booking, they may be prompted to create an account (post-MVP).
+- People looking to book a dental appointment or get information about treatments.
+- Interact with Denty through WhatsApp, Instagram, or web chat — no app download, no account creation.
+- Only a phone number is needed to book.
+- Receive reminders, follow-ups, and care instructions through the same channel.
 
-### Dental Clinics (Admins)
-- Clinic staff who manage appointments, doctors, and clinic settings.
-- Authenticate with email/password.
-- Configure integration with their existing management system.
+### Dental Clinics (Owners/Staff)
+- Clinic owners and staff who want to offload administrative work.
+- Talk to Denty to manage appointments, doctors, schedules, and settings.
+- View dashboards and reports through the web interface or ask Denty for summaries.
+- Onboard by having a conversation, not by filling out forms.
+
+### The Denty Agent (Conceptual)
+- Each clinic's Denty instance is a first-class entity with:
+  - Its own identity (name, personality, tone of voice)
+  - Its own data (patients, appointments, history)
+  - Its own connected channels (WhatsApp number, Instagram account, website)
+  - Its own capabilities (determined by the clinic's plan)
 
 ## 4. Tech Stack
 
@@ -37,165 +50,182 @@ The system is designed to integrate with existing dental clinic management softw
 | Framework | TanStack Start (RC) with TanStack Router + TanStack Query |
 | Database | MongoDB with official Node.js driver (no Mongoose, no Prisma) |
 | UI | shadcn/ui + Tailwind CSS |
-| AI Chatbot | OpenAI GPT-4 via `openai` SDK |
+| AI Core | OpenAI GPT-4 via `openai` SDK |
 | WhatsApp | WhatsApp Business Cloud API (Meta) |
+| Instagram | Instagram Messaging API (Meta) |
 | Email | Resend + React Email |
 | i18n | i18next + react-i18next (Spanish + English) |
 | Build | Vite + Nitro deployment adapter |
 
-## 5. Information Architecture
+## 5. Agent Architecture
 
-### Public Pages
+### 5.1 One Clinic = One Agent
 
-- **`/`** - Landing page. Hero section with live search bar (results appear as the user types across clinics, doctors, and treatments), value proposition, "How it works" steps.
-- **`/search?q=`** - Unified search results page. Shows matching clinics, doctors, and treatments in grouped sections with result counts.
-- **`/clinics`** - Clinic listing. Searchable grid of clinic cards.
-- **`/clinics/:clinic-slug`** - Clinic detail page. Name, address, phone, working hours, services with prices, list of doctors, "Book Appointment" CTA.
-- **`/doctors`** - Doctor listing. Searchable grid of doctor cards.
-- **`/doctors/:doctor-slug`** - Doctor detail page. Name, photo, specialization, bio, schedule, linked clinic, "Book Appointment" CTA.
-- **`/treatments`** - Treatment listing. Grid of treatment cards grouped by category (Preventive, Cosmetic, Orthodontics, Surgery, Restorative, Pediatric).
-- **`/treatments/:treatment-slug`** - Treatment detail page. Name, description, category, duration, price range, related clinics offering the treatment, and specialist doctors.
-- **`/book/:clinic-slug`** - Booking flow. Multi-step: select doctor, select service, pick date/time from calendar, enter patient info (name, phone), confirm.
+Each clinic gets a dedicated agent instance with:
 
-### Admin Pages
+- **Identity**: Clinic name, personality configuration, tone of voice, language preferences.
+- **Knowledge Base**: Clinic info, services, pricing, doctors, schedules, FAQs, treatment details — all injected as agent context.
+- **Memory**: Conversation history per patient, appointment history, interaction logs.
+- **Channels**: Connected communication channels (WhatsApp, Instagram, web chat, email).
+- **Capabilities**: Determined by the clinic's subscription plan (booking, CRM, website, social media).
+- **Tools**: Functions the agent can call — book appointment, check availability, send reminder, update website, create post, etc.
 
-- **`/admin/login`** - Email/password login for clinic staff.
-- **`/admin/dashboard`** - Today's appointments, upcoming appointments, quick stats.
-- **`/admin/appointments`** - Full appointment list with filters (date, status, doctor). Cancel/confirm actions.
-- **`/admin/doctors`** - Add, edit, remove doctors. Set schedules and services per doctor.
-- **`/admin/settings`** - Edit clinic info, working hours, services. Configure management system integration (select adapter type, enter API credentials).
+### 5.2 Agent Capabilities
 
-### Persistent UI
+The agent uses **function calling** to perform actions:
 
-- **Header** - Logo, navigation links (Clinics, Doctors, Treatments), language switcher (ES/EN).
-- **Footer** - Links, copyright.
-- **AI Chatbot Widget** - Floating button in bottom-right corner, opens chat panel. Available on all public pages.
+| Capability | Functions |
+|-----------|-----------|
+| Booking | `check_availability`, `create_appointment`, `cancel_appointment`, `reschedule_appointment` |
+| Patient Info | `get_patient_history`, `update_patient_record`, `search_patients` |
+| Reminders | `send_reminder`, `schedule_follow_up`, `send_recall_campaign` |
+| Clinic Management | `update_schedule`, `block_time_slot`, `add_service`, `update_pricing` |
+| Website | `update_website_content`, `publish_blog_post`, `update_seo_settings` |
+| Social Media | `create_social_post`, `reply_to_review`, `schedule_content` |
 
-## 6. Features
+### 5.3 Conversation Routing
 
-### 6.1 Clinic Pages
+```
+Patient message (WhatsApp/Instagram/Web)
+  → Channel Adapter (normalize message format)
+  → Agent Router (identify clinic + patient)
+  → Agent Instance (clinic-specific context loaded)
+  → Response + Actions (function calls executed)
+  → Channel Adapter (format response for channel)
+  → Patient receives reply
+```
 
-**`/clinics`**
-- Grid of clinic cards showing name, city, number of doctors, and a short description.
-- Search/filter by name or city.
+### 5.4 Admin Conversations
 
-**`/clinics/:clinic-slug`**
-- Full clinic profile: name, logo, description, address (with map link), phone, email, website.
-- Working hours displayed in a weekly table.
-- List of services with name, duration, and optional price.
-- List of doctors (cards linking to their individual pages).
-- Prominent "Book Appointment" button linking to `/book/:clinic-slug`.
+Clinic owners interact with Denty through a dedicated admin channel:
 
-### 6.2 Doctor Pages
+- **Natural language management**: "Show me tomorrow's appointments", "Add Dr. García to the team", "We're closed next Monday"
+- **Reports on demand**: "How many new patients this month?", "What's our busiest day?"
+- **Settings changes**: "Change our WhatsApp greeting message", "Update the cleaning price to €80"
+- Falls back to a **web dashboard** for complex operations (bulk edits, visual calendar, analytics charts).
 
-**`/doctors`**
-- Grid of doctor cards showing name, photo, specialization, and linked clinic name.
-- Search/filter by name or specialization.
+## 6. Conversational Interface
 
-**`/doctors/:doctor-slug`**
-- Full profile: name, photo, specialization, bio.
-- Weekly schedule (days and hours).
-- Services this doctor provides.
-- Link to parent clinic.
-- "Book Appointment" button linking to `/book/:clinic-slug?doctor=:doctor-slug`.
+### 6.1 Supported Channels
 
-### 6.3 Treatment Pages
+| Channel | Patient | Admin | Priority |
+|---------|---------|-------|----------|
+| WhatsApp Business | ✅ | ✅ | Phase 1 |
+| Web Chat Widget | ✅ | ✅ | Phase 1 |
+| Instagram DMs | ✅ | ❌ | Phase 2 |
+| SMS | ✅ | ❌ | Future |
+| Telegram | ✅ | ❌ | Future |
 
-**`/treatments`**
-- Grid of treatment cards grouped by category (Preventive, Cosmetic, Orthodontics, Surgery, Restorative, Pediatric).
-- Each card shows treatment name, short description, duration, and price range.
-- Cards link to the individual treatment detail page.
+### 6.2 Patient Conversation Flows
 
-**`/treatments/:treatment-slug`**
-- Full treatment profile: name, category badge, detailed description.
-- Info cards showing duration (in minutes) and price range.
-- "Clinics offering this treatment" section: lists clinics whose services match the treatment, displayed as clickable cards.
-- "Specialists in this treatment" section: lists doctors whose specialization matches, displayed as clickable cards with clinic name.
-- Breadcrumb navigation (Home / Treatment Name).
+**Booking Flow (via WhatsApp example):**
+```
+Patient: Hola, quiero pedir cita para una limpieza
+Denty: ¡Hola! 😊 Claro, te ayudo. Para una limpieza dental tenemos disponibilidad:
+       📅 Martes 18 — 10:00, 12:30, 16:00
+       📅 Miércoles 19 — 09:00, 11:00, 17:30
+       📅 Jueves 20 — 10:00, 15:00
+       ¿Cuál te viene mejor?
+Patient: El martes a las 10
+Denty: Perfecto. Tu cita queda así:
+       🦷 Limpieza dental
+       👨‍⚕️ Dr. Martínez
+       📅 Martes 18 de febrero, 10:00
+       📍 Clínica Dental Sonrisa, C/ Gran Vía 42
+       ¿Confirmo?
+Patient: Sí
+Denty: ✅ ¡Cita confirmada! Te enviaré un recordatorio el día anterior. ¡Hasta el martes!
+```
 
-### 6.4 Unified Search
+**FAQ Handling:**
+- Treatment information, pricing, clinic hours, location, insurance questions
+- Agent draws from clinic-specific knowledge base
+- Gracefully escalates to human when needed
 
-**Landing page search bar (`/`):**
-- Pill-shaped search bar prominently placed in the hero section.
-- Live results dropdown appears after typing 2+ characters.
-- Results are grouped by type (Clinics, Doctors, Treatments) with distinct icons and section headers.
-- Each result links directly to its detail page (`/clinics/:slug`, `/doctors/:slug`, `/treatments/:slug`).
-- Pressing Enter or clicking the Search button navigates to the unified search results page.
-- Clear button (X) to reset the input. Click-outside-to-close behavior.
-- Maximum 8 results shown in the dropdown.
+**Post-Visit Follow-up (automated):**
+```
+Denty: ¡Hola María! ¿Qué tal te fue ayer con el Dr. Martínez? Esperamos que todo bien 😊
+       Si tienes alguna molestia o duda, estoy aquí para ayudarte.
+```
 
-**Search results page (`/search?q=`):**
-- Shows all matching clinics, doctors, and treatments in separate sections.
-- Each section has a count badge and uses the same card layout as listing pages.
-- Treatment cards show description, duration, and price range.
-- Empty state message when no results match.
+### 6.3 Web Chat Widget
 
-**Booking flow at `/book/:clinic-slug`:**
+- Floating widget available on the clinic's website (generated or external).
+- Same conversational capabilities as WhatsApp.
+- Can hand off to booking calendar for visual date/time selection.
+- Persisted sessions — patient can return and continue conversation.
 
-1. **Select Doctor** - Dropdown or card selection. Pre-selected if coming from a doctor page.
-2. **Select Service** - List of services the selected doctor provides, showing name and duration.
-3. **Select Date & Time** - Calendar component showing available dates. Clicking a date reveals available time slots. Slots are fetched from the adapter layer (synced with external management system or Denty's own availability).
-4. **Patient Information** - Form fields:
-   - Name (required)
-   - Phone number (required, used for WhatsApp confirmation)
-   - Email (optional)
-   - Notes/reason (optional)
-5. **Confirmation** - Summary of selected doctor, service, date/time, patient info. "Confirm Booking" button.
-6. **Success Screen** - Appointment confirmed. Details displayed. Message that a WhatsApp confirmation will be sent.
+## 7. Features
 
-**Availability rules:**
-- Time slots are determined by the clinic's management system adapter.
-- For clinics using the Manual adapter, availability is calculated from the doctor's schedule minus existing confirmed appointments.
-- Slot duration matches the selected service's duration.
-- No double-booking: once a slot is taken, it is removed from available slots.
+### 7.1 Appointment Booking & Management
 
-### 6.6 Notifications
+All existing booking features from the original platform apply, now accessed primarily through conversation:
+
+- **Conversational booking**: Patients book by chatting — the agent handles doctor selection, service selection, date/time picking, and confirmation.
+- **Visual booking fallback**: Web calendar available for patients who prefer clicking over chatting.
+- **Availability sync**: Adapter layer keeps slots in sync with Gesden, Klinicare, or manual schedules.
+- **Appointment management**: Patients can reschedule or cancel via conversation.
+- **Smart suggestions**: Agent suggests optimal times based on patient history and preferences.
+- **No-show handling**: Automated follow-up for missed appointments.
+
+**Availability rules** (unchanged):
+- Time slots determined by the clinic's management system adapter.
+- ManualAdapter calculates from doctor schedules minus existing confirmed appointments.
+- Slot duration matches selected service duration.
+- No double-booking.
+
+### 7.2 Patient Relationship Management (CRM)
+
+- **Patient profiles**: Auto-built from interactions — name, phone, email, visit history, preferences, notes.
+- **Automated reminders**: 24h and 1h before appointments via the patient's preferred channel.
+- **Recall campaigns**: "Patients who haven't visited in 6+ months" — agent sends personalized re-engagement messages.
+- **Follow-up sequences**: Post-treatment care instructions, satisfaction check, review request.
+- **Birthday/milestone messages**: Personal touch automation.
+- **Treatment plans**: Track multi-visit treatments (orthodontics, implants) with scheduled follow-ups.
+- **Patient segments**: Group patients by treatment type, visit frequency, revenue, etc.
+
+### 7.3 Clinic Website Generation & SEO
+
+The agent generates and maintains a professional website for each clinic:
+
+- **Auto-generated pages**: Home, About, Services, Doctors, Contact, Blog.
+- **SEO optimized**: Meta tags, schema markup (LocalBusiness, Dentist), sitemap, fast loading.
+- **Content from conversation**: "Denty, add a page about our new Invisalign service" → agent creates it.
+- **Booking integration**: Every page has CTAs that open the chat or booking calendar.
+- **Blog/content**: Agent can generate dental health articles for SEO.
+- **Mobile responsive**: All generated sites are mobile-first.
+- **Custom domain**: Clinics can use their own domain or a denty.es subdomain.
+
+### 7.4 Social Media Management
+
+- **Content generation**: Agent creates posts about treatments, tips, promotions, seasonal content.
+- **DM responses**: Auto-reply to Instagram DMs with booking links and info.
+- **Review management**: Monitor and respond to Google Reviews, suggest responses for negative reviews.
+- **Content calendar**: Schedule posts in advance, maintain consistent posting.
+- **Platform support**: Instagram, Facebook, Google Business Profile (Phase 1). TikTok (future).
+
+### 7.5 Notifications
 
 **WhatsApp (to patient):**
-- Sent immediately after a successful booking.
-- Uses WhatsApp Business Cloud API with a pre-approved message template.
-- Contains: clinic name, doctor name, service, date, time, clinic address.
-- Sent to the phone number provided during booking.
+- Booking confirmation with details.
+- 24h and 1h reminders.
+- Post-visit follow-up.
+- Recall/re-engagement messages.
 
 **Email (to clinic):**
-- Sent immediately after a successful booking.
-- Uses Resend with a React Email template.
-- Contains: patient name, patient phone, service, doctor, date, time, any notes.
-- Sent to the clinic's configured email address.
+- New appointment notifications.
+- Daily/weekly appointment summaries.
+- Patient no-show alerts.
+- Monthly performance reports.
 
-**Error handling:**
-- If WhatsApp or email fails, the appointment is still created.
-- Flags `whatsappSent` and `emailSent` on the appointment record.
-- Admin dashboard shows notification status per appointment.
+**Error handling** (unchanged):
+- Notification failures don't block appointment creation.
+- Status flags (`whatsappSent`, `emailSent`) on appointment records.
 
-### 6.7 AI Chatbot
+### 7.6 Management System Integration (Adapter Layer)
 
-**Behavior:**
-- Floating widget available on all public pages. Bottom-right corner.
-- Click to open a chat panel with message history.
-- Powered by OpenAI GPT-4 Chat Completions API.
-- System prompt is dynamically built with clinic context from MongoDB:
-  - Clinic name, address, phone, working hours.
-  - List of services with descriptions and prices.
-  - List of doctors with specializations.
-- The chatbot can:
-  - Answer questions about treatments, prices, and procedures.
-  - Provide clinic address, phone, and working hours.
-  - Describe available doctors and their specializations.
-  - Redirect users to the booking page when they want to make an appointment.
-- Chat sessions are persisted in MongoDB for continuity.
+Architecture and interface unchanged from original design:
 
-**Function calling:**
-- The chatbot uses OpenAI function calling to trigger a "navigate to booking page" action when the user wants to book.
-
-### 6.8 Management System Integration (Adapter Layer)
-
-**Architecture:**
-- A `ClinicManagementAdapter` interface defines the contract for all integrations.
-- Each clinic is configured with a `managementSystem` field (`'manual'`, `'gesden'`, `'klinicare'`, or a custom string).
-- An adapter factory returns the correct adapter implementation based on the clinic's configuration.
-
-**Adapter Interface:**
 ```typescript
 interface ClinicManagementAdapter {
   getAvailableSlots(doctorId: string, date: Date): Promise<TimeSlot[]>
@@ -206,141 +236,138 @@ interface ClinicManagementAdapter {
 ```
 
 **Implementations:**
-- **ManualAdapter** (default): Reads doctor schedules and existing appointments from Denty's MongoDB. Calculates available slots by subtracting booked slots from the doctor's defined schedule. Fully functional out of the box.
-- **GesdenAdapter** (stub): Implements the interface with placeholder logic. Throws a descriptive error indicating the integration is pending API access. Includes a configuration schema for future use (API endpoint, credentials).
-- **KlinicareAdapter** (stub): Same approach as Gesden. Ready to be implemented when API documentation becomes available.
+- **ManualAdapter** (default): Reads schedules and appointments from MongoDB.
+- **GesdenAdapter** (stub): Ready for implementation when API access available.
+- **KlinicareAdapter** (stub): Ready for implementation when API access available.
 
-**Adding a new integration:**
-1. Create a new file in `src/adapters/` implementing `ClinicManagementAdapter`.
-2. Register it in the adapter factory.
-3. Clinics can select it from the admin settings page.
+### 7.7 Agent Onboarding Flow
 
-### 6.9 Clinic Admin Panel
+Onboarding is a conversation, not a tutorial:
 
-**Authentication:**
-- Email/password login. Passwords hashed with bcrypt.
-- JWT stored in an HTTP-only cookie for session management.
-- No patient authentication in MVP.
+```
+Denty: ¡Hola! Soy Denty, tu nuevo asistente digital 🦷
+       Vamos a configurar tu clínica. Primero, ¿cómo se llama?
+Owner: Clínica Dental Sonrisa
+Denty: ¡Buen nombre! ¿En qué ciudad estáis?
+Owner: Madrid, en la calle Gran Vía 42
+Denty: Perfecto. ¿Cuántos doctores trabajáis en la clínica?
+Owner: Somos 3 — yo soy el Dr. López, y tenemos a la Dra. García y el Dr. Martínez
+Denty: Genial. ¿Qué servicios ofrecéis? Dame los principales y luego podemos añadir más.
+Owner: Limpiezas, empastes, ortodoncia, blanqueamiento e implantes
+Denty: Ya tengo lo básico configurado. Tu clínica ya está activa en denty.es/clinica-dental-sonrisa
+       ¿Quieres que conectemos tu WhatsApp para que los pacientes puedan escribirte?
+```
 
-**Dashboard (`/admin/dashboard`):**
-- Today's appointments list with patient name, doctor, service, time, status.
-- Upcoming appointments (next 7 days).
-- Quick stats: total appointments this week, pending confirmations.
+### 7.8 Internationalization
 
-**Appointments (`/admin/appointments`):**
-- Full list of appointments with filters: date range, status, doctor.
-- Actions: confirm, cancel.
-- Shows WhatsApp/email notification status per appointment.
+Unchanged:
+- Spanish and English support.
+- Language switcher on web interfaces.
+- Localized content stored as `Record<string, string>` in MongoDB.
+- Agent detects and adapts to patient's language.
 
-**Doctors (`/admin/doctors`):**
-- List of clinic's doctors.
-- Add new doctor: name, specialization, bio, photo URL, schedule, services.
-- Edit existing doctor.
-- Remove doctor (soft-delete or mark inactive).
+## 8. Data Model
 
-**Settings (`/admin/settings`):**
-- Edit clinic information: name, description, address, phone, email, working hours.
-- Manage services: add, edit, remove. Each service has a name (multi-language), duration, optional price.
-- Management system configuration: select adapter type from dropdown, enter adapter-specific settings (API URL, credentials).
-
-### 6.10 Internationalization
-
-- All user-facing text supports Spanish and English.
-- Language switcher in the header toggles between ES and EN.
-- Clinic descriptions, service names, doctor specializations, bios, and treatment names/descriptions are stored as `Record<string, string>` (keyed by locale) in MongoDB.
-- Static UI text uses i18next translation files (`es.json`, `en.json`).
-- Default language: Spanish. Detectable from browser preferences.
-
-## 7. Data Model
-
-### `clinics` Collection
-| Field | Type | Description |
-|-------|------|-------------|
-| `_id` | ObjectId | Primary key |
-| `slug` | string | Unique, URL-friendly identifier |
-| `name` | string | Clinic display name |
-| `description` | Record\<string, string\> | Localized descriptions (es, en) |
-| `address` | object | street, city, zip, optional coordinates |
-| `phone` | string | Contact phone |
-| `email` | string | Contact email (receives appointment notifications) |
-| `website` | string? | Optional website URL |
-| `logo` | string? | Logo image URL |
-| `managementSystem` | string | Adapter type: 'manual', 'gesden', 'klinicare' |
-| `managementConfig` | object? | Adapter-specific configuration |
-| `workingHours` | array | Objects with day (0-6), open, close times |
-| `services` | array | Objects with name (localized), duration (min), price |
-| `adminEmail` | string | Admin login email |
-| `adminPasswordHash` | string | Bcrypt-hashed admin password |
-| `createdAt` | Date | Record creation timestamp |
-| `updatedAt` | Date | Last update timestamp |
-
-### `doctors` Collection
-| Field | Type | Description |
-|-------|------|-------------|
-| `_id` | ObjectId | Primary key |
-| `slug` | string | Unique, URL-friendly identifier |
-| `clinicId` | ObjectId | Reference to parent clinic |
-| `name` | string | Doctor display name |
-| `specialization` | Record\<string, string\> | Localized specialization text |
-| `bio` | Record\<string, string\> | Localized biography |
-| `photo` | string? | Photo URL |
-| `schedule` | array | Objects with day (0-6), startTime, endTime |
-| `services` | string[] | Service names this doctor provides |
-| `createdAt` | Date | Record creation timestamp |
-
-### `appointments` Collection
+### `agents` Collection (NEW)
 | Field | Type | Description |
 |-------|------|-------------|
 | `_id` | ObjectId | Primary key |
 | `clinicId` | ObjectId | Reference to clinic |
-| `doctorId` | ObjectId | Reference to doctor |
-| `patientName` | string | Patient's full name |
-| `patientPhone` | string | Patient's phone (WhatsApp number) |
-| `patientEmail` | string? | Optional patient email |
-| `service` | string | Service name |
-| `date` | Date | Appointment date and time |
-| `duration` | number | Duration in minutes |
-| `status` | string | 'pending', 'confirmed', 'cancelled', 'completed' |
-| `externalId` | string? | ID in the external management system |
-| `notes` | string? | Patient notes or reason for visit |
-| `whatsappSent` | boolean | Whether WhatsApp confirmation was sent |
-| `emailSent` | boolean | Whether clinic email was sent |
-| `createdAt` | Date | Record creation timestamp |
+| `name` | string | Agent display name (e.g., "Denty de Clínica Sonrisa") |
+| `personality` | object | Tone, greeting style, emoji usage, formality level |
+| `systemPrompt` | string | Base system prompt with clinic context |
+| `channels` | array | Connected channels with config (whatsapp, instagram, web) |
+| `capabilities` | string[] | Enabled capabilities based on plan |
+| `createdAt` | Date | Creation timestamp |
+| `updatedAt` | Date | Last update timestamp |
 
-### `chat_sessions` Collection
+### `patients` Collection (NEW)
 | Field | Type | Description |
 |-------|------|-------------|
 | `_id` | ObjectId | Primary key |
-| `clinicId` | ObjectId? | Associated clinic (if chatting on a clinic page) |
-| `sessionId` | string | Client-generated session identifier |
-| `messages` | array | Objects with role ('user'/'assistant'), content, timestamp |
+| `clinicId` | ObjectId | Reference to clinic |
+| `name` | string | Patient name |
+| `phone` | string | Phone number (primary identifier) |
+| `email` | string? | Optional email |
+| `channels` | object | Preferred channel, channel-specific IDs |
+| `visitHistory` | array | Past appointments summary |
+| `tags` | string[] | Segments/labels |
+| `notes` | string? | Clinic notes about patient |
+| `lastVisit` | Date? | Last appointment date |
+| `nextAppointment` | Date? | Next scheduled appointment |
+| `createdAt` | Date | First interaction timestamp |
+| `updatedAt` | Date | Last update timestamp |
+
+### `conversations` Collection (NEW — replaces `chat_sessions`)
+| Field | Type | Description |
+|-------|------|-------------|
+| `_id` | ObjectId | Primary key |
+| `agentId` | ObjectId | Reference to agent |
+| `clinicId` | ObjectId | Reference to clinic |
+| `patientId` | ObjectId? | Reference to patient (null for anonymous) |
+| `channel` | string | 'whatsapp', 'instagram', 'web', 'admin' |
+| `channelSessionId` | string | Channel-specific session identifier |
+| `messages` | array | Objects with role, content, timestamp, functionCalls |
+| `context` | object | Conversation context/state |
 | `createdAt` | Date | Session creation timestamp |
 | `updatedAt` | Date | Last message timestamp |
 
-### MongoDB Indexes
-- `clinics`: unique index on `slug`, unique index on `adminEmail`
-- `doctors`: unique index on `slug`, index on `clinicId`
-- `appointments`: compound index on `clinicId` + `doctorId` + `date`, index on `status`
-- `chat_sessions`: index on `sessionId`
+### `clinics` Collection (updated)
+Original fields preserved, with additions:
 
-## 8. Architecture
+| Field | Type | Description |
+|-------|------|-------------|
+| _(all original fields)_ | | |
+| `plan` | string | 'starter', 'professional', 'enterprise' |
+| `website` | object | Generated website config (domain, theme, pages) |
+| `socialMedia` | object | Connected social accounts and settings |
+| `onboardingComplete` | boolean | Whether onboarding conversation finished |
+
+### `doctors` Collection
+Unchanged from original design.
+
+### `appointments` Collection
+Unchanged from original design, with additions:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| _(all original fields)_ | | |
+| `patientId` | ObjectId? | Reference to patients collection |
+| `bookedVia` | string | Channel used to book: 'whatsapp', 'instagram', 'web', 'admin' |
+| `remindersSent` | array | Timestamps of sent reminders |
+
+### MongoDB Indexes
+Original indexes preserved, plus:
+- `agents`: unique index on `clinicId`
+- `patients`: compound index on `clinicId` + `phone`, index on `clinicId` + `lastVisit`
+- `conversations`: index on `agentId` + `patientId`, index on `channelSessionId`
+
+## 9. Architecture
 
 ### System Diagram
 
 ```mermaid
 graph TB
-    subgraph client [Client Layer]
-        Pages[TanStack Start Pages]
-        Chat[AI Chatbot Widget]
-        Calendar[Booking Calendar]
+    subgraph channels [Communication Channels]
+        WhatsApp[WhatsApp Business API]
+        Instagram[Instagram Messaging API]
+        WebChat[Web Chat Widget]
+        AdminChat[Admin Chat Interface]
     end
 
-    subgraph server [Server Layer - TanStack Start Server Functions]
-        ClinicFns[Clinic Server Functions]
-        BookingFns[Booking Server Functions]
-        DoctorFns[Doctor Server Functions]
-        ChatFns[Chat Server Functions]
-        AuthFns[Clinic Auth Functions]
+    subgraph agent_core [Agent Core]
+        Router[Channel Router & Normalizer]
+        AgentEngine[Agent Engine — LLM + Function Calling]
+        Tools[Agent Tools / Functions]
+        Context[Context Builder — Clinic Knowledge Base]
+    end
+
+    subgraph capabilities [Agent Capabilities]
+        Booking[Booking Engine]
+        CRM[Patient CRM]
+        Website[Website Generator]
+        Social[Social Media Manager]
+        Notifications[Notification Service]
     end
 
     subgraph integrations [Integration Layer]
@@ -351,96 +378,135 @@ graph TB
     end
 
     subgraph services [External Services]
-        WhatsApp[WhatsApp Business API]
+        OpenAI[OpenAI GPT-4]
         Email[Resend Email]
-        AI[OpenAI GPT-4]
         DB[(MongoDB)]
     end
 
-    Pages --> ClinicFns
-    Pages --> BookingFns
-    Pages --> DoctorFns
-    Chat --> ChatFns
-    Calendar --> BookingFns
+    subgraph web [Web Layer — TanStack Start]
+        PublicSite[Generated Clinic Websites]
+        Dashboard[Admin Dashboard — Visual Fallback]
+        BookingUI[Booking Calendar UI]
+    end
 
-    BookingFns --> AdapterInterface
+    WhatsApp --> Router
+    Instagram --> Router
+    WebChat --> Router
+    AdminChat --> Router
+
+    Router --> AgentEngine
+    AgentEngine --> Context
+    AgentEngine --> Tools
+    Context --> DB
+
+    Tools --> Booking
+    Tools --> CRM
+    Tools --> Website
+    Tools --> Social
+    Tools --> Notifications
+
+    Booking --> AdapterInterface
     AdapterInterface --> GesdenAdapter
     AdapterInterface --> KlinicareAdapter
     AdapterInterface --> ManualAdapter
 
-    BookingFns --> WhatsApp
-    BookingFns --> Email
-    ChatFns --> AI
+    Notifications --> WhatsApp
+    Notifications --> Email
+    AgentEngine --> OpenAI
 
-    ClinicFns --> DB
-    BookingFns --> DB
-    DoctorFns --> DB
-    AuthFns --> DB
+    Booking --> DB
+    CRM --> DB
+    Website --> PublicSite
+    Social --> Instagram
+
+    Dashboard --> DB
+    BookingUI --> Booking
 ```
 
-### Booking Flow Sequence
+### Conversation Flow Sequence
 
 ```mermaid
 sequenceDiagram
     participant Patient
-    participant Browser
-    participant ServerFn as Server Functions
-    participant Adapter as Management Adapter
+    participant Channel as WhatsApp/Instagram/Web
+    participant Router as Channel Router
+    participant Agent as Agent Engine
+    participant LLM as OpenAI GPT-4
+    participant Tools as Agent Tools
     participant DB as MongoDB
-    participant WA as WhatsApp API
-    participant EM as Resend Email
 
-    Patient->>Browser: Select doctor, service, date
-    Browser->>ServerFn: getAvailableSlots(doctorId, date)
-    ServerFn->>Adapter: getAvailableSlots()
-    Adapter->>DB: Query schedule + appointments
-    DB-->>Adapter: Schedule data
-    Adapter-->>ServerFn: Available TimeSlot[]
-    ServerFn-->>Browser: Render time slots
+    Patient->>Channel: "Quiero una cita para limpieza"
+    Channel->>Router: Normalized message
+    Router->>DB: Identify clinic + patient
+    Router->>Agent: Message + clinic context + patient history
+    Agent->>LLM: System prompt + conversation + functions
+    LLM-->>Agent: "Call check_availability(service='limpieza')"
+    Agent->>Tools: check_availability()
+    Tools->>DB: Query schedules + appointments
+    DB-->>Tools: Available slots
+    Tools-->>Agent: Formatted slot options
+    Agent->>LLM: Function result + conversation
+    LLM-->>Agent: Natural language response with options
+    Agent->>Channel: "Tenemos disponibilidad: Martes 10:00..."
+    Channel->>Patient: Message delivered
 
-    Patient->>Browser: Select slot, enter info, confirm
-    Browser->>ServerFn: createAppointment(data)
-    ServerFn->>DB: Insert appointment
-    ServerFn->>Adapter: createAppointment()
-    Adapter-->>ServerFn: externalId (optional)
-    ServerFn->>WA: Send confirmation message
-    ServerFn->>EM: Send clinic notification
-    ServerFn-->>Browser: Booking confirmed
-    Browser-->>Patient: Show confirmation screen
+    Patient->>Channel: "Martes a las 10"
+    Channel->>Router: Normalized message
+    Router->>Agent: Message + context
+    Agent->>LLM: Conversation + functions
+    LLM-->>Agent: "Call create_appointment(...)"
+    Agent->>Tools: create_appointment()
+    Tools->>DB: Create appointment record
+    Tools-->>Agent: Confirmation
+    Agent->>Channel: "✅ Cita confirmada!"
+    Channel->>Patient: Confirmation delivered
 ```
 
-## 9. Project Structure
+## 10. Project Structure
 
 ```
 denty/
 ├── src/
 │   ├── routes/
 │   │   ├── __root.tsx
-│   │   ├── index.tsx
+│   │   ├── index.tsx               # Landing page
 │   │   ├── search.tsx
-│   │   ├── clinics/
-│   │   │   ├── index.tsx
-│   │   │   └── $clinicSlug.tsx
-│   │   ├── doctors/
-│   │   │   ├── index.tsx
-│   │   │   └── $doctorSlug.tsx
-│   │   ├── treatments/
-│   │   │   ├── index.tsx
-│   │   │   └── $treatmentSlug.tsx
-│   │   ├── book/
-│   │   │   └── $clinicSlug.tsx
+│   │   ├── clinics/                # Clinic directory (SEO)
+│   │   ├── doctors/                # Doctor directory (SEO)
+│   │   ├── treatments/             # Treatment directory (SEO)
+│   │   ├── book/                   # Visual booking fallback
+│   │   ├── site/                   # Generated clinic websites
+│   │   │   └── $clinicSlug/
 │   │   └── admin/
 │   │       ├── login.tsx
-│   │       ├── dashboard.tsx
+│   │       ├── dashboard.tsx       # Visual dashboard
+│   │       ├── chat.tsx            # Admin conversational interface
 │   │       ├── appointments.tsx
 │   │       ├── doctors.tsx
 │   │       └── settings.tsx
+│   ├── agent/                      # Agent core (NEW)
+│   │   ├── engine.ts               # LLM orchestration + function calling
+│   │   ├── router.ts               # Channel routing + clinic/patient identification
+│   │   ├── context.ts              # Knowledge base builder
+│   │   ├── tools/                  # Agent tool definitions
+│   │   │   ├── booking.ts
+│   │   │   ├── crm.ts
+│   │   │   ├── website.ts
+│   │   │   ├── social.ts
+│   │   │   └── admin.ts
+│   │   └── personality.ts          # Tone/style configuration
+│   ├── channels/                   # Channel adapters (NEW)
+│   │   ├── whatsapp.ts
+│   │   ├── instagram.ts
+│   │   ├── web-chat.ts
+│   │   └── types.ts
 │   ├── server/
 │   │   ├── clinics.ts
 │   │   ├── doctors.ts
 │   │   ├── appointments.ts
 │   │   ├── auth.ts
-│   │   ├── chat.ts
+│   │   ├── patients.ts            # Patient CRM (NEW)
+│   │   ├── conversations.ts       # Conversation management (NEW)
 │   │   ├── availability.ts
 │   │   └── notifications.ts
 │   ├── lib/
@@ -455,25 +521,15 @@ denty/
 │   │   └── factory.ts
 │   ├── components/
 │   │   ├── ui/
-│   │   ├── hero-search.tsx
+│   │   ├── chat-widget.tsx         # Web chat component
 │   │   ├── booking-calendar.tsx
 │   │   ├── booking-form.tsx
-│   │   ├── chat-widget.tsx
 │   │   ├── clinic-card.tsx
 │   │   ├── doctor-card.tsx
 │   │   ├── language-switcher.tsx
 │   │   └── layout/
-│   │       ├── header.tsx
-│   │       └── footer.tsx
-│   ├── data/
-│   │   └── mock.ts
 │   ├── emails/
-│   │   ├── appointment-confirmation.tsx
-│   │   └── appointment-reminder.tsx
 │   ├── i18n/
-│   │   ├── config.ts
-│   │   ├── es.json
-│   │   └── en.json
 │   └── styles.css
 ├── scripts/
 │   └── seed.ts
@@ -486,87 +542,96 @@ denty/
 └── README.md
 ```
 
-## 10. Environment Variables
+## 11. Environment Variables
 
 | Variable | Description |
 |----------|-------------|
 | `MONGODB_URI` | MongoDB connection string |
 | `WHATSAPP_TOKEN` | WhatsApp Business Cloud API access token |
 | `WHATSAPP_PHONE_NUMBER_ID` | WhatsApp sender phone number ID |
-| `OPENAI_API_KEY` | OpenAI API key for chatbot |
+| `INSTAGRAM_ACCESS_TOKEN` | Instagram Messaging API token |
+| `OPENAI_API_KEY` | OpenAI API key for agent engine |
 | `RESEND_API_KEY` | Resend API key for email |
 | `JWT_SECRET` | Secret for signing admin JWT tokens |
 
-## 11. Implementation Phases
+## 12. Implementation Phases
 
 ### Phase 1: Project Scaffolding + Database
 - Initialize TanStack Start project with Tailwind CSS and shadcn/ui.
-- Configure MongoDB connection using the official Node.js driver (singleton pattern).
-- Set up i18n with i18next (Spanish + English, browser detection, language switcher).
-- Create the base layout: `__root.tsx`, header (with Clinics, Doctors, Treatments nav), footer.
-- Landing page with hero search bar and "How it works" section.
+- Configure MongoDB connection using the official Node.js driver.
+- Set up i18n with i18next (Spanish + English).
+- Create the base layout: header, footer, landing page.
 
 ### Phase 2: Clinics, Doctors, and Treatments
-- Create typed MongoDB collection accessors for clinics, doctors, and treatments.
-- Implement clinic, doctor, and treatment server functions (read operations for public, CRUD for admin).
-- Build `/clinics` listing page with clinic cards (search/filter).
-- Build `/clinics/:clinic-slug` detail page (full profile, services, doctors, CTA).
-- Build `/doctors` listing page with doctor cards.
-- Build `/doctors/:doctor-slug` detail page (profile, schedule, clinic link, CTA).
-- Build `/treatments` listing page with treatment cards grouped by category.
-- Build `/treatments/:treatment-slug` detail page (description, duration, price, related clinics and doctors).
-- Build `/search` unified search results page (clinics, doctors, treatments).
-- Build hero search bar with live dropdown results.
-- Create a seed script with sample clinic, doctor, and treatment data.
+- Clinic, doctor, and treatment pages (public directory for SEO).
+- Search functionality.
+- Seed script with sample data.
 
 ### Phase 3: Booking System + Adapter Layer
-- Define `ClinicManagementAdapter` interface.
-- Implement `ManualAdapter` (slot calculation from schedules and appointments).
-- Create `GesdenAdapter` and `KlinicareAdapter` stubs.
-- Implement adapter factory.
-- Build availability server function.
-- Build booking calendar component (date picker + time slot grid).
-- Build booking form component (patient info).
-- Implement appointment creation server function.
-- Build booking confirmation screen.
+- `ClinicManagementAdapter` interface and ManualAdapter.
+- Gesden and Klinicare stubs.
+- Booking calendar UI (visual fallback).
+- Appointment creation and confirmation.
 
 ### Phase 4: Notifications
-- Integrate WhatsApp Business Cloud API for patient confirmations.
-- Set up Resend with React Email templates.
-- Build appointment confirmation email template.
-- Implement notification server functions with error handling and status flags.
+- WhatsApp Business API integration for confirmations and reminders.
+- Email notifications with React Email templates.
 
-### Phase 5: AI Chatbot
-- Integrate OpenAI Chat Completions API.
-- Build system prompt builder that injects clinic context from MongoDB.
-- Build chat widget UI (floating button, message panel, input field).
-- Implement chat session persistence in MongoDB.
-- Add function calling for booking page navigation.
+### Phase 5: AI Chatbot (Web)
+- OpenAI integration with function calling.
+- Web chat widget with clinic context.
+- Chat session persistence.
 
-### Phase 6: Clinic Admin Panel
-- Implement email/password authentication (bcrypt + JWT cookie).
-- Build admin login page.
-- Build dashboard with appointment lists and quick stats.
-- Build doctor management page (add, edit, remove).
-- Build settings page (clinic info, services, management system configuration).
+### Phase 6: Agent Core
+- **Agent engine**: LLM orchestration with function calling for all capabilities.
+- **Channel router**: Normalize messages from WhatsApp/Instagram/Web.
+- **Context builder**: Dynamic knowledge base from clinic data.
+- **Admin conversational interface**: Replace form-based admin with chat-first management.
+- **Agent tools**: Booking, schedule management, clinic settings — all as callable functions.
+- **Personality system**: Per-clinic tone, greeting style, emoji usage.
 
-## 12. Non-Functional Requirements
+### Phase 7: Patient CRM
+- Patient profiles auto-built from interactions.
+- Automated reminders (24h, 1h before appointment).
+- Post-visit follow-up sequences.
+- Recall campaigns for inactive patients.
+- Patient segmentation and tagging.
 
-- **Performance**: Pages should load within 2 seconds. Use TanStack Query caching to minimize redundant database calls.
-- **SEO**: Clinic and doctor pages are server-rendered for search engine visibility. Use TanStack Start's `head()` for meta tags per route.
-- **Security**: Admin passwords hashed with bcrypt. JWT tokens in HTTP-only cookies. Server functions validate all inputs. No sensitive data exposed to the client.
-- **Accessibility**: Follow WCAG 2.1 AA guidelines. shadcn/ui components are accessible by default. Ensure proper ARIA labels, keyboard navigation, and color contrast.
-- **Mobile**: Fully responsive design. The booking calendar and chat widget must work well on mobile screens.
-- **Error Handling**: Graceful error boundaries per route. Notification failures do not block appointment creation. Clear error messages for users.
+### Phase 8: Website Generation
+- Auto-generate clinic websites from agent data.
+- SEO optimization (schema markup, meta tags, sitemap).
+- Content management via conversation ("Add a page about Invisalign").
+- Custom domain support.
+- Blog generation for dental health content.
 
-## 13. Future Considerations (Post-MVP)
+### Phase 9: Social Media Management
+- Instagram content generation and posting.
+- DM auto-responses with booking integration.
+- Google Reviews monitoring and response suggestions.
+- Content calendar and scheduling.
 
-- Patient accounts with appointment history.
-- SMS fallback if WhatsApp delivery fails.
-- Appointment reminders (24h before, via WhatsApp).
-- Online payment integration.
-- Reviews and ratings for clinics and doctors.
-- Real Gesden and Klinicare API integrations when access is available.
-- Multi-clinic admin accounts (clinic chains).
-- Analytics dashboard for clinics.
-- Waitlist functionality for fully-booked slots.
+### Phase 10: Clinic Admin Panel (Visual Fallback)
+- Web dashboard for complex operations (analytics, bulk edits, visual calendar).
+- Complements the conversational admin — not a replacement.
+
+## 13. Non-Functional Requirements
+
+- **Performance**: Responses within 3 seconds for conversational interactions. Web pages load within 2 seconds.
+- **SEO**: Clinic directory and generated websites are server-rendered. Schema markup on all pages.
+- **Security**: Admin passwords hashed with bcrypt. JWT tokens in HTTP-only cookies. Patient data encrypted at rest. GDPR compliant.
+- **Accessibility**: WCAG 2.1 AA for all web interfaces.
+- **Mobile**: All web interfaces mobile-first. Chat widget optimized for mobile.
+- **Reliability**: Agent must be available 24/7. Notification failures don't block core operations.
+- **Scalability**: Architecture supports hundreds of clinic agent instances. Each agent is stateless (state in MongoDB).
+- **Privacy**: Each clinic's data is strictly isolated. No cross-clinic data access.
+
+## 14. Future Considerations
+
+- **Voice**: Phone call handling with speech-to-text/text-to-speech.
+- **Payments**: Online payment for appointments and treatments.
+- **Insurance**: Direct integration with dental insurance providers.
+- **Multi-location**: Single owner managing multiple clinic agents.
+- **Vertical expansion**: Medical clinics, veterinary, beauty salons, fitness — same agent architecture, different knowledge base.
+- **Patient app**: Dedicated patient interface for managing all their dental care.
+- **Marketplace**: Connect clinics with dental suppliers.
+- **Analytics AI**: Agent provides business insights and recommendations proactively.
