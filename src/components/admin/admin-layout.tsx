@@ -1,5 +1,14 @@
 import { Link, useNavigate } from '@tanstack/react-router'
-import { CalendarDays, LayoutDashboard, LogOut, Menu, Settings, Stethoscope, X } from 'lucide-react'
+import {
+  CalendarDays,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Settings,
+  Stethoscope,
+  Users,
+  X,
+} from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
@@ -9,6 +18,7 @@ const navItems = [
   { key: 'dashboard', to: '/admin/dashboard', icon: LayoutDashboard },
   { key: 'appointments', to: '/admin/appointments', icon: CalendarDays },
   { key: 'doctors', to: '/admin/doctors', icon: Stethoscope },
+  { key: 'patients', to: '/admin/patients', icon: Users },
   { key: 'settings', to: '/admin/settings', icon: Settings },
 ] as const
 

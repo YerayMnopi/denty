@@ -1,10 +1,12 @@
 // Server function to create an appointment
 
 import { createServerFn } from '@tanstack/react-start'
+import { ObjectId } from 'mongodb'
 import { getAdapter } from '@/adapters/factory'
 import type { AppointmentData, CreatedAppointment } from '@/adapters/types'
 import { mockClinics, mockDoctors } from '@/data/mock'
 import { sendBookingNotifications } from './notifications'
+import { createOrUpdatePatient } from './patients'
 
 export interface CreatedAppointmentWithNotifications extends CreatedAppointment {
   whatsappSent: boolean
@@ -64,6 +66,23 @@ export const createAppointment = createServerFn({ method: 'POST' })
       clinicPhone: clinic.phone,
       doctorName,
     })
+
+    // Create or update patient profile (non-blocking)
+    try {
+      await createOrUpdatePatient({
+        clinicId: clinic._id,
+        phone: data.patientPhone,
+        name: data.patientName,
+        email: data.patientEmail,
+        appointmentId: new ObjectId(appointment.id),
+        service: data.service,
+        doctorName,
+        appointmentDate: new Date(`${data.date} ${data.time}`),
+      })
+    } catch (error) {
+      console.error('Failed to create/update patient profile:', error)
+      // Don't fail the appointment if patient creation fails
+    }
 
     return {
       ...appointment,
