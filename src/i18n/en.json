@@ -139,6 +139,7 @@
       "dashboard": "Dashboard",
       "appointments": "Appointments",
       "doctors": "Doctors",
+      "patients": "Patients",
       "settings": "Settings",
       "logout": "Logout"
     },
@@ -199,6 +200,33 @@
       "managementSystem": "Management System",
       "adapter": "Adapter",
       "saved": "Saved!"
+    },
+    "patients": {
+      "title": "Patient Management",
+      "search": "Search patients...",
+      "tags": "Tags",
+      "segments": {
+        "all": "All patients",
+        "active": "Active",
+        "inactive": "Inactive",
+        "new": "New"
+      },
+      "visitHistory": "Visit History",
+      "noPatients": "No patients found",
+      "addTag": "Add Tag",
+      "removeTag": "Remove Tag",
+      "notes": "Notes",
+      "sendRecall": "Send Recall",
+      "recallSent": "Recall message sent",
+      "lastVisit": "Last Visit",
+      "nextAppointment": "Next Appointment",
+      "totalVisits": "Total Visits",
+      "patientDetail": "View Details",
+      "phone": "Phone",
+      "email": "Email",
+      "newTag": "New tag",
+      "filterByTag": "Filter by tag",
+      "allTags": "All tags"
     }
   }
 }

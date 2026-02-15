@@ -139,6 +139,7 @@
       "dashboard": "Panel",
       "appointments": "Citas",
       "doctors": "Doctores",
+      "patients": "Pacientes",
       "settings": "Configuración",
       "logout": "Cerrar sesión"
     },
@@ -199,6 +200,33 @@
       "managementSystem": "Sistema de Gestión",
       "adapter": "Adaptador",
       "saved": "¡Guardado!"
+    },
+    "patients": {
+      "title": "Gestión de Pacientes",
+      "search": "Buscar pacientes...",
+      "tags": "Etiquetas",
+      "segments": {
+        "all": "Todos los pacientes",
+        "active": "Activos",
+        "inactive": "Inactivos",
+        "new": "Nuevos"
+      },
+      "visitHistory": "Historial de Visitas",
+      "noPatients": "No se encontraron pacientes",
+      "addTag": "Añadir Etiqueta",
+      "removeTag": "Quitar Etiqueta",
+      "notes": "Notas",
+      "sendRecall": "Enviar Recordatorio",
+      "recallSent": "Recordatorio enviado",
+      "lastVisit": "Última Visita",
+      "nextAppointment": "Próxima Cita",
+      "totalVisits": "Total Visitas",
+      "patientDetail": "Ver Detalles",
+      "phone": "Teléfono",
+      "email": "Email",
+      "newTag": "Nueva etiqueta",
+      "filterByTag": "Filtrar por etiqueta",
+      "allTags": "Todas las etiquetas"
     }
   }
 }

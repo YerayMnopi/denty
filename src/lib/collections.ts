@@ -82,6 +82,24 @@ export interface ChatSession {
   updatedAt: Date
 }
 
+// ─── Patient ─────────────────────────────────────────────
+
+export interface Patient {
+  _id: ObjectId
+  clinicId: ObjectId
+  name: string
+  phone: string
+  email?: string
+  channels: { preferred?: string; whatsappId?: string; instagramId?: string }
+  visitHistory: { appointmentId: ObjectId; service: string; date: Date; doctorName: string }[]
+  tags: string[]
+  notes?: string
+  lastVisit?: Date
+  nextAppointment?: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
 // ─── Collection Accessors ────────────────────────────────
 
 export async function getClinicsCollection() {
@@ -102,4 +120,9 @@ export async function getAppointmentsCollection() {
 export async function getChatSessionsCollection() {
   const db = await getDb()
   return db.collection<ChatSession>('chat_sessions')
+}
+
+export async function getPatientsCollection() {
+  const db = await getDb()
+  return db.collection<Patient>('patients')
 }
