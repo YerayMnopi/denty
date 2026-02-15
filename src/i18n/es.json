@@ -131,5 +131,74 @@
     "rights": "Todos los derechos reservados.",
     "privacy": "Política de Privacidad",
     "terms": "Términos del Servicio"
+  },
+  "admin": {
+    "panelTitle": "Admin Panel",
+    "clinicName": "Clínica Dental Sonrisa",
+    "nav": {
+      "dashboard": "Panel",
+      "appointments": "Citas",
+      "doctors": "Doctores",
+      "settings": "Configuración",
+      "logout": "Cerrar sesión"
+    },
+    "login": {
+      "title": "Panel de Administración",
+      "subtitle": "Inicia sesión para gestionar tu clínica",
+      "password": "Contraseña",
+      "invalidCredentials": "Credenciales incorrectas"
+    },
+    "status": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmada",
+      "cancelled": "Cancelada",
+      "completed": "Completada"
+    },
+    "dashboard": {
+      "title": "Panel de Control",
+      "weekAppointments": "Citas esta semana",
+      "pendingConfirmations": "Pendientes de confirmar",
+      "totalDoctors": "Total doctores",
+      "todayAppointments": "Citas de hoy",
+      "upcomingAppointments": "Próximas citas",
+      "noAppointmentsToday": "No hay citas para hoy",
+      "noUpcoming": "No hay próximas citas"
+    },
+    "appointments": {
+      "title": "Gestión de Citas",
+      "patient": "Paciente",
+      "dateTime": "Fecha y Hora",
+      "status": "Estado",
+      "notifications": "Notificaciones",
+      "actions": "Acciones",
+      "allStatuses": "Todos los estados",
+      "allDoctors": "Todos los doctores"
+    },
+    "doctors": {
+      "title": "Gestión de Doctores",
+      "addDoctor": "Añadir Doctor",
+      "editDoctor": "Editar Doctor",
+      "name": "Nombre",
+      "photoUrl": "URL de Foto",
+      "specializationEs": "Especialización (ES)",
+      "specializationEn": "Especialización (EN)",
+      "bioEs": "Biografía (ES)",
+      "bioEn": "Biografía (EN)",
+      "servicesList": "Servicios (separados por coma)"
+    },
+    "settings": {
+      "title": "Configuración",
+      "clinicInfo": "Información de la Clínica",
+      "clinicName": "Nombre de la clínica",
+      "descriptionEs": "Descripción (ES)",
+      "descriptionEn": "Descripción (EN)",
+      "manageServices": "Gestionar Servicios",
+      "serviceNameEs": "Nombre (ES)",
+      "serviceNameEn": "Nombre (EN)",
+      "addService": "Añadir",
+      "managementSystem": "Sistema de Gestión",
+      "adapter": "Adaptador",
+      "saved": "¡Guardado!"
+    }
   }
 }

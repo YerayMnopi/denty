@@ -131,5 +131,74 @@
     "rights": "All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service"
+  },
+  "admin": {
+    "panelTitle": "Admin Panel",
+    "clinicName": "Clínica Dental Sonrisa",
+    "nav": {
+      "dashboard": "Dashboard",
+      "appointments": "Appointments",
+      "doctors": "Doctors",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "login": {
+      "title": "Admin Panel",
+      "subtitle": "Sign in to manage your clinic",
+      "password": "Password",
+      "invalidCredentials": "Invalid credentials"
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "weekAppointments": "Appointments this week",
+      "pendingConfirmations": "Pending confirmations",
+      "totalDoctors": "Total doctors",
+      "todayAppointments": "Today's Appointments",
+      "upcomingAppointments": "Upcoming Appointments",
+      "noAppointmentsToday": "No appointments for today",
+      "noUpcoming": "No upcoming appointments"
+    },
+    "appointments": {
+      "title": "Appointment Management",
+      "patient": "Patient",
+      "dateTime": "Date & Time",
+      "status": "Status",
+      "notifications": "Notifications",
+      "actions": "Actions",
+      "allStatuses": "All statuses",
+      "allDoctors": "All doctors"
+    },
+    "doctors": {
+      "title": "Doctor Management",
+      "addDoctor": "Add Doctor",
+      "editDoctor": "Edit Doctor",
+      "name": "Name",
+      "photoUrl": "Photo URL",
+      "specializationEs": "Specialization (ES)",
+      "specializationEn": "Specialization (EN)",
+      "bioEs": "Biography (ES)",
+      "bioEn": "Biography (EN)",
+      "servicesList": "Services (comma separated)"
+    },
+    "settings": {
+      "title": "Settings",
+      "clinicInfo": "Clinic Information",
+      "clinicName": "Clinic name",
+      "descriptionEs": "Description (ES)",
+      "descriptionEn": "Description (EN)",
+      "manageServices": "Manage Services",
+      "serviceNameEs": "Name (ES)",
+      "serviceNameEn": "Name (EN)",
+      "addService": "Add",
+      "managementSystem": "Management System",
+      "adapter": "Adapter",
+      "saved": "Saved!"
+    }
   }
 }
