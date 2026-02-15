@@ -9,27 +9,33 @@ test.describe("Admin Panel", () => {
 		await expect(page).toHaveURL(/\/admin\/login/);
 	});
 
-	test("dashboard page loads", async ({ page }) => {
+	test("unauthenticated users are redirected to login", async ({ page }) => {
 		await page.goto("/admin/dashboard");
 		await page.waitForLoadState("networkidle");
-		await expect(page.locator("body")).toBeVisible({ timeout: 15000 });
+		await expect(page).toHaveURL(/\/admin\/login/, { timeout: 15000 });
 	});
 
-	test("appointments page loads", async ({ page }) => {
+	test("unauthenticated access to appointments redirects to login", async ({
+		page,
+	}) => {
 		await page.goto("/admin/appointments");
 		await page.waitForLoadState("networkidle");
-		await expect(page.locator("body")).toBeVisible({ timeout: 15000 });
+		await expect(page).toHaveURL(/\/admin\/login/, { timeout: 15000 });
 	});
 
-	test("doctors page loads", async ({ page }) => {
+	test("unauthenticated access to doctors redirects to login", async ({
+		page,
+	}) => {
 		await page.goto("/admin/doctors");
 		await page.waitForLoadState("networkidle");
-		await expect(page.locator("body")).toBeVisible({ timeout: 15000 });
+		await expect(page).toHaveURL(/\/admin\/login/, { timeout: 15000 });
 	});
 
-	test("settings page loads", async ({ page }) => {
+	test("unauthenticated access to settings redirects to login", async ({
+		page,
+	}) => {
 		await page.goto("/admin/settings");
 		await page.waitForLoadState("networkidle");
-		await expect(page.locator("body")).toBeVisible({ timeout: 15000 });
+		await expect(page).toHaveURL(/\/admin\/login/, { timeout: 15000 });
 	});
 });

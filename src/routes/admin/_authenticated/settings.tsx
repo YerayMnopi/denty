@@ -6,7 +6,7 @@ import { AdminLayout } from '@/components/admin/admin-layout'
 import { Button } from '@/components/ui/button'
 import { mockClinicSettings } from '@/data/admin-mock'
 
-export const Route = createFileRoute('/admin/settings')({
+export const Route = createFileRoute('/admin/_authenticated/settings')({
   component: AdminSettingsPage,
 })
 

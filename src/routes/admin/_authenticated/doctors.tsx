@@ -6,7 +6,7 @@ import { AdminLayout } from '@/components/admin/admin-layout'
 import { Button } from '@/components/ui/button'
 import { type MockAdminDoctor, mockAdminDoctors } from '@/data/admin-mock'
 
-export const Route = createFileRoute('/admin/doctors')({
+export const Route = createFileRoute('/admin/_authenticated/doctors')({
   component: AdminDoctorsPage,
 })
 

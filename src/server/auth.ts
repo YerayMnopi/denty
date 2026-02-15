@@ -1,7 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getCookie, setCookie } from '@tanstack/react-start/server'
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me'
 const COOKIE_NAME = 'admin_token'
@@ -13,43 +11,32 @@ export interface AdminSession {
 }
 
 // Mock admin users — will be replaced by MongoDB
+// Password hashes are pre-computed for 'admin123'
 const MOCK_ADMINS = [
   {
     email: 'admin@sonrisa.com',
-    passwordHash: bcrypt.hashSync('admin123', 10),
+    // bcrypt hash of 'admin123' (pre-computed to avoid top-level import)
+    passwordHash: '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy',
     clinicSlug: 'clinica-dental-sonrisa',
   },
 ]
 
-export function hashPassword(password: string): string {
-  return bcrypt.hashSync(password, 10)
-}
-
-export function verifyPassword(password: string, hash: string): boolean {
-  return bcrypt.compareSync(password, hash)
-}
-
-export function generateToken(payload: AdminSession): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: TOKEN_EXPIRY })
-}
-
-export function verifyToken(token: string): AdminSession | null {
-  try {
-    return jwt.verify(token, JWT_SECRET) as AdminSession
-  } catch {
-    return null
-  }
-}
-
 export const loginFn = createServerFn({ method: 'POST' })
   .inputValidator((input: { email: string; password: string }) => input)
   .handler(async ({ data }): Promise<{ success: boolean; error?: string }> => {
+    const bcrypt = await import('bcryptjs')
+    const jwt = await import('jsonwebtoken')
+
     const admin = MOCK_ADMINS.find((a) => a.email === data.email)
-    if (!admin || !verifyPassword(data.password, admin.passwordHash)) {
+    if (!admin || !bcrypt.compareSync(data.password, admin.passwordHash)) {
       return { success: false, error: 'invalid_credentials' }
     }
 
-    const token = generateToken({ email: admin.email, clinicSlug: admin.clinicSlug })
+    const token = jwt.default.sign(
+      { email: admin.email, clinicSlug: admin.clinicSlug } satisfies AdminSession,
+      JWT_SECRET,
+      { expiresIn: TOKEN_EXPIRY },
+    )
     setCookie(COOKIE_NAME, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -74,8 +61,13 @@ export const logoutFn = createServerFn({ method: 'POST' }).handler(async () => {
 
 export const getSessionFn = createServerFn({ method: 'GET' }).handler(
   async (): Promise<AdminSession | null> => {
+    const jwt = await import('jsonwebtoken')
     const token = getCookie(COOKIE_NAME)
     if (!token) return null
-    return verifyToken(token)
+    try {
+      return jwt.default.verify(token, JWT_SECRET) as AdminSession
+    } catch {
+      return null
+    }
   },
 )

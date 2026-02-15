@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { AdminLayout } from '@/components/admin/admin-layout'
 import { mockAdminDoctors, mockAppointments } from '@/data/admin-mock'
 
-export const Route = createFileRoute('/admin/dashboard')({
+export const Route = createFileRoute('/admin/_authenticated/dashboard')({
   component: AdminDashboardPage,
 })
 
