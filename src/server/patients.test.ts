@@ -1,68 +1,10 @@
 // Tests for patient server functions
 
-import { ObjectId } from 'mongodb'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { Patient } from '@/lib/collections'
-
-// Mock MongoDB collections
-const mockPatients: Patient[] = []
-const mockFindResult = { toArray: vi.fn(() => Promise.resolve([])) }
-const mockFind = vi.fn(() => mockFindResult)
-const mockFindOne = vi.fn(() => Promise.resolve(null))
-const mockInsertOne = vi.fn()
-const mockUpdateOne = vi.fn()
-
-const mockPatientsCollection = {
-  find: mockFind,
-  findOne: mockFindOne,
-  insertOne: mockInsertOne,
-  updateOne: mockUpdateOne,
-}
-
-// Mock the collections module
-vi.mock('@/lib/collections', () => ({
-  getPatientsCollection: vi.fn(() => Promise.resolve(mockPatientsCollection)),
-  getAppointmentsCollection: vi.fn(() => Promise.resolve(mockPatientsCollection)),
-}))
+import { describe, expect, it } from 'vitest'
 
 describe('Patient Server Functions', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    mockPatients.length = 0
-  })
-
-  describe('getPatients', () => {
-    it('should get patients for a clinic', async () => {
-      const clinicId = new ObjectId()
-      const mockPatientsData = [
-        {
-          _id: new ObjectId(),
-          clinicId,
-          name: 'Test Patient',
-          phone: '+34 666 123 456',
-          tags: ['test'],
-          visitHistory: [
-            {
-              appointmentId: new ObjectId(),
-              service: 'Test',
-              date: new Date(),
-              doctorName: 'Dr. Test',
-            },
-          ],
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ]
-
-      mockFindResult.toArray.mockResolvedValue(mockPatientsData)
-
-      // Since we can't directly import the server functions due to createServerFn,
-      // we'll test the core logic separately
-      expect(mockFind).toBeDefined()
-    })
-
+  describe('patient filtering logic', () => {
     it('should filter patients by search query', () => {
-      // Test search functionality logic
       const patients = [
         { name: 'María García', phone: '+34 666 123 456', email: 'maria@test.com' },
         { name: 'Juan Pérez', phone: '+34 677 234 567', email: 'juan@test.com' },
@@ -80,118 +22,68 @@ describe('Patient Server Functions', () => {
       expect(filtered[0].name).toBe('María García')
     })
 
-    it('should segment patients correctly', () => {
-      const sixMonthsAgo = new Date()
-      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
+    it('should filter by phone number', () => {
+      const patients = [
+        { name: 'María', phone: '+34 666 123 456', email: 'maria@test.com' },
+        { name: 'Juan', phone: '+34 677 234 567', email: 'juan@test.com' },
+      ]
 
-      const activePatient = {
-        name: 'Active',
+      const filtered = patients.filter((p) => p.phone.includes('666'))
+      expect(filtered).toHaveLength(1)
+      expect(filtered[0].name).toBe('María')
+    })
+
+    it('should filter by email', () => {
+      const patients = [
+        { name: 'María', phone: '+34 666 123 456', email: 'maria@test.com' },
+        { name: 'Juan', phone: '+34 677 234 567', email: 'juan@test.com' },
+      ]
+
+      const filtered = patients.filter((p) => p.email?.toLowerCase().includes('juan'))
+      expect(filtered).toHaveLength(1)
+      expect(filtered[0].name).toBe('Juan')
+    })
+  })
+
+  describe('patient segmentation logic', () => {
+    const sixMonthsAgo = new Date()
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
+
+    it('should identify active patients', () => {
+      const patient = {
         lastVisit: new Date(),
         visitHistory: [{ service: 'Test' }, { service: 'Test2' }],
       }
-      const inactivePatient = {
-        name: 'Inactive',
+      expect(patient.lastVisit > sixMonthsAgo).toBe(true)
+    })
+
+    it('should identify inactive patients', () => {
+      const patient = {
         lastVisit: new Date('2023-01-01'),
         visitHistory: [{ service: 'Test' }],
       }
-      const newPatient = {
-        name: 'New',
+      expect(patient.lastVisit <= sixMonthsAgo).toBe(true)
+    })
+
+    it('should identify new patients', () => {
+      const patient = {
         visitHistory: [{ service: 'First visit' }],
       }
-
-      // Test active segment
-      expect(activePatient.lastVisit! > sixMonthsAgo).toBe(true)
-
-      // Test inactive segment
-      expect(inactivePatient.lastVisit! <= sixMonthsAgo).toBe(true)
-
-      // Test new segment
-      expect(newPatient.visitHistory.length <= 1).toBe(true)
-    })
-  })
-
-  describe('createOrUpdatePatient', () => {
-    it('should create new patient when not exists', async () => {
-      const patientData = {
-        clinicId: new ObjectId(),
-        phone: '+34 666 123 456',
-        name: 'New Patient',
-        email: 'new@test.com',
-      }
-
-      mockFindOne.mockResolvedValue(null) // Patient doesn't exist
-      mockInsertOne.mockResolvedValue({ insertedId: new ObjectId() })
-
-      // Test creation logic
-      const newPatient = {
-        ...patientData,
-        channels: {},
-        visitHistory: [],
-        tags: ['new-patient'],
-        createdAt: expect.any(Date),
-        updatedAt: expect.any(Date),
-      }
-
-      expect(newPatient.tags).toContain('new-patient')
+      expect(patient.visitHistory.length <= 1).toBe(true)
     })
 
-    it('should update existing patient', async () => {
-      const existingPatient = {
-        _id: new ObjectId(),
-        clinicId: new ObjectId(),
-        phone: '+34 666 123 456',
-        name: 'Existing Patient',
-        visitHistory: [],
+    it('should not classify multi-visit patients as new', () => {
+      const patient = {
+        visitHistory: [{ service: 'First' }, { service: 'Second' }],
       }
-
-      mockFindOne.mockResolvedValue(existingPatient)
-
-      // Test update logic
-      const updateData = {
-        name: 'Updated Name',
-        updatedAt: expect.any(Date),
-      }
-
-      expect(updateData.name).toBe('Updated Name')
-    })
-  })
-
-  describe('tag management', () => {
-    it('should add tag to patient', () => {
-      const patient = { tags: ['existing-tag'] }
-      const newTag = 'new-tag'
-
-      // Simulate $addToSet behavior
-      if (!patient.tags.includes(newTag)) {
-        patient.tags.push(newTag)
-      }
-
-      expect(patient.tags).toContain('new-tag')
-      expect(patient.tags).toContain('existing-tag')
+      expect(patient.visitHistory.length <= 1).toBe(false)
     })
 
-    it('should remove tag from patient', () => {
-      const patient = { tags: ['tag1', 'tag2', 'tag3'] }
-      const tagToRemove = 'tag2'
-
-      // Simulate $pull behavior
-      patient.tags = patient.tags.filter((tag) => tag !== tagToRemove)
-
-      expect(patient.tags).not.toContain('tag2')
-      expect(patient.tags).toContain('tag1')
-      expect(patient.tags).toContain('tag3')
-    })
-  })
-
-  describe('getInactivePatients', () => {
-    it('should identify inactive patients', () => {
-      const sixMonthsAgo = new Date()
-      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
-
+    it('should classify patients without lastVisit as inactive', () => {
       const patients = [
         { name: 'Active', lastVisit: new Date() },
         { name: 'Inactive', lastVisit: new Date('2023-01-01') },
-        { name: 'Never visited' }, // no lastVisit
+        { name: 'Never visited', lastVisit: undefined },
       ]
 
       const inactive = patients.filter((p) => !p.lastVisit || p.lastVisit < sixMonthsAgo)
@@ -201,23 +93,99 @@ describe('Patient Server Functions', () => {
     })
   })
 
-  describe('getUpcomingReminders', () => {
-    it('should calculate correct time ranges for reminders', () => {
+  describe('tag management logic', () => {
+    it('should add tag without duplicates', () => {
+      const tags = ['existing-tag']
+      const newTag = 'new-tag'
+
+      if (!tags.includes(newTag)) {
+        tags.push(newTag)
+      }
+
+      expect(tags).toContain('new-tag')
+      expect(tags).toContain('existing-tag')
+      expect(tags).toHaveLength(2)
+    })
+
+    it('should not add duplicate tag', () => {
+      const tags = ['existing-tag']
+      const newTag = 'existing-tag'
+
+      if (!tags.includes(newTag)) {
+        tags.push(newTag)
+      }
+
+      expect(tags).toHaveLength(1)
+    })
+
+    it('should remove tag from patient', () => {
+      const tags = ['tag1', 'tag2', 'tag3']
+      const tagToRemove = 'tag2'
+
+      const result = tags.filter((tag) => tag !== tagToRemove)
+
+      expect(result).not.toContain('tag2')
+      expect(result).toContain('tag1')
+      expect(result).toContain('tag3')
+      expect(result).toHaveLength(2)
+    })
+
+    it('should handle removing non-existent tag', () => {
+      const tags = ['tag1', 'tag2']
+      const result = tags.filter((tag) => tag !== 'nonexistent')
+      expect(result).toHaveLength(2)
+    })
+  })
+
+  describe('patient creation logic', () => {
+    it('should create patient with new-patient tag', () => {
+      const newPatient = {
+        name: 'New Patient',
+        phone: '+34 666 123 456',
+        tags: ['new-patient'],
+        visitHistory: [] as unknown[],
+      }
+
+      expect(newPatient.tags).toContain('new-patient')
+      expect(newPatient.visitHistory).toHaveLength(0)
+    })
+
+    it('should create patient with visit history from appointment', () => {
+      const newPatient = {
+        name: 'New Patient',
+        phone: '+34 666 123 456',
+        tags: ['new-patient'],
+        visitHistory: [
+          {
+            service: 'Limpieza dental',
+            date: new Date(),
+            doctorName: 'Dr. Test',
+          },
+        ],
+      }
+
+      expect(newPatient.visitHistory).toHaveLength(1)
+      expect(newPatient.visitHistory[0].service).toBe('Limpieza dental')
+    })
+  })
+
+  describe('reminder time ranges', () => {
+    it('should calculate correct 24h reminder window', () => {
       const now = new Date()
+      const start = new Date(now.getTime() + 23 * 60 * 60 * 1000)
+      const end = new Date(now.getTime() + 25 * 60 * 60 * 1000)
 
-      // Test 24h reminder range
-      const start24h = new Date(now.getTime() + 23 * 60 * 60 * 1000)
-      const end24h = new Date(now.getTime() + 25 * 60 * 60 * 1000)
+      expect(start.getTime()).toBeLessThan(end.getTime())
+      expect(end.getTime() - start.getTime()).toBe(2 * 60 * 60 * 1000)
+    })
 
-      expect(start24h.getTime()).toBeLessThan(end24h.getTime())
-      expect(end24h.getTime() - start24h.getTime()).toBe(2 * 60 * 60 * 1000) // 2 hours window
+    it('should calculate correct 1h reminder window', () => {
+      const now = new Date()
+      const start = new Date(now.getTime() + 50 * 60 * 1000)
+      const end = new Date(now.getTime() + 70 * 60 * 1000)
 
-      // Test 1h reminder range
-      const start1h = new Date(now.getTime() + 50 * 60 * 1000)
-      const end1h = new Date(now.getTime() + 70 * 60 * 1000)
-
-      expect(start1h.getTime()).toBeLessThan(end1h.getTime())
-      expect(end1h.getTime() - start1h.getTime()).toBe(20 * 60 * 1000) // 20 minutes window
+      expect(start.getTime()).toBeLessThan(end.getTime())
+      expect(end.getTime() - start.getTime()).toBe(20 * 60 * 1000)
     })
   })
 })

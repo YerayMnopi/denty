@@ -1,24 +1,24 @@
 // Server functions for patient management
 
 import { createServerFn } from '@tanstack/react-start'
-import type { ObjectId } from 'mongodb'
+import { ObjectId } from 'mongodb'
 import { getAppointmentsCollection, getPatientsCollection, type Patient } from '@/lib/collections'
 
 export interface PatientFilters {
-  clinicId: ObjectId
+  clinicId: string
   search?: string
   tag?: string
   segment?: 'all' | 'active' | 'inactive' | 'new'
 }
 
 export interface PatientListItem {
-  _id: ObjectId
+  _id: string
   name: string
   phone: string
   email?: string
   tags: string[]
-  lastVisit?: Date
-  nextAppointment?: Date
+  lastVisit?: string
+  nextAppointment?: string
   totalVisits: number
 }
 
@@ -27,8 +27,7 @@ export const getPatients = createServerFn({ method: 'GET' })
   .handler(async ({ data }): Promise<PatientListItem[]> => {
     const patientsCol = await getPatientsCollection()
 
-    // Build query
-    const query: Record<string, unknown> = { clinicId: data.clinicId }
+    const query: Record<string, unknown> = { clinicId: new ObjectId(data.clinicId) }
 
     if (data.search?.trim()) {
       query.$or = [
@@ -42,10 +41,8 @@ export const getPatients = createServerFn({ method: 'GET' })
       query.tags = data.tag
     }
 
-    // Get patients
     const patients = await patientsCol.find(query).toArray()
 
-    // Filter by segment
     const sixMonthsAgo = new Date()
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
 
@@ -59,87 +56,122 @@ export const getPatients = createServerFn({ method: 'GET' })
       if (data.segment === 'new') {
         return patient.visitHistory.length <= 1
       }
-      return true // 'all'
+      return true
     })
 
-    // Transform to list items
     return filteredPatients.map((patient) => ({
-      _id: patient._id,
+      _id: patient._id.toHexString(),
       name: patient.name,
       phone: patient.phone,
       email: patient.email,
       tags: patient.tags,
-      lastVisit: patient.lastVisit,
-      nextAppointment: patient.nextAppointment,
+      lastVisit: patient.lastVisit?.toISOString(),
+      nextAppointment: patient.nextAppointment?.toISOString(),
       totalVisits: patient.visitHistory.length,
     }))
   })
 
+export interface PatientDetail {
+  _id: string
+  clinicId: string
+  name: string
+  phone: string
+  email?: string
+  channels: { preferred?: string; whatsappId?: string; instagramId?: string }
+  visitHistory: { appointmentId: string; service: string; date: string; doctorName: string }[]
+  tags: string[]
+  notes?: string
+  lastVisit?: string
+  nextAppointment?: string
+  createdAt: string
+  updatedAt: string
+}
+
+function serializePatient(p: Patient): PatientDetail {
+  return {
+    _id: p._id.toHexString(),
+    clinicId: p.clinicId.toHexString(),
+    name: p.name,
+    phone: p.phone,
+    email: p.email,
+    channels: p.channels,
+    visitHistory: p.visitHistory.map((v) => ({
+      appointmentId: v.appointmentId.toHexString(),
+      service: v.service,
+      date: v.date.toISOString(),
+      doctorName: v.doctorName,
+    })),
+    tags: p.tags,
+    notes: p.notes,
+    lastVisit: p.lastVisit?.toISOString(),
+    nextAppointment: p.nextAppointment?.toISOString(),
+    createdAt: p.createdAt.toISOString(),
+    updatedAt: p.updatedAt.toISOString(),
+  }
+}
+
 export const getPatient = createServerFn({ method: 'GET' })
-  .inputValidator((input: { patientId: ObjectId }) => input)
-  .handler(async ({ data }): Promise<Patient | null> => {
+  .inputValidator((input: { patientId: string }) => input)
+  .handler(async ({ data }): Promise<PatientDetail | null> => {
     const patientsCol = await getPatientsCollection()
-    return await patientsCol.findOne({ _id: data.patientId })
+    const patient = await patientsCol.findOne({ _id: new ObjectId(data.patientId) })
+    return patient ? serializePatient(patient) : null
   })
 
 export const createOrUpdatePatient = createServerFn({ method: 'POST' })
   .inputValidator(
     (input: {
-      clinicId: ObjectId
+      clinicId: string
       phone: string
       name: string
       email?: string
-      appointmentId?: ObjectId
+      appointmentId?: string
       service?: string
       doctorName?: string
-      appointmentDate?: Date
+      appointmentDate?: string
     }) => input,
   )
-  .handler(async ({ data }): Promise<Patient> => {
+  .handler(async ({ data }): Promise<void> => {
     const patientsCol = await getPatientsCollection()
     const now = new Date()
+    const clinicId = new ObjectId(data.clinicId)
 
-    // Find existing patient by phone and clinic
     const existing = await patientsCol.findOne({
-      clinicId: data.clinicId,
+      clinicId,
       phone: data.phone,
     })
 
     if (existing) {
-      // Update existing patient
-      const updateData: Record<string, unknown> = {
+      const updateFields: Record<string, unknown> = {
         name: data.name,
         updatedAt: now,
       }
 
       if (data.email) {
-        updateData.email = data.email
+        updateFields.email = data.email
       }
 
-      // Add visit history if provided
+      if (data.appointmentDate) {
+        updateFields.lastVisit = new Date(data.appointmentDate)
+      }
+
+      const updateOp: Record<string, unknown> = { $set: updateFields }
+
       if (data.appointmentId && data.service && data.doctorName && data.appointmentDate) {
-        updateData.$push = {
+        updateOp.$push = {
           visitHistory: {
-            appointmentId: data.appointmentId,
+            appointmentId: new ObjectId(data.appointmentId),
             service: data.service,
-            date: data.appointmentDate,
+            date: new Date(data.appointmentDate),
             doctorName: data.doctorName,
           },
         }
-        updateData.lastVisit = data.appointmentDate
       }
 
-      await patientsCol.updateOne({ _id: existing._id }, { $set: updateData })
-
-      const updated = await patientsCol.findOne({ _id: existing._id })
-      if (!updated) {
-        throw new Error('Failed to retrieve updated patient')
-      }
-      return updated
+      await patientsCol.updateOne({ _id: existing._id }, updateOp)
     } else {
-      // Create new patient
       const newPatient: Omit<Patient, '_id'> = {
-        clinicId: data.clinicId,
+        clinicId,
         name: data.name,
         phone: data.phone,
         email: data.email,
@@ -148,34 +180,29 @@ export const createOrUpdatePatient = createServerFn({ method: 'POST' })
           data.appointmentId && data.service && data.doctorName && data.appointmentDate
             ? [
                 {
-                  appointmentId: data.appointmentId,
+                  appointmentId: new ObjectId(data.appointmentId),
                   service: data.service,
-                  date: data.appointmentDate,
+                  date: new Date(data.appointmentDate),
                   doctorName: data.doctorName,
                 },
               ]
             : [],
         tags: ['new-patient'],
-        lastVisit: data.appointmentDate,
+        lastVisit: data.appointmentDate ? new Date(data.appointmentDate) : undefined,
         createdAt: now,
         updatedAt: now,
       }
 
-      const result = await patientsCol.insertOne(newPatient as Patient)
-      const created = await patientsCol.findOne({ _id: result.insertedId })
-      if (!created) {
-        throw new Error('Failed to retrieve created patient')
-      }
-      return created
+      await patientsCol.insertOne(newPatient as Patient)
     }
   })
 
 export const addPatientTag = createServerFn({ method: 'POST' })
-  .inputValidator((input: { patientId: ObjectId; tag: string }) => input)
+  .inputValidator((input: { patientId: string; tag: string }) => input)
   .handler(async ({ data }): Promise<void> => {
     const patientsCol = await getPatientsCollection()
     await patientsCol.updateOne(
-      { _id: data.patientId },
+      { _id: new ObjectId(data.patientId) },
       {
         $addToSet: { tags: data.tag },
         $set: { updatedAt: new Date() },
@@ -184,11 +211,11 @@ export const addPatientTag = createServerFn({ method: 'POST' })
   })
 
 export const removePatientTag = createServerFn({ method: 'POST' })
-  .inputValidator((input: { patientId: ObjectId; tag: string }) => input)
+  .inputValidator((input: { patientId: string; tag: string }) => input)
   .handler(async ({ data }): Promise<void> => {
     const patientsCol = await getPatientsCollection()
     await patientsCol.updateOne(
-      { _id: data.patientId },
+      { _id: new ObjectId(data.patientId) },
       {
         $pull: { tags: data.tag },
         $set: { updatedAt: new Date() },
@@ -197,11 +224,11 @@ export const removePatientTag = createServerFn({ method: 'POST' })
   })
 
 export const updatePatientNotes = createServerFn({ method: 'POST' })
-  .inputValidator((input: { patientId: ObjectId; notes: string }) => input)
+  .inputValidator((input: { patientId: string; notes: string }) => input)
   .handler(async ({ data }): Promise<void> => {
     const patientsCol = await getPatientsCollection()
     await patientsCol.updateOne(
-      { _id: data.patientId },
+      { _id: new ObjectId(data.patientId) },
       {
         $set: {
           notes: data.notes.trim() || undefined,
@@ -212,23 +239,34 @@ export const updatePatientNotes = createServerFn({ method: 'POST' })
   })
 
 export const getInactivePatients = createServerFn({ method: 'GET' })
-  .inputValidator((input: { clinicId: ObjectId }) => input)
-  .handler(async ({ data }): Promise<Patient[]> => {
+  .inputValidator((input: { clinicId: string }) => input)
+  .handler(async ({ data }): Promise<PatientListItem[]> => {
     const patientsCol = await getPatientsCollection()
     const sixMonthsAgo = new Date()
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
 
-    return await patientsCol
+    const patients = await patientsCol
       .find({
-        clinicId: data.clinicId,
+        clinicId: new ObjectId(data.clinicId),
         $or: [{ lastVisit: { $lt: sixMonthsAgo } }, { lastVisit: { $exists: false } }],
       })
       .toArray()
+
+    return patients.map((p) => ({
+      _id: p._id.toHexString(),
+      name: p.name,
+      phone: p.phone,
+      email: p.email,
+      tags: p.tags,
+      lastVisit: p.lastVisit?.toISOString(),
+      nextAppointment: p.nextAppointment?.toISOString(),
+      totalVisits: p.visitHistory.length,
+    }))
   })
 
 export const getUpcomingReminders = createServerFn({ method: 'GET' })
   .inputValidator((input: { timeFrame: '24h' | '1h' }) => input)
-  .handler(async ({ data }): Promise<unknown[]> => {
+  .handler(async ({ data }): Promise<string> => {
     const appointmentsCol = await getAppointmentsCollection()
     const now = new Date()
 
@@ -236,19 +274,19 @@ export const getUpcomingReminders = createServerFn({ method: 'GET' })
     let endTime: Date
 
     if (data.timeFrame === '24h') {
-      // 24 hours from now
-      startTime = new Date(now.getTime() + 23 * 60 * 60 * 1000) // 23h from now
-      endTime = new Date(now.getTime() + 25 * 60 * 60 * 1000) // 25h from now
+      startTime = new Date(now.getTime() + 23 * 60 * 60 * 1000)
+      endTime = new Date(now.getTime() + 25 * 60 * 60 * 1000)
     } else {
-      // 1 hour from now
-      startTime = new Date(now.getTime() + 50 * 60 * 1000) // 50min from now
-      endTime = new Date(now.getTime() + 70 * 60 * 1000) // 70min from now
+      startTime = new Date(now.getTime() + 50 * 60 * 1000)
+      endTime = new Date(now.getTime() + 70 * 60 * 1000)
     }
 
-    return await appointmentsCol
+    const appointments = await appointmentsCol
       .find({
         date: { $gte: startTime, $lte: endTime },
         status: { $in: ['pending', 'confirmed'] },
       })
       .toArray()
+
+    return JSON.stringify(appointments)
   })

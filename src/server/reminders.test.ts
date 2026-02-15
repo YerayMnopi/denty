@@ -68,7 +68,7 @@ describe('Reminder Functions', () => {
 
       // Check that the message contains the correct time reference
       const callArgs = vi.mocked(fetch).mock.calls[0]
-      const body = JSON.parse(callArgs[1].body as string)
+      const body = JSON.parse(callArgs[1]!.body as string)
       expect(body.text.body).toContain('en 1 hora')
     })
 
@@ -109,7 +109,7 @@ describe('Reminder Functions', () => {
       await sendAppointmentReminder(dataWithFormattedPhone, '24h')
 
       const callArgs = vi.mocked(fetch).mock.calls[0]
-      const body = JSON.parse(callArgs[1].body as string)
+      const body = JSON.parse(callArgs[1]!.body as string)
       expect(body.to).toBe('34666123456') // Should strip non-numeric characters
     })
   })
@@ -128,7 +128,7 @@ describe('Reminder Functions', () => {
 
       // Check that the message contains follow-up content
       const callArgs = vi.mocked(fetch).mock.calls[0]
-      const body = JSON.parse(callArgs[1].body as string)
+      const body = JSON.parse(callArgs[1]!.body as string)
       expect(body.text.body).toContain('visita de ayer')
       expect(body.text.body).toContain(mockReminderData.service)
     })
@@ -164,7 +164,7 @@ describe('Reminder Functions', () => {
 
       // Check that the message contains recall content
       const callArgs = vi.mocked(fetch).mock.calls[0]
-      const body = JSON.parse(callArgs[1].body as string)
+      const body = JSON.parse(callArgs[1]!.body as string)
       expect(body.text.body).toContain('Te echamos de menos')
       expect(body.text.body).toContain(mockRecallData.clinicName)
       expect(body.text.body).toContain(mockRecallData.clinicPhone)
@@ -180,7 +180,7 @@ describe('Reminder Functions', () => {
       await sendRecallCampaign(mockRecallData)
 
       const callArgs = vi.mocked(fetch).mock.calls[0]
-      const body = JSON.parse(callArgs[1].body as string)
+      const body = JSON.parse(callArgs[1]!.body as string)
       expect(body.text.body).toContain(mockRecallData.clinicAddress)
       expect(body.text.body).toContain(mockRecallData.clinicPhone)
     })
@@ -197,7 +197,7 @@ describe('Reminder Functions', () => {
       await sendAppointmentReminder(mockReminderData, '24h')
 
       const callArgs = vi.mocked(fetch).mock.calls[0]
-      const body = JSON.parse(callArgs[1].body as string)
+      const body = JSON.parse(callArgs[1]!.body as string)
       const message = body.text.body
 
       expect(message).toContain('mañana') // 24h indicator
@@ -220,7 +220,7 @@ describe('Reminder Functions', () => {
       await sendAppointmentReminder(mockReminderData, '1h')
 
       const callArgs = vi.mocked(fetch).mock.calls[0]
-      const body = JSON.parse(callArgs[1].body as string)
+      const body = JSON.parse(callArgs[1]!.body as string)
       const message = body.text.body
 
       expect(message).toContain('en 1 hora') // 1h indicator
@@ -259,7 +259,7 @@ describe('Reminder Functions', () => {
       await sendAppointmentReminder(dataWithoutPhone, '24h')
 
       const callArgs = vi.mocked(fetch).mock.calls[0]
-      const body = JSON.parse(callArgs[1].body as string)
+      const body = JSON.parse(callArgs[1]!.body as string)
       expect(body.to).toBe('') // Empty string after stripping non-numeric
     })
   })

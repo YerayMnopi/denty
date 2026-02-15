@@ -155,7 +155,9 @@ function AdminPatientsPage() {
           {/* Segment filter */}
           <select
             value={selectedSegment}
-            onChange={(e) => setSelectedSegment(e.target.value as 'all' | 'active' | 'inactive' | 'new')}
+            onChange={(e) =>
+              setSelectedSegment(e.target.value as 'all' | 'active' | 'inactive' | 'new')
+            }
             className="px-3 py-2 border border-input bg-background rounded-md text-sm min-w-32"
           >
             <option value="all">{t('admin.patients.segments.all')}</option>

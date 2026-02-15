@@ -1,6 +1,5 @@
 // Reminder and follow-up logic for patient CRM
 
-import type { ObjectId } from 'mongodb'
 import { mockClinics } from '@/data/mock'
 import type { Appointment } from '@/lib/collections'
 
@@ -213,8 +212,7 @@ export async function sendAppointmentReminders(
   timeFrame: '24h' | '1h',
 ): Promise<void> {
   for (const appointment of appointments) {
-    // Find clinic info
-    const clinic = mockClinics.find((c) => c._id.toString() === appointment.clinicId.toString())
+    const clinic = mockClinics.find((c) => c.slug === appointment.clinicId?.toString())
     if (!clinic) continue
 
     const reminderData: ReminderData = {
@@ -225,7 +223,7 @@ export async function sendAppointmentReminders(
       date: appointment.date.toLocaleDateString('es-ES'),
       time: appointment.date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
       clinicName: clinic.name,
-      clinicAddress: `${clinic.address.street}, ${clinic.address.city}`,
+      clinicAddress: clinic.address,
       doctorName: appointment.doctorName || 'Nuestro equipo',
     }
 
@@ -236,10 +234,11 @@ export async function sendAppointmentReminders(
 /**
  * Send post-visit follow-ups for completed appointments
  */
-export async function sendPostVisitFollowUps(appointments: AppointmentWithDetails[]): Promise<void> {
+export async function sendPostVisitFollowUps(
+  appointments: AppointmentWithDetails[],
+): Promise<void> {
   for (const appointment of appointments) {
-    // Find clinic info
-    const clinic = mockClinics.find((c) => c._id.toString() === appointment.clinicId.toString())
+    const clinic = mockClinics.find((c) => c.slug === appointment.clinicId?.toString())
     if (!clinic) continue
 
     const followUpData: ReminderData = {
@@ -250,7 +249,7 @@ export async function sendPostVisitFollowUps(appointments: AppointmentWithDetail
       date: appointment.date.toLocaleDateString('es-ES'),
       time: appointment.date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
       clinicName: clinic.name,
-      clinicAddress: `${clinic.address.street}, ${clinic.address.city}`,
+      clinicAddress: clinic.address,
       doctorName: appointment.doctorName || 'Nuestro equipo',
     }
 
@@ -263,10 +262,9 @@ export async function sendPostVisitFollowUps(appointments: AppointmentWithDetail
  */
 export async function sendRecallCampaignBulk(
   patients: PatientForBulk[],
-  clinicId: ObjectId,
+  clinicSlug: string,
 ): Promise<void> {
-  // Find clinic info
-  const clinic = mockClinics.find((c) => c._id.toString() === clinicId.toString())
+  const clinic = mockClinics.find((c) => c.slug === clinicSlug)
   if (!clinic) return
 
   for (const patient of patients) {
@@ -274,7 +272,7 @@ export async function sendRecallCampaignBulk(
       patientName: patient.name,
       patientPhone: patient.phone,
       clinicName: clinic.name,
-      clinicAddress: `${clinic.address.street}, ${clinic.address.city}`,
+      clinicAddress: clinic.address,
       clinicPhone: clinic.phone,
     }
 
