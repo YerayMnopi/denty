@@ -126,3 +126,87 @@ export async function getPatientsCollection() {
   const db = await getDb()
   return db.collection<Patient>('patients')
 }
+
+// ─── Website ─────────────────────────────────────────────
+
+export interface Website {
+  _id: ObjectId
+  clinicId: ObjectId
+  domain?: string
+  subdomain: string // e.g., 'clinica-dental-sonrisa' for clinica-dental-sonrisa.denty.es
+  settings: {
+    name: Record<string, string>
+    theme: {
+      primaryColor: string
+      secondaryColor: string
+      logo?: string
+      favicon?: string
+    }
+    pages: {
+      homepage: boolean
+      services: boolean
+      team: boolean
+      contact: boolean
+      blog: boolean
+    }
+    seo: {
+      title: Record<string, string>
+      description: Record<string, string>
+      keywords: string[]
+    }
+  }
+  content: {
+    homepage: {
+      hero: Record<string, string>
+      about: Record<string, string>
+      callToAction: Record<string, string>
+    }
+    services: {
+      title: Record<string, string>
+      description: Record<string, string>
+    }
+    team: {
+      title: Record<string, string>
+      description: Record<string, string>
+    }
+    contact: {
+      title: Record<string, string>
+      description: Record<string, string>
+    }
+  }
+  createdAt: Date
+  updatedAt: Date
+}
+
+// ─── Blog Post ───────────────────────────────────────────
+
+export interface BlogPost {
+  _id: ObjectId
+  clinicId: ObjectId
+  slug: string
+  title: Record<string, string>
+  content: Record<string, string> // markdown content
+  excerpt: Record<string, string>
+  author: string
+  authorId: ObjectId
+  tags: string[]
+  published: boolean
+  seo: {
+    title: Record<string, string>
+    description: Record<string, string>
+    keywords: string[]
+  }
+  publishedAt?: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
+export async function getWebsitesCollection() {
+  const db = await getDb()
+  return db.collection<Website>('websites')
+}
+
+export async function getBlogPostsCollection() {
+  const db = await getDb()
+  return db.collection<BlogPost>('blog_posts')
+}

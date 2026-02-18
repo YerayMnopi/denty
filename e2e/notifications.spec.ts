@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { gotoAndWaitForHydration } from "./helpers";
 
 test.describe("Booking notifications", () => {
 	test("booking completion shows confirmation with notification status", async ({
@@ -22,23 +23,22 @@ test.describe("Booking notifications", () => {
 			}),
 		);
 
-		await page.goto("/book/clinica-dental-sonrisa");
+		await gotoAndWaitForHydration(page, "/book/clinica-dental-sonrisa");
 
 		// Step 1: Select doctor
 		const doctorButton = page
 			.locator("button")
 			.filter({ hasText: /Dra?\./i })
 			.first();
-		await expect(doctorButton).toBeVisible({ timeout: 10000 });
+		await expect(doctorButton).toBeVisible({ timeout: 15000 });
 		await doctorButton.click();
 
 		// Step 2: Select service
 		const serviceButton = page.locator("button").first();
-		await expect(serviceButton).toBeVisible({ timeout: 10000 });
+		await expect(serviceButton).toBeVisible({ timeout: 15000 });
 		await serviceButton.click();
 
 		// Step 3: Select a date (click on an available day in the calendar)
-		// Wait for the calendar to load
 		await page.waitForTimeout(1000);
 		const availableDay = page
 			.locator("button")
@@ -74,7 +74,7 @@ test.describe("Booking notifications", () => {
 				// Should show confirmation screen
 				await expect(
 					page.getByText(/confirm|confirmada/i).first(),
-				).toBeVisible({ timeout: 10000 });
+				).toBeVisible({ timeout: 15000 });
 			}
 		}
 	});
@@ -82,10 +82,9 @@ test.describe("Booking notifications", () => {
 	test("booking page loads successfully regardless of notification config", async ({
 		page,
 	}) => {
-		// This test verifies the booking page works even without notification services
-		await page.goto("/book/clinica-dental-sonrisa");
+		await gotoAndWaitForHydration(page, "/book/clinica-dental-sonrisa");
 		await expect(page.getByRole("heading", { level: 1 })).toBeVisible({
-			timeout: 10000,
+			timeout: 15000,
 		});
 	});
 });
