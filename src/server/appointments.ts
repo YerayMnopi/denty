@@ -1,9 +1,11 @@
 // Server function to create an appointment
 
 import { createServerFn } from '@tanstack/react-start'
+import { ObjectId } from 'mongodb'
 import { getAdapter } from '@/adapters/factory'
 import type { AppointmentData, CreatedAppointment } from '@/adapters/types'
 import { mockClinics, mockDoctors } from '@/data/mock'
+import { getPatientsCollection } from '@/lib/collections'
 import { sendBookingNotifications } from './notifications'
 
 export interface CreatedAppointmentWithNotifications extends CreatedAppointment {
@@ -64,6 +66,55 @@ export const createAppointment = createServerFn({ method: 'POST' })
       clinicPhone: clinic.phone,
       doctorName,
     })
+
+    // Create or update patient profile (non-blocking — failures don't affect the appointment)
+    try {
+      const patientsCol = await getPatientsCollection()
+      const now = new Date()
+      const appointmentDate = new Date(`${data.date}T${data.time}`)
+
+      const existing = await patientsCol.findOne({ phone: data.patientPhone })
+
+      if (existing) {
+        await patientsCol.updateOne(
+          { _id: existing._id },
+          {
+            $set: { name: data.patientName, updatedAt: now, lastVisit: appointmentDate },
+            $push: {
+              visitHistory: {
+                appointmentId: new ObjectId(appointment.id),
+                service: data.service,
+                date: appointmentDate,
+                doctorName,
+              },
+            },
+          },
+        )
+      } else {
+        await patientsCol.insertOne({
+          _id: new ObjectId(),
+          clinicId: new ObjectId(),
+          name: data.patientName,
+          phone: data.patientPhone,
+          email: data.patientEmail,
+          channels: {},
+          visitHistory: [
+            {
+              appointmentId: new ObjectId(appointment.id),
+              service: data.service,
+              date: appointmentDate,
+              doctorName,
+            },
+          ],
+          tags: ['new-patient'],
+          lastVisit: appointmentDate,
+          createdAt: now,
+          updatedAt: now,
+        })
+      }
+    } catch (error) {
+      console.error('Failed to create/update patient profile:', error)
+    }
 
     return {
       ...appointment,
