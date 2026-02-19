@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { notFound } from '@tanstack/react-router'
-import { getMockWebsiteBySubdomain, getMockBlogPostBySlug, getMockBlogPostsByClinicId } from '@/data/website-mock'
+import { getMockWebsiteBySubdomain, getMockBlogPostBySlug, getMockBlogPostsByClinicId, type MockBlogPost } from '@/data/website-mock'
 import { mockClinics } from '@/data/mock'
-import type { BlogPost } from '@/lib/collections'
 
 // Server function to get blog post data
 const getBlogPostData = createServerFn({ method: 'GET' })
@@ -12,9 +11,9 @@ const getBlogPostData = createServerFn({ method: 'GET' })
     postSlug: string
   }) => input)
   .handler(async ({ data }): Promise<{
-    post: BlogPost
+    post: MockBlogPost
     clinic: { name: string, slug: string }
-    relatedPosts: BlogPost[]
+    relatedPosts: MockBlogPost[]
   }> => {
     // Get website data by subdomain (clinicSlug)
     const website = getMockWebsiteBySubdomain(data.clinicSlug)
@@ -22,21 +21,21 @@ const getBlogPostData = createServerFn({ method: 'GET' })
       throw notFound()
     }
 
-    // Get clinic data
-    const clinic = mockClinics.find(c => c._id.toString() === website.clinicId.toString())
+    // Get clinic data (match by subdomain/slug)
+    const clinic = mockClinics.find(c => c.slug === website.subdomain)
     if (!clinic) {
       throw notFound()
     }
 
     // Get the specific blog post
-    const post = getMockBlogPostBySlug(website.clinicId.toString(), data.postSlug)
+    const post = getMockBlogPostBySlug(website.clinicId, data.postSlug)
     if (!post || !post.published) {
       throw notFound()
     }
 
     // Get related posts (other posts with similar tags)
-    const allPosts = getMockBlogPostsByClinicId(website.clinicId.toString())
-      .filter(p => p.published && p._id.toString() !== post._id.toString())
+    const allPosts = getMockBlogPostsByClinicId(website.clinicId)
+      .filter(p => p.published && p._id !== post._id)
     
     const relatedPosts = allPosts
       .filter(p => p.tags.some(tag => post.tags.includes(tag)))
@@ -64,63 +63,69 @@ export const Route = createFileRoute('/clinic/$clinicSlug/blog/$postSlug')({
     }
   },
   component: ClinicBlogPost,
-  head: ({ loaderData }) => ({
-    meta: [
-      {
-        title: loaderData.post.seo.title.en || loaderData.post.title.en || `${Object.values(loaderData.post.title)[0]} | ${loaderData.clinic.name}`,
-      },
-      {
-        name: 'description',
-        content: loaderData.post.seo.description.en || loaderData.post.excerpt.en || Object.values(loaderData.post.excerpt)[0],
-      },
-      {
-        name: 'keywords',
-        content: loaderData.post.seo.keywords.join(', '),
-      },
-      {
-        property: 'og:title',
-        content: loaderData.post.title.en || Object.values(loaderData.post.title)[0],
-      },
-      {
-        property: 'og:description',
-        content: loaderData.post.excerpt.en || Object.values(loaderData.post.excerpt)[0],
-      },
-      {
-        property: 'og:type',
-        content: 'article',
-      },
-      {
-        name: 'article:author',
-        content: loaderData.post.author,
-      },
-      {
-        name: 'article:published_time',
-        content: (loaderData.post.publishedAt || loaderData.post.createdAt).toISOString(),
-      },
-    ],
-    scripts: [
-      {
-        type: 'application/ld+json',
-        children: JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'BlogPosting',
-          headline: loaderData.post.title.en || Object.values(loaderData.post.title)[0],
-          description: loaderData.post.excerpt.en || Object.values(loaderData.post.excerpt)[0],
-          author: {
-            '@type': 'Person',
-            name: loaderData.post.author,
-          },
-          datePublished: (loaderData.post.publishedAt || loaderData.post.createdAt).toISOString(),
-          dateModified: loaderData.post.updatedAt.toISOString(),
-          publisher: {
-            '@type': 'Organization',
-            name: loaderData.clinic.name,
-          },
-          keywords: loaderData.post.seo.keywords.join(', '),
-        }),
-      },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const post = loaderData?.post
+    const clinic = loaderData?.clinic
+    if (!post || !clinic) return { meta: [] }
+
+    return {
+      meta: [
+        {
+          title: post.seo.title.en || post.title.en || `${Object.values(post.title)[0]} | ${clinic.name}`,
+        },
+        {
+          name: 'description',
+          content: post.seo.description.en || post.excerpt.en || Object.values(post.excerpt)[0],
+        },
+        {
+          name: 'keywords',
+          content: post.seo.keywords.join(', '),
+        },
+        {
+          property: 'og:title',
+          content: post.title.en || Object.values(post.title)[0],
+        },
+        {
+          property: 'og:description',
+          content: post.excerpt.en || Object.values(post.excerpt)[0],
+        },
+        {
+          property: 'og:type',
+          content: 'article',
+        },
+        {
+          name: 'article:author',
+          content: post.author,
+        },
+        {
+          name: 'article:published_time',
+          content: (post.publishedAt || post.createdAt).toISOString(),
+        },
+      ],
+      scripts: [
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title.en || Object.values(post.title)[0],
+            description: post.excerpt.en || Object.values(post.excerpt)[0],
+            author: {
+              '@type': 'Person',
+              name: post.author,
+            },
+            datePublished: (post.publishedAt || post.createdAt).toISOString(),
+            dateModified: post.updatedAt.toISOString(),
+            publisher: {
+              '@type': 'Organization',
+              name: clinic.name,
+            },
+            keywords: post.seo.keywords.join(', '),
+          }),
+        },
+      ],
+    }
+  },
 })
 
 function ClinicBlogPost() {
@@ -235,7 +240,7 @@ function ClinicBlogPost() {
               </li>
               <li>
                 <div className="flex items-center">
-                  <svg className="flex-shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                   <Link 
@@ -249,7 +254,7 @@ function ClinicBlogPost() {
               </li>
               <li>
                 <div className="flex items-center">
-                  <svg className="flex-shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                   <span className="text-gray-900 font-medium line-clamp-1">
@@ -310,7 +315,7 @@ function ClinicBlogPost() {
         />
 
         {/* Call to Action */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-8 mt-12 text-center text-white">
+        <div className="bg-linear-to-r from-blue-600 to-blue-700 rounded-lg p-8 mt-12 text-center text-white">
           <h2 className="text-2xl font-bold mb-4">Need Professional Dental Care?</h2>
           <p className="text-blue-100 mb-6">
             Our experienced team at {clinic.name} is here to help you maintain optimal oral health.
@@ -344,7 +349,7 @@ function ClinicBlogPost() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {relatedPosts.map(relatedPost => (
                 <article 
-                  key={relatedPost._id.toString()} 
+                  key={relatedPost._id} 
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                 >
                   <div className="p-6">

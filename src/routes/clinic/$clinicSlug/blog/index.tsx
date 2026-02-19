@@ -2,9 +2,8 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { notFound } from '@tanstack/react-router'
 import { z } from 'zod'
-import { getMockWebsiteBySubdomain, getMockBlogPostsByClinicId } from '@/data/website-mock'
+import { getMockWebsiteBySubdomain, getMockBlogPostsByClinicId, type MockBlogPost } from '@/data/website-mock'
 import { mockClinics } from '@/data/mock'
-import type { BlogPost } from '@/lib/collections'
 
 // Search params for blog listing
 const blogSearchSchema = z.object({
@@ -22,7 +21,7 @@ const getClinicBlogData = createServerFn({ method: 'GET' })
     tag?: string
   }) => input)
   .handler(async ({ data }): Promise<{
-    posts: BlogPost[]
+    posts: MockBlogPost[]
     totalPosts: number
     currentPage: number
     totalPages: number
@@ -35,21 +34,21 @@ const getClinicBlogData = createServerFn({ method: 'GET' })
       throw notFound()
     }
 
-    // Get clinic data
-    const clinic = mockClinics.find(c => c._id.toString() === website.clinicId.toString())
+    // Get clinic data (match by subdomain/slug)
+    const clinic = mockClinics.find(c => c.slug === website.subdomain)
     if (!clinic) {
       throw notFound()
     }
 
     // Get blog posts
-    let posts = getMockBlogPostsByClinicId(website.clinicId.toString())
+    let posts = getMockBlogPostsByClinicId(website.clinicId)
     
     // Filter published posts only
     posts = posts.filter(post => post.published)
 
     // Filter by tag if provided
     if (data.tag) {
-      posts = posts.filter(post => post.tags.includes(data.tag))
+      posts = posts.filter(post => post.tags.includes(data.tag!))
     }
 
     // Pagination
@@ -93,22 +92,22 @@ export const Route = createFileRoute('/clinic/$clinicSlug/blog/')({
     }
   },
   component: ClinicBlogIndex,
-  head: ({ params, loaderData }) => ({
+  head: ({ loaderData }) => ({
     meta: [
       {
-        title: `Blog | ${loaderData.clinic.name}`,
+        title: `Blog | ${loaderData?.clinic?.name ?? ''}`,
       },
       {
         name: 'description',
-        content: `Read the latest dental health tips and news from ${loaderData.clinic.name}. Expert advice from our dental professionals.`,
+        content: loaderData?.clinic?.name ? `Read the latest dental health tips and news from ${loaderData.clinic.name}. Expert advice from our dental professionals.` : '',
       },
       {
         property: 'og:title',
-        content: `Blog | ${loaderData.clinic.name}`,
+        content: `Blog | ${loaderData?.clinic?.name ?? ''}`,
       },
       {
         property: 'og:description',
-        content: `Read the latest dental health tips and news from ${loaderData.clinic.name}.`,
+        content: loaderData?.clinic?.name ? `Read the latest dental health tips and news from ${loaderData.clinic.name}.` : '',
       },
       {
         property: 'og:type',
@@ -210,7 +209,7 @@ function ClinicBlogIndex() {
               </li>
               <li>
                 <div className="flex items-center">
-                  <svg className="flex-shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                   <span className="text-gray-900 font-medium">Blog</span>
@@ -273,7 +272,7 @@ function ClinicBlogIndex() {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
               {posts.map(post => (
-                <article key={post._id.toString()} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <article key={post._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="p-6">
                     <div className="flex items-center text-sm text-gray-500 mb-2">
                       <span>{post.author}</span>

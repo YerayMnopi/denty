@@ -1,6 +1,7 @@
 import { Link, useNavigate } from '@tanstack/react-router'
 import {
   CalendarDays,
+  Globe,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -19,6 +20,7 @@ const navItems = [
   { key: 'appointments', to: '/admin/appointments', icon: CalendarDays },
   { key: 'doctors', to: '/admin/doctors', icon: Stethoscope },
   { key: 'patients', to: '/admin/patients', icon: Users },
+  { key: 'website', to: '/admin/website', icon: Globe },
   { key: 'settings', to: '/admin/settings', icon: Settings },
 ] as const
 

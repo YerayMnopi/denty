@@ -1,19 +1,16 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { useTranslation } from 'react-i18next'
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
-import { mockWebsites } from '@/data/website-mock'
-import type { Website } from '@/lib/collections'
+import { mockWebsites, type MockWebsite } from '@/data/website-mock'
+import { AdminLayout } from '@/components/admin/admin-layout'
 
 // Mock server function to get website data
 const getWebsiteData = createServerFn({ method: 'GET' })
   .inputValidator(z.object({ clinicId: z.string() }))
-  .handler(async ({ data }): Promise<Website | null> => {
-    // In a real implementation, this would fetch from database
-    // For now, using mock data
-    const website = mockWebsites.find(w => w.clinicId.toString() === data.clinicId)
+  .handler(async ({ data }): Promise<MockWebsite | null> => {
+    const website = mockWebsites.find(w => w.clinicId === data.clinicId)
     return website || null
   })
 
@@ -68,18 +65,17 @@ export const Route = createFileRoute('/admin/_authenticated/website')({
 })
 
 function WebsiteManagement() {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-  const { website, clinicId } = Route.useLoaderData()
+  const { website } = Route.useLoaderData()
   
   const [activeTab, setActiveTab] = useState('general')
-  const [formData, setFormData] = useState(website || {
+  const [formData, setFormData] = useState<Record<string, any>>(website || {
     settings: {
       name: { en: '', es: '' },
       theme: {
         primaryColor: '#2563eb',
         secondaryColor: '#06b6d4',
         logo: '',
+        favicon: '',
       },
       pages: {
         homepage: true,
@@ -91,7 +87,7 @@ function WebsiteManagement() {
       seo: {
         title: { en: '', es: '' },
         description: { en: '', es: '' },
-        keywords: [],
+        keywords: [] as string[],
       },
     },
     content: {
@@ -104,7 +100,6 @@ function WebsiteManagement() {
   })
 
   const [isSaving, setIsSaving] = useState(false)
-  const [previewUrl, setPreviewUrl] = useState('')
 
   const handleSave = async () => {
     if (!website) return
@@ -113,7 +108,7 @@ function WebsiteManagement() {
     try {
       await updateWebsiteData({
         data: {
-          websiteId: website._id.toString(),
+          websiteId: website._id,
           updates: {
             settings: formData.settings,
             content: formData.content,
@@ -145,6 +140,7 @@ function WebsiteManagement() {
   ]
 
   return (
+    <AdminLayout>
     <div className="p-6 max-w-6xl mx-auto">
       {/* Header */}
       <div className="mb-8">
@@ -463,7 +459,7 @@ function WebsiteManagement() {
                           <input
                             type="checkbox"
                             className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                            checked={enabled}
+                            checked={enabled as boolean}
                             onChange={(e) => setFormData(prev => ({
                               ...prev,
                               settings: {
@@ -482,7 +478,7 @@ function WebsiteManagement() {
 
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                       <div className="flex">
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                           <svg className="h-5 w-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L5.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                           </svg>
@@ -629,7 +625,7 @@ function WebsiteManagement() {
 
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                       <div className="flex">
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                           <svg className="h-5 w-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
@@ -662,7 +658,8 @@ function WebsiteManagement() {
                         Manage your blog posts and content to improve SEO and engage visitors.
                       </p>
                       <Button 
-                        onClick={() => navigate({ to: '/admin/blog/new' })}
+                        disabled
+                        title="Coming soon"
                       >
                         📝 New Blog Post
                       </Button>
@@ -689,6 +686,7 @@ function WebsiteManagement() {
         </div>
       )}
     </div>
+    </AdminLayout>
   )
 }
 

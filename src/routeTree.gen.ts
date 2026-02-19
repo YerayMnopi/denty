@@ -20,11 +20,18 @@ import { Route as ClinicsClinicSlugRouteImport } from './routes/clinics/$clinicS
 import { Route as BookClinicSlugRouteImport } from './routes/book/$clinicSlug'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminAuthenticatedRouteImport } from './routes/admin/_authenticated'
+import { Route as ClinicClinicSlugIndexRouteImport } from './routes/clinic/$clinicSlug/index'
+import { Route as ClinicClinicSlugTeamRouteImport } from './routes/clinic/$clinicSlug/team'
+import { Route as ClinicClinicSlugServicesRouteImport } from './routes/clinic/$clinicSlug/services'
+import { Route as ClinicClinicSlugContactRouteImport } from './routes/clinic/$clinicSlug/contact'
+import { Route as AdminAuthenticatedWebsiteRouteImport } from './routes/admin/_authenticated/website'
 import { Route as AdminAuthenticatedSettingsRouteImport } from './routes/admin/_authenticated/settings'
 import { Route as AdminAuthenticatedPatientsRouteImport } from './routes/admin/_authenticated/patients'
 import { Route as AdminAuthenticatedDoctorsRouteImport } from './routes/admin/_authenticated/doctors'
 import { Route as AdminAuthenticatedDashboardRouteImport } from './routes/admin/_authenticated/dashboard'
 import { Route as AdminAuthenticatedAppointmentsRouteImport } from './routes/admin/_authenticated/appointments'
+import { Route as ClinicClinicSlugBlogIndexRouteImport } from './routes/clinic/$clinicSlug/blog/index'
+import { Route as ClinicClinicSlugBlogPostSlugRouteImport } from './routes/clinic/$clinicSlug/blog/$postSlug'
 
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
@@ -81,6 +88,33 @@ const AdminAuthenticatedRoute = AdminAuthenticatedRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClinicClinicSlugIndexRoute = ClinicClinicSlugIndexRouteImport.update({
+  id: '/clinic/$clinicSlug/',
+  path: '/clinic/$clinicSlug/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClinicClinicSlugTeamRoute = ClinicClinicSlugTeamRouteImport.update({
+  id: '/clinic/$clinicSlug/team',
+  path: '/clinic/$clinicSlug/team',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClinicClinicSlugServicesRoute =
+  ClinicClinicSlugServicesRouteImport.update({
+    id: '/clinic/$clinicSlug/services',
+    path: '/clinic/$clinicSlug/services',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ClinicClinicSlugContactRoute = ClinicClinicSlugContactRouteImport.update({
+  id: '/clinic/$clinicSlug/contact',
+  path: '/clinic/$clinicSlug/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAuthenticatedWebsiteRoute =
+  AdminAuthenticatedWebsiteRouteImport.update({
+    id: '/website',
+    path: '/website',
+    getParentRoute: () => AdminAuthenticatedRoute,
+  } as any)
 const AdminAuthenticatedSettingsRoute =
   AdminAuthenticatedSettingsRouteImport.update({
     id: '/settings',
@@ -111,6 +145,18 @@ const AdminAuthenticatedAppointmentsRoute =
     path: '/appointments',
     getParentRoute: () => AdminAuthenticatedRoute,
   } as any)
+const ClinicClinicSlugBlogIndexRoute =
+  ClinicClinicSlugBlogIndexRouteImport.update({
+    id: '/clinic/$clinicSlug/blog/',
+    path: '/clinic/$clinicSlug/blog/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ClinicClinicSlugBlogPostSlugRoute =
+  ClinicClinicSlugBlogPostSlugRouteImport.update({
+    id: '/clinic/$clinicSlug/blog/$postSlug',
+    path: '/clinic/$clinicSlug/blog/$postSlug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -129,6 +175,13 @@ export interface FileRoutesByFullPath {
   '/admin/doctors': typeof AdminAuthenticatedDoctorsRoute
   '/admin/patients': typeof AdminAuthenticatedPatientsRoute
   '/admin/settings': typeof AdminAuthenticatedSettingsRoute
+  '/admin/website': typeof AdminAuthenticatedWebsiteRoute
+  '/clinic/$clinicSlug/contact': typeof ClinicClinicSlugContactRoute
+  '/clinic/$clinicSlug/services': typeof ClinicClinicSlugServicesRoute
+  '/clinic/$clinicSlug/team': typeof ClinicClinicSlugTeamRoute
+  '/clinic/$clinicSlug/': typeof ClinicClinicSlugIndexRoute
+  '/clinic/$clinicSlug/blog/$postSlug': typeof ClinicClinicSlugBlogPostSlugRoute
+  '/clinic/$clinicSlug/blog/': typeof ClinicClinicSlugBlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -147,6 +200,13 @@ export interface FileRoutesByTo {
   '/admin/doctors': typeof AdminAuthenticatedDoctorsRoute
   '/admin/patients': typeof AdminAuthenticatedPatientsRoute
   '/admin/settings': typeof AdminAuthenticatedSettingsRoute
+  '/admin/website': typeof AdminAuthenticatedWebsiteRoute
+  '/clinic/$clinicSlug/contact': typeof ClinicClinicSlugContactRoute
+  '/clinic/$clinicSlug/services': typeof ClinicClinicSlugServicesRoute
+  '/clinic/$clinicSlug/team': typeof ClinicClinicSlugTeamRoute
+  '/clinic/$clinicSlug': typeof ClinicClinicSlugIndexRoute
+  '/clinic/$clinicSlug/blog/$postSlug': typeof ClinicClinicSlugBlogPostSlugRoute
+  '/clinic/$clinicSlug/blog': typeof ClinicClinicSlugBlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -166,6 +226,13 @@ export interface FileRoutesById {
   '/admin/_authenticated/doctors': typeof AdminAuthenticatedDoctorsRoute
   '/admin/_authenticated/patients': typeof AdminAuthenticatedPatientsRoute
   '/admin/_authenticated/settings': typeof AdminAuthenticatedSettingsRoute
+  '/admin/_authenticated/website': typeof AdminAuthenticatedWebsiteRoute
+  '/clinic/$clinicSlug/contact': typeof ClinicClinicSlugContactRoute
+  '/clinic/$clinicSlug/services': typeof ClinicClinicSlugServicesRoute
+  '/clinic/$clinicSlug/team': typeof ClinicClinicSlugTeamRoute
+  '/clinic/$clinicSlug/': typeof ClinicClinicSlugIndexRoute
+  '/clinic/$clinicSlug/blog/$postSlug': typeof ClinicClinicSlugBlogPostSlugRoute
+  '/clinic/$clinicSlug/blog/': typeof ClinicClinicSlugBlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -186,6 +253,13 @@ export interface FileRouteTypes {
     | '/admin/doctors'
     | '/admin/patients'
     | '/admin/settings'
+    | '/admin/website'
+    | '/clinic/$clinicSlug/contact'
+    | '/clinic/$clinicSlug/services'
+    | '/clinic/$clinicSlug/team'
+    | '/clinic/$clinicSlug/'
+    | '/clinic/$clinicSlug/blog/$postSlug'
+    | '/clinic/$clinicSlug/blog/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -204,6 +278,13 @@ export interface FileRouteTypes {
     | '/admin/doctors'
     | '/admin/patients'
     | '/admin/settings'
+    | '/admin/website'
+    | '/clinic/$clinicSlug/contact'
+    | '/clinic/$clinicSlug/services'
+    | '/clinic/$clinicSlug/team'
+    | '/clinic/$clinicSlug'
+    | '/clinic/$clinicSlug/blog/$postSlug'
+    | '/clinic/$clinicSlug/blog'
   id:
     | '__root__'
     | '/'
@@ -222,6 +303,13 @@ export interface FileRouteTypes {
     | '/admin/_authenticated/doctors'
     | '/admin/_authenticated/patients'
     | '/admin/_authenticated/settings'
+    | '/admin/_authenticated/website'
+    | '/clinic/$clinicSlug/contact'
+    | '/clinic/$clinicSlug/services'
+    | '/clinic/$clinicSlug/team'
+    | '/clinic/$clinicSlug/'
+    | '/clinic/$clinicSlug/blog/$postSlug'
+    | '/clinic/$clinicSlug/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -236,6 +324,12 @@ export interface RootRouteChildren {
   ClinicsIndexRoute: typeof ClinicsIndexRoute
   DoctorsIndexRoute: typeof DoctorsIndexRoute
   TreatmentsIndexRoute: typeof TreatmentsIndexRoute
+  ClinicClinicSlugContactRoute: typeof ClinicClinicSlugContactRoute
+  ClinicClinicSlugServicesRoute: typeof ClinicClinicSlugServicesRoute
+  ClinicClinicSlugTeamRoute: typeof ClinicClinicSlugTeamRoute
+  ClinicClinicSlugIndexRoute: typeof ClinicClinicSlugIndexRoute
+  ClinicClinicSlugBlogPostSlugRoute: typeof ClinicClinicSlugBlogPostSlugRoute
+  ClinicClinicSlugBlogIndexRoute: typeof ClinicClinicSlugBlogIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -317,6 +411,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/clinic/$clinicSlug/': {
+      id: '/clinic/$clinicSlug/'
+      path: '/clinic/$clinicSlug'
+      fullPath: '/clinic/$clinicSlug/'
+      preLoaderRoute: typeof ClinicClinicSlugIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clinic/$clinicSlug/team': {
+      id: '/clinic/$clinicSlug/team'
+      path: '/clinic/$clinicSlug/team'
+      fullPath: '/clinic/$clinicSlug/team'
+      preLoaderRoute: typeof ClinicClinicSlugTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clinic/$clinicSlug/services': {
+      id: '/clinic/$clinicSlug/services'
+      path: '/clinic/$clinicSlug/services'
+      fullPath: '/clinic/$clinicSlug/services'
+      preLoaderRoute: typeof ClinicClinicSlugServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clinic/$clinicSlug/contact': {
+      id: '/clinic/$clinicSlug/contact'
+      path: '/clinic/$clinicSlug/contact'
+      fullPath: '/clinic/$clinicSlug/contact'
+      preLoaderRoute: typeof ClinicClinicSlugContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/_authenticated/website': {
+      id: '/admin/_authenticated/website'
+      path: '/website'
+      fullPath: '/admin/website'
+      preLoaderRoute: typeof AdminAuthenticatedWebsiteRouteImport
+      parentRoute: typeof AdminAuthenticatedRoute
+    }
     '/admin/_authenticated/settings': {
       id: '/admin/_authenticated/settings'
       path: '/settings'
@@ -352,6 +481,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAuthenticatedAppointmentsRouteImport
       parentRoute: typeof AdminAuthenticatedRoute
     }
+    '/clinic/$clinicSlug/blog/': {
+      id: '/clinic/$clinicSlug/blog/'
+      path: '/clinic/$clinicSlug/blog'
+      fullPath: '/clinic/$clinicSlug/blog/'
+      preLoaderRoute: typeof ClinicClinicSlugBlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clinic/$clinicSlug/blog/$postSlug': {
+      id: '/clinic/$clinicSlug/blog/$postSlug'
+      path: '/clinic/$clinicSlug/blog/$postSlug'
+      fullPath: '/clinic/$clinicSlug/blog/$postSlug'
+      preLoaderRoute: typeof ClinicClinicSlugBlogPostSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -361,6 +504,7 @@ interface AdminAuthenticatedRouteChildren {
   AdminAuthenticatedDoctorsRoute: typeof AdminAuthenticatedDoctorsRoute
   AdminAuthenticatedPatientsRoute: typeof AdminAuthenticatedPatientsRoute
   AdminAuthenticatedSettingsRoute: typeof AdminAuthenticatedSettingsRoute
+  AdminAuthenticatedWebsiteRoute: typeof AdminAuthenticatedWebsiteRoute
 }
 
 const AdminAuthenticatedRouteChildren: AdminAuthenticatedRouteChildren = {
@@ -369,6 +513,7 @@ const AdminAuthenticatedRouteChildren: AdminAuthenticatedRouteChildren = {
   AdminAuthenticatedDoctorsRoute: AdminAuthenticatedDoctorsRoute,
   AdminAuthenticatedPatientsRoute: AdminAuthenticatedPatientsRoute,
   AdminAuthenticatedSettingsRoute: AdminAuthenticatedSettingsRoute,
+  AdminAuthenticatedWebsiteRoute: AdminAuthenticatedWebsiteRoute,
 }
 
 const AdminAuthenticatedRouteWithChildren =
@@ -386,6 +531,12 @@ const rootRouteChildren: RootRouteChildren = {
   ClinicsIndexRoute: ClinicsIndexRoute,
   DoctorsIndexRoute: DoctorsIndexRoute,
   TreatmentsIndexRoute: TreatmentsIndexRoute,
+  ClinicClinicSlugContactRoute: ClinicClinicSlugContactRoute,
+  ClinicClinicSlugServicesRoute: ClinicClinicSlugServicesRoute,
+  ClinicClinicSlugTeamRoute: ClinicClinicSlugTeamRoute,
+  ClinicClinicSlugIndexRoute: ClinicClinicSlugIndexRoute,
+  ClinicClinicSlugBlogPostSlugRoute: ClinicClinicSlugBlogPostSlugRoute,
+  ClinicClinicSlugBlogIndexRoute: ClinicClinicSlugBlogIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

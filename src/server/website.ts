@@ -2,6 +2,32 @@ import { createServerFn } from '@tanstack/react-start'
 import { ObjectId } from 'mongodb'
 import { getClinicsCollection, getWebsitesCollection, type Website } from '@/lib/collections'
 
+// ─── Serialized Types ────────────────────────────────────
+
+export interface SerializedWebsite {
+  _id: string
+  clinicId: string
+  domain?: string
+  subdomain: string
+  settings: Website['settings']
+  content: Website['content']
+  createdAt: string
+  updatedAt: string
+}
+
+function serializeWebsite(w: Website): SerializedWebsite {
+  return {
+    _id: w._id.toHexString(),
+    clinicId: w.clinicId.toHexString(),
+    domain: w.domain,
+    subdomain: w.subdomain,
+    settings: w.settings,
+    content: w.content,
+    createdAt: w.createdAt.toISOString(),
+    updatedAt: w.updatedAt.toISOString(),
+  }
+}
+
 // ─── Input Types ─────────────────────────────────────────
 
 export interface CreateWebsiteInput {
@@ -101,7 +127,7 @@ export interface UpdateWebsiteInput {
 
 export const createWebsite = createServerFn()
   .inputValidator((input: CreateWebsiteInput) => input)
-  .handler(async ({ data }): Promise<Website> => {
+  .handler(async ({ data }): Promise<SerializedWebsite> => {
     const websitesCollection = await getWebsitesCollection()
     
     // Validate clinic exists
@@ -134,26 +160,28 @@ export const createWebsite = createServerFn()
     }
 
     const result = await websitesCollection.insertOne(website)
-    return { ...website, _id: result.insertedId }
+    return serializeWebsite({ ...website, _id: result.insertedId })
   })
 
 export const getWebsite = createServerFn()
   .inputValidator((input: { clinicId: string }) => input)
-  .handler(async ({ data }): Promise<Website | null> => {
+  .handler(async ({ data }): Promise<SerializedWebsite | null> => {
     const websitesCollection = await getWebsitesCollection()
-    return await websitesCollection.findOne({ clinicId: new ObjectId(data.clinicId) })
+    const website = await websitesCollection.findOne({ clinicId: new ObjectId(data.clinicId) })
+    return website ? serializeWebsite(website) : null
   })
 
 export const getWebsiteBySubdomain = createServerFn()
   .inputValidator((input: { subdomain: string }) => input)
-  .handler(async ({ data }): Promise<Website | null> => {
+  .handler(async ({ data }): Promise<SerializedWebsite | null> => {
     const websitesCollection = await getWebsitesCollection()
-    return await websitesCollection.findOne({ subdomain: data.subdomain })
+    const website = await websitesCollection.findOne({ subdomain: data.subdomain })
+    return website ? serializeWebsite(website) : null
   })
 
 export const updateWebsite = createServerFn()
   .inputValidator((input: UpdateWebsiteInput) => input)
-  .handler(async ({ data }): Promise<Website | null> => {
+  .handler(async ({ data }): Promise<SerializedWebsite | null> => {
     const websitesCollection = await getWebsitesCollection()
     
     const updateDoc: any = { updatedAt: new Date() }
@@ -205,7 +233,7 @@ export const updateWebsite = createServerFn()
       { returnDocument: 'after' }
     )
     
-    return result
+    return result ? serializeWebsite(result) : null
   })
 
 export const deleteWebsite = createServerFn()

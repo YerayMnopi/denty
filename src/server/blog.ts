@@ -45,6 +45,48 @@ export interface GetBlogPostsInput {
   tags?: string[]
 }
 
+// ─── Serialized Types ────────────────────────────────────
+
+export interface SerializedBlogPost {
+  _id: string
+  clinicId: string
+  slug: string
+  title: Record<string, string>
+  content: Record<string, string>
+  excerpt: Record<string, string>
+  author: string
+  authorId: string
+  tags: string[]
+  published: boolean
+  seo: {
+    title: Record<string, string>
+    description: Record<string, string>
+    keywords: string[]
+  }
+  publishedAt?: string
+  createdAt: string
+  updatedAt: string
+}
+
+function serializeBlogPost(p: BlogPost): SerializedBlogPost {
+  return {
+    _id: p._id.toHexString(),
+    clinicId: p.clinicId.toHexString(),
+    slug: p.slug,
+    title: p.title,
+    content: p.content,
+    excerpt: p.excerpt,
+    author: p.author,
+    authorId: p.authorId.toHexString(),
+    tags: p.tags,
+    published: p.published,
+    seo: p.seo,
+    publishedAt: p.publishedAt?.toISOString(),
+    createdAt: p.createdAt.toISOString(),
+    updatedAt: p.updatedAt.toISOString(),
+  }
+}
+
 // ─── Helper Functions ────────────────────────────────────
 
 function generateSlug(title: string): string {
@@ -89,7 +131,7 @@ async function generateUniqueSlug(clinicId: string, title: string, excludeId?: s
 
 export const createBlogPost = createServerFn()
   .inputValidator((input: CreateBlogPostInput) => input)
-  .handler(async ({ data }): Promise<BlogPost> => {
+  .handler(async ({ data }): Promise<SerializedBlogPost> => {
     const blogPostsCollection = await getBlogPostsCollection()
     
     // Validate clinic exists
@@ -124,29 +166,31 @@ export const createBlogPost = createServerFn()
     }
 
     const result = await blogPostsCollection.insertOne(blogPost)
-    return { ...blogPost, _id: result.insertedId }
+    return serializeBlogPost({ ...blogPost, _id: result.insertedId })
   })
 
 export const getBlogPost = createServerFn()
   .inputValidator((input: { clinicId: string; slug: string }) => input)
-  .handler(async ({ data }): Promise<BlogPost | null> => {
+  .handler(async ({ data }): Promise<SerializedBlogPost | null> => {
     const blogPostsCollection = await getBlogPostsCollection()
-    return await blogPostsCollection.findOne({ 
+    const post = await blogPostsCollection.findOne({ 
       clinicId: new ObjectId(data.clinicId),
       slug: data.slug 
     })
+    return post ? serializeBlogPost(post) : null
   })
 
 export const getBlogPostById = createServerFn()
   .inputValidator((input: { postId: string }) => input)
-  .handler(async ({ data }): Promise<BlogPost | null> => {
+  .handler(async ({ data }): Promise<SerializedBlogPost | null> => {
     const blogPostsCollection = await getBlogPostsCollection()
-    return await blogPostsCollection.findOne({ _id: new ObjectId(data.postId) })
+    const post = await blogPostsCollection.findOne({ _id: new ObjectId(data.postId) })
+    return post ? serializeBlogPost(post) : null
   })
 
 export const getBlogPosts = createServerFn()
   .inputValidator((input: GetBlogPostsInput) => input)
-  .handler(async ({ data }): Promise<{ posts: BlogPost[], total: number }> => {
+  .handler(async ({ data }): Promise<{ posts: SerializedBlogPost[], total: number }> => {
     const blogPostsCollection = await getBlogPostsCollection()
     
     // Apply defaults
@@ -173,12 +217,12 @@ export const getBlogPosts = createServerFn()
       blogPostsCollection.countDocuments(query)
     ])
 
-    return { posts, total }
+    return { posts: posts.map(serializeBlogPost), total }
   })
 
 export const updateBlogPost = createServerFn()
   .inputValidator((input: UpdateBlogPostInput) => input)
-  .handler(async ({ data }): Promise<BlogPost | null> => {
+  .handler(async ({ data }): Promise<SerializedBlogPost | null> => {
     const blogPostsCollection = await getBlogPostsCollection()
     
     // Get existing post to check for slug changes
@@ -231,7 +275,7 @@ export const updateBlogPost = createServerFn()
       { returnDocument: 'after' }
     )
     
-    return result
+    return result ? serializeBlogPost(result) : null
   })
 
 export const deleteBlogPost = createServerFn()

@@ -20,19 +20,19 @@ const getClinicTeamData = createServerFn({ method: 'GET' })
       throw notFound()
     }
 
-    // Get clinic and doctors data
-    const clinic = mockClinics.find(c => c._id.toString() === website.clinicId.toString())
-    const doctors = mockDoctors.filter(d => d.clinicId.toString() === website.clinicId.toString())
+    // Get clinic and doctors data (match by subdomain/slug)
+    const clinic = mockClinics.find(c => c.slug === website.subdomain)
+    const doctors = mockDoctors.filter(d => d.clinicSlug === website.subdomain)
     
     if (!clinic) {
       throw notFound()
     }
 
-    const context: WebsiteGenerationContext = {
+    const context = {
       website,
       clinic,
       doctors
-    }
+    } as unknown as WebsiteGenerationContext
 
     // Generate team page content
     const pageData = generateTeamPage(context, 'en')
@@ -60,31 +60,31 @@ export const Route = createFileRoute('/clinic/$clinicSlug/team')({
   head: ({ loaderData }) => ({
     meta: [
       {
-        title: loaderData.teamData.title,
+        title: loaderData?.teamData?.title ?? '',
       },
       {
         name: 'description',
-        content: loaderData.teamData.description,
+        content: loaderData?.teamData?.description ?? '',
       },
       {
         property: 'og:title',
-        content: loaderData.teamData.title,
+        content: loaderData?.teamData?.title ?? '',
       },
       {
         property: 'og:description',
-        content: loaderData.teamData.description,
+        content: loaderData?.teamData?.description ?? '',
       },
       {
         property: 'og:type',
         content: 'website',
       },
     ],
-    scripts: [
+    scripts: loaderData?.teamData?.schemaMarkup ? [
       {
         type: 'application/ld+json',
         children: JSON.stringify(loaderData.teamData.schemaMarkup),
       },
-    ],
+    ] : [],
   }),
 })
 
@@ -172,7 +172,7 @@ function ClinicTeamPage() {
               </li>
               <li>
                 <div className="flex items-center">
-                  <svg className="flex-shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                   <span className="text-gray-900 font-medium">Our Team</span>

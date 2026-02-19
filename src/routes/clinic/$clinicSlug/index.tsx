@@ -20,19 +20,19 @@ const getClinicWebsiteData = createServerFn({ method: 'GET' })
       throw notFound()
     }
 
-    // Get clinic and doctors data
-    const clinic = mockClinics.find(c => c._id.toString() === website.clinicId.toString())
-    const doctors = mockDoctors.filter(d => d.clinicId.toString() === website.clinicId.toString())
+    // Get clinic and doctors data (match by subdomain/slug)
+    const clinic = mockClinics.find(c => c.slug === website.subdomain)
+    const doctors = mockDoctors.filter(d => d.clinicSlug === website.subdomain)
     
     if (!clinic) {
       throw notFound()
     }
 
-    const context: WebsiteGenerationContext = {
+    const context = {
       website,
       clinic,
       doctors
-    }
+    } as unknown as WebsiteGenerationContext
 
     // Generate homepage content
     const pageData = generateHomepage(context, 'en') // Default to English, could be dynamic
@@ -60,31 +60,31 @@ export const Route = createFileRoute('/clinic/$clinicSlug/')({
   head: ({ loaderData }) => ({
     meta: [
       {
-        title: loaderData.websiteData.title,
+        title: loaderData?.websiteData?.title ?? '',
       },
       {
         name: 'description',
-        content: loaderData.websiteData.description,
+        content: loaderData?.websiteData?.description ?? '',
       },
       {
         property: 'og:title',
-        content: loaderData.websiteData.title,
+        content: loaderData?.websiteData?.title ?? '',
       },
       {
         property: 'og:description',
-        content: loaderData.websiteData.description,
+        content: loaderData?.websiteData?.description ?? '',
       },
       {
         property: 'og:type',
         content: 'website',
       },
     ],
-    scripts: [
+    scripts: loaderData?.websiteData?.schemaMarkup ? [
       {
         type: 'application/ld+json',
         children: JSON.stringify(loaderData.websiteData.schemaMarkup),
       },
-    ],
+    ] : [],
   }),
 })
 

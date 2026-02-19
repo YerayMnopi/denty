@@ -1,11 +1,85 @@
-import { ObjectId } from 'mongodb'
-import type { Website, BlogPost } from '@/lib/collections'
+// NOTE: This file is imported by client-side components, so it must NOT import
+// the `mongodb` package (only available server-side). Use plain strings for IDs.
 
-// Mock website data for testing and development
-export const mockWebsites: Website[] = [
+export interface MockWebsite {
+  _id: string
+  clinicId: string
+  domain?: string
+  subdomain: string
+  settings: {
+    name: Record<string, string>
+    theme: {
+      primaryColor: string
+      secondaryColor: string
+      logo: string
+      favicon: string
+    }
+    pages: {
+      homepage: boolean
+      services: boolean
+      team: boolean
+      contact: boolean
+      blog: boolean
+    }
+    seo: {
+      title: Record<string, string>
+      description: Record<string, string>
+      keywords: string[]
+    }
+  }
+  content: {
+    homepage: {
+      hero: Record<string, string>
+      about: Record<string, string>
+      callToAction: Record<string, string>
+    }
+    services: {
+      title: Record<string, string>
+      description: Record<string, string>
+    }
+    team: {
+      title: Record<string, string>
+      description: Record<string, string>
+    }
+    contact: {
+      title: Record<string, string>
+      description: Record<string, string>
+    }
+  }
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface MockBlogPost {
+  _id: string
+  clinicId: string
+  slug: string
+  title: Record<string, string>
+  content: Record<string, string>
+  excerpt: Record<string, string>
+  author: string
+  authorId: string
+  tags: string[]
+  published: boolean
+  seo: {
+    title: Record<string, string>
+    description: Record<string, string>
+    keywords: string[]
+  }
+  publishedAt?: Date
+  createdAt: Date
+  updatedAt: Date
+}
+
+let idCounter = 0
+function mockId(): string {
+  return `mock-id-${Date.now()}-${++idCounter}`
+}
+
+export const mockWebsites: MockWebsite[] = [
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'), // Mock clinic ID
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     domain: undefined,
     subdomain: 'clinica-dental-sonrisa',
     settings: {
@@ -99,8 +173,8 @@ export const mockWebsites: Website[] = [
     updatedAt: new Date('2024-01-20T15:30:00Z')
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439012'), // Another mock clinic ID
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439012',
     domain: 'www.dentalvitacare.com',
     subdomain: 'dental-vita-care',
     settings: {
@@ -193,11 +267,10 @@ export const mockWebsites: Website[] = [
   }
 ]
 
-// Mock blog posts for testing
-export const mockBlogPosts: BlogPost[] = [
+export const mockBlogPosts: MockBlogPost[] = [
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     slug: '10-tips-for-better-oral-hygiene',
     title: {
       en: '10 Essential Tips for Better Oral Hygiene',
@@ -280,7 +353,7 @@ Seguir estos simples consejos puede ayudarte a mantener una salud bucal óptima 
       es: 'Aprende los 10 consejos esenciales para mantener una excelente higiene bucal y mantener tus dientes y encías saludables con consejos expertos de nuestro equipo dental.'
     },
     author: 'Dr. María García',
-    authorId: new ObjectId('507f1f77bcf86cd799439021'),
+    authorId: '507f1f77bcf86cd799439021',
     tags: ['oral hygiene', 'dental tips', 'prevention', 'dental health'],
     published: true,
     seo: {
@@ -299,8 +372,8 @@ Seguir estos simples consejos puede ayudarte a mantener una salud bucal óptima 
     updatedAt: new Date('2024-01-17T09:15:00Z')
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     slug: 'dental-implants-complete-guide',
     title: {
       en: 'Dental Implants: A Complete Guide to Permanent Tooth Replacement',
@@ -427,7 +500,7 @@ En Clínica Dental Sonrisa, usamos la última tecnología y técnicas de implant
       es: 'Todo lo que necesitas saber sobre los implantes dentales - la solución permanente para el reemplazo de dientes. Aprende sobre el proceso, beneficios y cuidados.'
     },
     author: 'Dr. Carlos Rodríguez',
-    authorId: new ObjectId('507f1f77bcf86cd799439022'),
+    authorId: '507f1f77bcf86cd799439022',
     tags: ['dental implants', 'tooth replacement', 'oral surgery', 'restorative dentistry'],
     published: true,
     seo: {
@@ -446,8 +519,8 @@ En Clínica Dental Sonrisa, usamos la última tecnología y técnicas de implant
     updatedAt: new Date('2024-01-21T10:20:00Z')
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     slug: 'choosing-right-orthodontic-treatment',
     title: {
       en: 'Choosing the Right Orthodontic Treatment: Braces vs. Clear Aligners',
@@ -606,9 +679,9 @@ En Clínica Dental Sonrisa, ofrecemos tanto brackets tradicionales como tratamie
       es: 'Compara brackets tradicionales y alineadores transparentes para encontrar el mejor tratamiento ortodóncico para tus necesidades. Aprende sobre beneficios, costos y duración.'
     },
     author: 'Dra. Ana López',
-    authorId: new ObjectId('507f1f77bcf86cd799439023'),
+    authorId: '507f1f77bcf86cd799439023',
     tags: ['orthodontics', 'braces', 'clear aligners', 'teeth straightening'],
-    published: false, // Draft post
+    published: false,
     seo: {
       title: {
         en: 'Braces vs Clear Aligners: Complete Orthodontic Treatment Guide | Dental Smile Clinic',
@@ -626,20 +699,20 @@ En Clínica Dental Sonrisa, ofrecemos tanto brackets tradicionales como tratamie
   }
 ]
 
-export function getMockWebsiteByClinicId(clinicId: string): Website | undefined {
-  return mockWebsites.find(website => website.clinicId.toString() === clinicId)
+export function getMockWebsiteByClinicId(clinicId: string): MockWebsite | undefined {
+  return mockWebsites.find(website => website.clinicId === clinicId)
 }
 
-export function getMockWebsiteBySubdomain(subdomain: string): Website | undefined {
+export function getMockWebsiteBySubdomain(subdomain: string): MockWebsite | undefined {
   return mockWebsites.find(website => website.subdomain === subdomain)
 }
 
-export function getMockBlogPostsByClinicId(clinicId: string): BlogPost[] {
-  return mockBlogPosts.filter(post => post.clinicId.toString() === clinicId)
+export function getMockBlogPostsByClinicId(clinicId: string): MockBlogPost[] {
+  return mockBlogPosts.filter(post => post.clinicId === clinicId)
 }
 
-export function getMockBlogPostBySlug(clinicId: string, slug: string): BlogPost | undefined {
-  return mockBlogPosts.find(post => 
-    post.clinicId.toString() === clinicId && post.slug === slug
+export function getMockBlogPostBySlug(clinicId: string, slug: string): MockBlogPost | undefined {
+  return mockBlogPosts.find(post =>
+    post.clinicId === clinicId && post.slug === slug
   )
 }

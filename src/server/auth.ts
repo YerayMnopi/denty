@@ -15,8 +15,8 @@ export interface AdminSession {
 const MOCK_ADMINS = [
   {
     email: 'admin@sonrisa.com',
-    // bcrypt hash of 'admin123' (pre-computed to avoid top-level import)
-    passwordHash: '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy',
+    // bcrypt hash of 'admin123'
+    passwordHash: '$2b$10$QgjYsVwEBBS7fCRTPQ8Sx.S2hgiP80jedlclVZl82iphshHv0G6/u',
     clinicSlug: 'clinica-dental-sonrisa',
   },
 ]
