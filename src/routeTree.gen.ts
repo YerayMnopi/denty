@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TreatmentsIndexRouteImport } from './routes/treatments/index'
 import { Route as DoctorsIndexRouteImport } from './routes/doctors/index'
@@ -36,6 +38,16 @@ import { Route as ClinicClinicSlugBlogPostSlugRouteImport } from './routes/clini
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -160,6 +172,8 @@ const ClinicClinicSlugBlogPostSlugRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/register': typeof RegisterRoute
   '/search': typeof SearchRoute
   '/admin': typeof AdminAuthenticatedRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -185,6 +199,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/register': typeof RegisterRoute
   '/search': typeof SearchRoute
   '/admin': typeof AdminAuthenticatedRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -211,6 +227,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/onboarding': typeof OnboardingRoute
+  '/register': typeof RegisterRoute
   '/search': typeof SearchRoute
   '/admin/_authenticated': typeof AdminAuthenticatedRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -238,6 +256,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/onboarding'
+    | '/register'
     | '/search'
     | '/admin'
     | '/admin/login'
@@ -263,6 +283,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/onboarding'
+    | '/register'
     | '/search'
     | '/admin'
     | '/admin/login'
@@ -288,6 +310,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/onboarding'
+    | '/register'
     | '/search'
     | '/admin/_authenticated'
     | '/admin/login'
@@ -314,6 +338,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  OnboardingRoute: typeof OnboardingRoute
+  RegisterRoute: typeof RegisterRoute
   SearchRoute: typeof SearchRoute
   AdminAuthenticatedRoute: typeof AdminAuthenticatedRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
@@ -339,6 +365,20 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -521,6 +561,8 @@ const AdminAuthenticatedRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  OnboardingRoute: OnboardingRoute,
+  RegisterRoute: RegisterRoute,
   SearchRoute: SearchRoute,
   AdminAuthenticatedRoute: AdminAuthenticatedRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
