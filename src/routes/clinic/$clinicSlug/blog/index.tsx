@@ -1,21 +1,13 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { z } from 'zod'
-import { mockClinics } from '@/data/mock'
-import {
-  getMockBlogPostsByClinicId,
-  getMockWebsiteBySubdomain,
-  type MockBlogPost,
-} from '@/data/website-mock'
 
-// Search params for blog listing
 const blogSearchSchema = z.object({
   page: z.number().min(1).optional(),
   limit: z.number().min(1).max(20).optional(),
   tag: z.string().optional(),
 })
 
-// Server function to get clinic blog data
 const getClinicBlogData = createServerFn({ method: 'GET' })
   .inputValidator(
     (input: { clinicSlug: string; page?: number; limit?: number; tag?: string }) => input,
@@ -24,37 +16,35 @@ const getClinicBlogData = createServerFn({ method: 'GET' })
     async ({
       data,
     }): Promise<{
-      posts: MockBlogPost[]
+      posts: Array<any>
       totalPosts: number
       currentPage: number
       totalPages: number
       clinic: { name: string; slug: string }
       tags: string[]
     }> => {
-      // Get website data by subdomain (clinicSlug)
+      const { mockClinics } = await import('@/data/mock')
+      const { getMockBlogPostsByClinicId, getMockWebsiteBySubdomain } = await import(
+        '@/data/website-mock'
+      )
+
       const website = getMockWebsiteBySubdomain(data.clinicSlug)
       if (!website) {
         throw notFound()
       }
 
-      // Get clinic data (match by subdomain/slug)
       const clinic = mockClinics.find((c) => c.slug === website.subdomain)
       if (!clinic) {
         throw notFound()
       }
 
-      // Get blog posts
       let posts = getMockBlogPostsByClinicId(website.clinicId)
-
-      // Filter published posts only
       posts = posts.filter((post) => post.published)
 
-      // Filter by tag if provided
       if (data.tag) {
         posts = posts.filter((post) => post.tags.includes(data.tag!))
       }
 
-      // Pagination
       const page = data.page || 1
       const limit = data.limit || 6
       const startIndex = (page - 1) * limit
@@ -63,7 +53,6 @@ const getClinicBlogData = createServerFn({ method: 'GET' })
       const paginatedPosts = posts.slice(startIndex, endIndex)
       const totalPages = Math.ceil(posts.length / limit)
 
-      // Get all unique tags
       const allTags = [...new Set(posts.flatMap((post) => post.tags))].sort()
 
       return {
@@ -79,13 +68,13 @@ const getClinicBlogData = createServerFn({ method: 'GET' })
 
 export const Route = createFileRoute('/clinic/$clinicSlug/blog/')({
   validateSearch: blogSearchSchema,
-  loader: async (context) => {
-    const { params } = context
-    // Get search params from the URL - TanStack Start approach
-    const url = new URL(context.location.href)
-    const page = Number(url.searchParams.get('page')) || undefined
-    const limit = Number(url.searchParams.get('limit')) || undefined
-    const tag = url.searchParams.get('tag') || undefined
+  loaderDeps: ({ search }) => ({
+    page: search.page,
+    limit: search.limit,
+    tag: search.tag,
+  }),
+  loader: async ({ params, deps }) => {
+    const { page, limit, tag } = deps
 
     const blogData = await getClinicBlogData({
       data: {

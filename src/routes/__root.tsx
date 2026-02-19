@@ -59,7 +59,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function useClinicSlugFromPath(): string | undefined {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
-  const clinicMatch = pathname.match(/^\/clinics\/([^/]+)$/)
+  const clinicMatch = pathname.match(/^\/clinic\/([^/]+)/)
   const bookMatch = pathname.match(/^\/book\/([^/]+)/)
   return clinicMatch?.[1] || bookMatch?.[1] || undefined
 }

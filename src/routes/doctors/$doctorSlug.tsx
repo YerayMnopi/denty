@@ -65,7 +65,7 @@ function DoctorDetailPage() {
           </p>
           {clinic && (
             <Link
-              to="/clinics/$clinicSlug"
+              to="/clinic/$clinicSlug"
               params={{ clinicSlug: clinic.slug }}
               className="mt-2 inline-flex items-center gap-1 text-sm text-primary hover:underline"
             >

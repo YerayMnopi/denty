@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { mockClinics, mockDoctors } from '@/data/mock'
 
-export const Route = createFileRoute('/clinics/')({
+export const Route = createFileRoute('/clinic/')({
   component: ClinicsPage,
   head: () => ({
     meta: [{ title: 'Clinics - Denty' }],
@@ -49,7 +49,7 @@ function ClinicsPage() {
             return (
               <Link
                 key={clinic.slug}
-                to="/clinics/$clinicSlug"
+                to="/clinic/$clinicSlug"
                 params={{ clinicSlug: clinic.slug }}
                 className="group rounded-xl border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-md"
               >
