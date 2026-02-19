@@ -45,6 +45,83 @@
     "exploreDoctors": "Explorar Doctores",
     "searchPlaceholder": "Buscar clínicas, doctores o tratamientos..."
   },
+  "pricing": {
+    "title": "Planes para tu clínica",
+    "subtitle": "Elige el plan que mejor se adapte a las necesidades de tu clínica dental",
+    "popular": "Más Popular",
+    "period": "mes",
+    "starter": {
+      "name": "Starter",
+      "features": [
+        "Reservas online ilimitadas",
+        "Recordatorios automáticos por WhatsApp",
+        "Panel de administración básico",
+        "Página web básica",
+        "Soporte por email"
+      ]
+    },
+    "professional": {
+      "name": "Professional",
+      "features": [
+        "Todo lo del plan Starter",
+        "Gestión avanzada de pacientes",
+        "Campañas de reactivación automáticas",
+        "Página web personalizada con blog",
+        "Integración con redes sociales",
+        "Reportes y analytics",
+        "Soporte prioritario"
+      ]
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "features": [
+        "Todo lo del plan Professional",
+        "Múltiples ubicaciones",
+        "API personalizada",
+        "Integración con sistemas de gestión",
+        "Branding personalizado",
+        "Gerente de cuenta dedicado",
+        "Soporte 24/7"
+      ]
+    }
+  },
+  "trial": {
+    "title": "¿Listo para empezar?",
+    "subtitle": "Configura tu clínica en minutos con nuestro asistente inteligente. Sin formularios complicados, solo una conversación.",
+    "cta": "Prueba Denty gratis 30 días",
+    "terms": "Sin tarjeta de crédito. Cancela cuando quieras."
+  },
+  "onboarding": {
+    "title": "Configurar mi clínica",
+    "subtitle": "Denty te ayudará a configurar tu clínica paso a paso",
+    "progress": {
+      "clinicName": "Nombre de la clínica",
+      "email": "Email de administración",
+      "password": "Contraseña",
+      "phone": "Teléfono",
+      "address": "Dirección",
+      "services": "Servicios",
+      "workingHours": "Horario de atención",
+      "doctors": "Equipo médico",
+      "complete": "¡Listo!"
+    },
+    "messages": {
+      "welcome": "¡Hola! Soy Denty 🦷 Vamos a configurar tu clínica. ¿Cómo se llama?",
+      "askEmail": "Perfecto, {{clinicName}}. Ahora necesito un email para crear tu cuenta de administrador.",
+      "askPassword": "Genial. Ahora crea una contraseña segura para acceder al panel de administración.",
+      "askPhone": "Excelente. ¿Cuál es el número de teléfono principal de la clínica?",
+      "askAddress": "¿En qué dirección se encuentra {{clinicName}}?",
+      "askServices": "¿Qué servicios ofrece {{clinicName}}? Por ejemplo: limpiezas, empastes, ortodoncia...",
+      "askWorkingHours": "¿Cuál es el horario de atención de {{clinicName}}? Por ejemplo: Lunes a Viernes 9:00-18:00",
+      "askDoctors": "¿Cuántos doctores trabajan en {{clinicName}} y cuáles son sus especialidades?",
+      "completing": "¡Perfecto! Ya tengo toda la información. Estoy configurando tu clínica...",
+      "completed": "🎉 ¡{{clinicName}} ya está configurada! Te redirigiremos al panel de administración en unos segundos."
+    },
+    "placeholder": "Escribe tu respuesta...",
+    "send": "Enviar",
+    "error": "Algo salió mal. Inténtalo de nuevo.",
+    "passwordWeak": "La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula y un número."
+  },
   "clinic": {
     "workingHours": "Horario de Atención",
     "ourDoctors": "Nuestros Doctores",

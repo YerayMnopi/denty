@@ -298,7 +298,7 @@ function ClinicBlogPost() {
         {/* Article Header */}
         <header className="mb-8">
           <div className="flex flex-wrap gap-2 mb-4">
-            {post.tags.map((tag) => (
+            {post.tags.map((tag: string) => (
               <span
                 key={tag}
                 className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full"

@@ -28,6 +28,10 @@ export interface Clinic {
   }[]
   adminEmail: string
   adminPasswordHash: string
+  trialStartDate?: Date
+  trialEndDate?: Date
+  onboardingComplete?: boolean
+  plan?: 'starter' | 'professional' | 'enterprise'
   createdAt: Date
   updatedAt: Date
 }
@@ -209,4 +213,43 @@ export async function getWebsitesCollection() {
 export async function getBlogPostsCollection() {
   const db = await getDb()
   return db.collection<BlogPost>('blog_posts')
+}
+
+// ─── Onboarding Session ─────────────────────────────────
+
+export interface OnboardingSession {
+  _id: ObjectId
+  sessionId: string
+  currentStep:
+    | 'name'
+    | 'email'
+    | 'password'
+    | 'phone'
+    | 'address'
+    | 'services'
+    | 'working_hours'
+    | 'doctors'
+    | 'complete'
+  data: {
+    clinicName?: string
+    email?: string
+    password?: string
+    phone?: string
+    address?: string
+    services?: string[]
+    workingHours?: { day: number; open: string; close: string }[]
+    doctors?: { name: string; specialization: string }[]
+  }
+  messages: {
+    role: 'user' | 'assistant'
+    content: string
+    timestamp: Date
+  }[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+export async function getOnboardingSessionsCollection() {
+  const db = await getDb()
+  return db.collection<OnboardingSession>('onboarding_sessions')
 }

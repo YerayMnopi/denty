@@ -1,7 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { CalendarCheck, Search, UserRound } from 'lucide-react'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { CalendarCheck, Check, Search, UserRound } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { HeroSearch } from '@/components/hero-search'
+import { Button } from '@/components/ui/button'
 
 export const Route = createFileRoute('/')({
   component: LandingPage,
@@ -32,6 +33,30 @@ function LandingPage() {
       icon: <CalendarCheck className="h-8 w-8" />,
       title: t('landing.step3Title'),
       description: t('landing.step3Description'),
+    },
+  ]
+
+  const plans = [
+    {
+      name: t('pricing.starter.name'),
+      price: '€199',
+      period: t('pricing.period'),
+      features: t('pricing.starter.features', { returnObjects: true }) as string[],
+      popular: false,
+    },
+    {
+      name: t('pricing.professional.name'),
+      price: '€349',
+      period: t('pricing.period'),
+      features: t('pricing.professional.features', { returnObjects: true }) as string[],
+      popular: true,
+    },
+    {
+      name: t('pricing.enterprise.name'),
+      price: '€499',
+      period: t('pricing.period'),
+      features: t('pricing.enterprise.features', { returnObjects: true }) as string[],
+      popular: false,
     },
   ]
 
@@ -76,6 +101,69 @@ function LandingPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="py-20 bg-muted/30">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+              {t('pricing.title')}
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              {t('pricing.subtitle')}
+            </p>
+          </div>
+          <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
+            {plans.map((plan, i) => (
+              <div
+                key={i}
+                className={`relative rounded-xl border bg-card p-8 shadow-sm transition-all hover:shadow-md ${
+                  plan.popular ? 'border-primary ring-2 ring-primary/20 scale-105' : ''
+                }`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                    <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
+                      {t('pricing.popular')}
+                    </span>
+                  </div>
+                )}
+                <div className="text-center">
+                  <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
+                  <div className="mb-6">
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    <span className="text-muted-foreground">/{plan.period}</span>
+                  </div>
+                  <ul className="space-y-3 mb-8 text-left">
+                    {plan.features.map((feature, fi) => (
+                      <li key={fi} className="flex items-center gap-2 text-sm">
+                        <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">{t('trial.title')}</h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            {t('trial.subtitle')}
+          </p>
+          <Link to="/onboarding">
+            <Button size="lg" className="text-lg px-8 py-3">
+              {t('trial.cta')}
+            </Button>
+          </Link>
+          <p className="text-sm text-muted-foreground mt-4">{t('trial.terms')}</p>
         </div>
       </section>
     </div>
