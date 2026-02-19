@@ -1,25 +1,51 @@
 // Mock patient data for development and testing
+// NOTE: This file is imported by client-side components, so it must NOT import
+// the `mongodb` package (only available server-side). Use plain strings for IDs.
 
-import { ObjectId } from 'mongodb'
-import type { Patient } from '@/lib/collections'
+export interface MockPatient {
+  _id: string
+  clinicId: string
+  name: string
+  phone: string
+  email?: string
+  channels: { preferred?: string; whatsappId?: string; instagramId?: string }
+  visitHistory: {
+    appointmentId: string
+    service: string
+    date: Date
+    doctorName: string
+  }[]
+  tags: string[]
+  notes?: string
+  lastVisit?: Date
+  nextAppointment?: Date
+  createdAt: Date
+  updatedAt: Date
+}
 
-export const mockPatients: Patient[] = [
+let idCounter = 0
+function mockId(): string {
+  idCounter++
+  return `mock-${idCounter.toString().padStart(24, '0')}`
+}
+
+export const mockPatients: MockPatient[] = [
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'), // Clínica Dental Sonrisa
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     name: 'María García López',
     phone: '+34 666 123 456',
     email: 'maria.garcia@email.com',
     channels: { preferred: 'whatsapp', whatsappId: '+34666123456' },
     visitHistory: [
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Limpieza dental',
         date: new Date('2024-01-15'),
         doctorName: 'Dr. Juan Pérez',
       },
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Empaste',
         date: new Date('2024-03-20'),
         doctorName: 'Dr. Juan Pérez',
@@ -33,15 +59,15 @@ export const mockPatients: Patient[] = [
     updatedAt: new Date('2024-03-20'),
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     name: 'Carlos Rodríguez Fernández',
     phone: '+34 655 987 654',
     email: 'carlos.rodriguez@email.com',
     channels: { preferred: 'email' },
     visitHistory: [
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Ortodoncia - Revisión',
         date: new Date('2024-02-10'),
         doctorName: 'Dra. Ana Martínez',
@@ -55,14 +81,14 @@ export const mockPatients: Patient[] = [
     updatedAt: new Date('2024-02-10'),
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     name: 'Ana Sánchez Torres',
     phone: '+34 644 555 789',
     channels: { preferred: 'whatsapp', whatsappId: '+34644555789' },
     visitHistory: [
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Blanqueamiento dental',
         date: new Date('2023-08-15'),
         doctorName: 'Dr. Juan Pérez',
@@ -75,21 +101,21 @@ export const mockPatients: Patient[] = [
     updatedAt: new Date('2023-08-15'),
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     name: 'Pedro Martín Ruiz',
     phone: '+34 633 741 852',
     email: 'pedro.martin@email.com',
     channels: { preferred: 'phone' },
     visitHistory: [
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Extracción dental',
         date: new Date('2024-01-08'),
         doctorName: 'Dr. Luis González',
       },
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Revisión post-extracción',
         date: new Date('2024-01-22'),
         doctorName: 'Dr. Luis González',
@@ -102,15 +128,15 @@ export const mockPatients: Patient[] = [
     updatedAt: new Date('2024-01-22'),
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     name: 'Laura Jiménez Mora',
     phone: '+34 622 159 753',
     email: 'laura.jimenez@email.com',
     channels: { preferred: 'whatsapp', whatsappId: '+34622159753' },
     visitHistory: [
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Primera consulta',
         date: new Date('2024-02-28'),
         doctorName: 'Dr. Juan Pérez',
@@ -124,20 +150,20 @@ export const mockPatients: Patient[] = [
     updatedAt: new Date('2024-02-28'),
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     name: 'Roberto Fernández Vila',
     phone: '+34 611 357 159',
     channels: { preferred: 'whatsapp', whatsappId: '+34611357159' },
     visitHistory: [
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Implante dental',
         date: new Date('2023-09-12'),
         doctorName: 'Dr. Luis González',
       },
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Revisión implante',
         date: new Date('2023-12-12'),
         doctorName: 'Dr. Luis González',
@@ -150,15 +176,15 @@ export const mockPatients: Patient[] = [
     updatedAt: new Date('2023-12-12'),
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     name: 'Carmen López Vega',
     phone: '+34 699 876 543',
     email: 'carmen.lopez@email.com',
     channels: { preferred: 'email' },
     visitHistory: [
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Endodoncia',
         date: new Date('2024-01-30'),
         doctorName: 'Dra. Ana Martínez',
@@ -171,14 +197,14 @@ export const mockPatients: Patient[] = [
     updatedAt: new Date('2024-01-30'),
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     name: 'José Antonio Ruiz Castro',
     phone: '+34 688 234 567',
     channels: { preferred: 'phone' },
     visitHistory: [
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Limpieza dental',
         date: new Date('2023-06-15'),
         doctorName: 'Dr. Juan Pérez',
@@ -191,21 +217,21 @@ export const mockPatients: Patient[] = [
     updatedAt: new Date('2023-06-15'),
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     name: 'Elena Morales Díaz',
     phone: '+34 677 345 678',
     email: 'elena.morales@email.com',
     channels: { preferred: 'whatsapp', whatsappId: '+34677345678' },
     visitHistory: [
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Revisión preventiva',
         date: new Date('2024-02-05'),
         doctorName: 'Dr. Juan Pérez',
       },
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Limpieza profesional',
         date: new Date('2024-02-05'),
         doctorName: 'Dr. Juan Pérez',
@@ -219,14 +245,14 @@ export const mockPatients: Patient[] = [
     updatedAt: new Date('2024-02-05'),
   },
   {
-    _id: new ObjectId(),
-    clinicId: new ObjectId('507f1f77bcf86cd799439011'),
+    _id: mockId(),
+    clinicId: '507f1f77bcf86cd799439011',
     name: 'Miguel Ángel Torres Prieto',
     phone: '+34 666 789 012',
     channels: { preferred: 'whatsapp', whatsappId: '+34666789012' },
     visitHistory: [
       {
-        appointmentId: new ObjectId(),
+        appointmentId: mockId(),
         service: 'Urgencia - Dolor',
         date: new Date('2024-03-01'),
         doctorName: 'Dr. Luis González',
@@ -241,18 +267,16 @@ export const mockPatients: Patient[] = [
   },
 ]
 
-// Helper function to get patients for a specific clinic
-export function getPatientsByClinic(clinicId: string): Patient[] {
-  return mockPatients.filter((patient) => patient.clinicId.toString() === clinicId)
+export function getPatientsByClinic(clinicId: string): MockPatient[] {
+  return mockPatients.filter((patient) => patient.clinicId === clinicId)
 }
 
-// Helper to get all available tags
 export function getAllPatientTags(): string[] {
   const tags = new Set<string>()
-  mockPatients.forEach((patient) => {
-    patient.tags.forEach((tag) => {
+  for (const patient of mockPatients) {
+    for (const tag of patient.tags) {
       tags.add(tag)
-    })
-  })
+    }
+  }
   return Array.from(tags).sort()
 }

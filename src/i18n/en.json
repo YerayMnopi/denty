@@ -140,6 +140,7 @@
       "appointments": "Appointments",
       "doctors": "Doctors",
       "patients": "Patients",
+      "website": "Website",
       "settings": "Settings",
       "logout": "Logout"
     },
@@ -227,6 +228,95 @@
       "newTag": "New tag",
       "filterByTag": "Filter by tag",
       "allTags": "All tags"
+    },
+    "website": {
+      "title": "Website Management",
+      "subtitle": "Manage your clinic's website content and settings",
+      "previewWebsite": "Preview Website",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "websiteUrl": "Website URL",
+      "noWebsiteFound": "No Website Found",
+      "noWebsiteDescription": "You don't have a website set up yet. Create one to start building your online presence.",
+      "createWebsite": "Create Website",
+      "tabs": {
+        "general": "General Settings",
+        "pages": "Pages",
+        "seo": "SEO",
+        "blog": "Blog"
+      },
+      "general": {
+        "websiteName": "Website Name",
+        "themeColors": "Theme Colors",
+        "primaryColor": "Primary Color",
+        "secondaryColor": "Secondary Color",
+        "logoUrl": "Logo URL",
+        "homepageContent": "Homepage Content",
+        "heroTitle": "Hero Title",
+        "aboutDescription": "About Description"
+      },
+      "pages": {
+        "subtitle": "Choose which pages to include on your website. Disabled pages won't be accessible to visitors.",
+        "homepage": "Homepage",
+        "homepageDescription": "Main landing page with hero section and overview",
+        "services": "Services Page",
+        "servicesDescription": "Detailed list of all your dental services",
+        "team": "Team Page",
+        "teamDescription": "Meet the team - doctors and staff profiles",
+        "contact": "Contact Page",
+        "contactDescription": "Contact information and location details",
+        "blog": "Blog Page",
+        "blogDescription": "Blog posts and dental health articles",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "note": "Note",
+        "noteDescription": "The homepage cannot be disabled as it's the main entry point for your website. Disabled pages will return a 404 error when accessed."
+      },
+      "seo": {
+        "metaTitle": "Meta Title",
+        "metaDescription": "Meta Description",
+        "keywords": "SEO Keywords",
+        "keywordsPlaceholder": "dentist, dental clinic, teeth cleaning, dental implants",
+        "keywordsNote": "Separate keywords with commas. Focus on 5-10 relevant terms.",
+        "tips": "SEO Tips",
+        "tip1": "Keep titles under 60 characters for best display in search results",
+        "tip2": "Write compelling descriptions under 160 characters",
+        "tip3": "Include your location and main services in keywords",
+        "tip4": "Use natural language that your patients would search for",
+        "charactersCount": "{{count}}/{{max}} characters"
+      },
+      "blog": {
+        "subtitle": "Manage your blog posts and content to improve SEO and engage visitors.",
+        "newBlogPost": "New Blog Post",
+        "title": "Blog Management",
+        "description": "Blog functionality will be available here. You'll be able to create, edit, and manage blog posts.",
+        "features": {
+          "createEdit": "Create and edit blog posts",
+          "categories": "Manage categories and tags",
+          "schedule": "Schedule posts for future publication",
+          "analytics": "Monitor post performance"
+        }
+      }
+    },
+    "blog": {
+      "title": "Blog",
+      "subtitle": "Stay informed with the latest dental health tips, news, and insights from our experienced team",
+      "filterByTopic": "Filter by Topic:",
+      "allPosts": "All Posts",
+      "readMore": "Read More",
+      "previousPage": "Previous",
+      "nextPage": "Next",
+      "pageOf": "Page {{current}} of {{total}}",
+      "noPosts": "No blog posts yet",
+      "noPostsDescription": "Check back soon for dental health tips and news from our team!",
+      "noPostsWithTag": "No posts found with the tag \"{{tag}}\". Try browsing all posts or selecting a different topic.",
+      "viewAllPosts": "View All Posts",
+      "youMightLike": "You Might Also Like",
+      "needDentalCare": "Need Professional Dental Care?",
+      "needDentalCareDescription": "Our experienced team is here to help you maintain optimal oral health.",
+      "contactUs": "Contact Us",
+      "subscribeTitle": "Subscribe to Our Blog",
+      "subscribeDescription": "Stay updated with the latest dental health tips and news."
     }
   }
 }

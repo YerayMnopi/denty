@@ -140,6 +140,7 @@
       "appointments": "Citas",
       "doctors": "Doctores",
       "patients": "Pacientes",
+      "website": "Sitio web",
       "settings": "Configuración",
       "logout": "Cerrar sesión"
     },
@@ -227,6 +228,95 @@
       "newTag": "Nueva etiqueta",
       "filterByTag": "Filtrar por etiqueta",
       "allTags": "Todas las etiquetas"
+    },
+    "website": {
+      "title": "Gestión de Sitio Web",
+      "subtitle": "Gestiona el contenido y configuración del sitio web de tu clínica",
+      "previewWebsite": "Previsualizar Sitio Web",
+      "saveChanges": "Guardar Cambios",
+      "saving": "Guardando...",
+      "websiteUrl": "URL del Sitio Web",
+      "noWebsiteFound": "No Se Encontró Sitio Web",
+      "noWebsiteDescription": "Aún no tienes un sitio web configurado. Crea uno para comenzar a construir tu presencia online.",
+      "createWebsite": "Crear Sitio Web",
+      "tabs": {
+        "general": "Configuración General",
+        "pages": "Páginas",
+        "seo": "SEO",
+        "blog": "Blog"
+      },
+      "general": {
+        "websiteName": "Nombre del Sitio Web",
+        "themeColors": "Colores del Tema",
+        "primaryColor": "Color Primario",
+        "secondaryColor": "Color Secundario",
+        "logoUrl": "URL del Logo",
+        "homepageContent": "Contenido de Página Principal",
+        "heroTitle": "Título Principal",
+        "aboutDescription": "Descripción Sobre Nosotros"
+      },
+      "pages": {
+        "subtitle": "Elige qué páginas incluir en tu sitio web. Las páginas deshabilitadas no serán accesibles para los visitantes.",
+        "homepage": "Página Principal",
+        "homepageDescription": "Página de inicio principal con sección hero y resumen",
+        "services": "Página de Servicios",
+        "servicesDescription": "Lista detallada de todos tus servicios dentales",
+        "team": "Página del Equipo",
+        "teamDescription": "Conoce al equipo - perfiles de doctores y personal",
+        "contact": "Página de Contacto",
+        "contactDescription": "Información de contacto y detalles de ubicación",
+        "blog": "Página de Blog",
+        "blogDescription": "Artículos de blog y consejos de salud dental",
+        "enabled": "Habilitado",
+        "disabled": "Deshabilitado",
+        "note": "Nota",
+        "noteDescription": "La página principal no puede ser deshabilitada ya que es el punto de entrada principal de tu sitio web. Las páginas deshabilitadas devolverán un error 404 cuando se accedan."
+      },
+      "seo": {
+        "metaTitle": "Meta Título",
+        "metaDescription": "Meta Descripción",
+        "keywords": "Palabras Clave SEO",
+        "keywordsPlaceholder": "dentista, clínica dental, limpieza dental, implantes dentales",
+        "keywordsNote": "Separa las palabras clave con comas. Enfócate en 5-10 términos relevantes.",
+        "tips": "Consejos SEO",
+        "tip1": "Mantén los títulos bajo 60 caracteres para mejor visualización en resultados de búsqueda",
+        "tip2": "Escribe descripciones atractivas bajo 160 caracteres",
+        "tip3": "Incluye tu ubicación y servicios principales en las palabras clave",
+        "tip4": "Usa lenguaje natural que tus pacientes buscarían",
+        "charactersCount": "{{count}}/{{max}} caracteres"
+      },
+      "blog": {
+        "subtitle": "Gestiona tus artículos de blog y contenido para mejorar SEO y atraer visitantes.",
+        "newBlogPost": "Nueva Entrada de Blog",
+        "title": "Gestión de Blog",
+        "description": "La funcionalidad de blog estará disponible aquí. Podrás crear, editar y gestionar artículos de blog.",
+        "features": {
+          "createEdit": "Crear y editar artículos de blog",
+          "categories": "Gestionar categorías y etiquetas",
+          "schedule": "Programar publicaciones para el futuro",
+          "analytics": "Monitorear rendimiento de publicaciones"
+        }
+      }
+    },
+    "blog": {
+      "title": "Blog",
+      "subtitle": "Mantente informado con los últimos consejos de salud dental, noticias e insights de nuestro equipo experimentado",
+      "filterByTopic": "Filtrar por Tema:",
+      "allPosts": "Todas las Publicaciones",
+      "readMore": "Leer Más",
+      "previousPage": "Anterior",
+      "nextPage": "Siguiente",
+      "pageOf": "Página {{current}} de {{total}}",
+      "noPosts": "Aún no hay publicaciones en el blog",
+      "noPostsDescription": "¡Vuelve pronto para consejos de salud dental y noticias de nuestro equipo!",
+      "noPostsWithTag": "No se encontraron publicaciones con la etiqueta \"{{tag}}\". Intenta navegar todas las publicaciones o seleccionar un tema diferente.",
+      "viewAllPosts": "Ver Todas las Publicaciones",
+      "youMightLike": "También Te Podría Gustar",
+      "needDentalCare": "¿Necesitas Atención Dental Profesional?",
+      "needDentalCareDescription": "Nuestro equipo experimentado está aquí para ayudarte a mantener una salud bucal óptima.",
+      "contactUs": "Contáctanos",
+      "subscribeTitle": "Suscríbete a Nuestro Blog",
+      "subscribeDescription": "Mantente actualizado con los últimos consejos de salud dental y noticias."
     }
   }
 }

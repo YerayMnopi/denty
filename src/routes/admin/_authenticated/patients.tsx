@@ -4,23 +4,14 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AdminLayout } from '@/components/admin/admin-layout'
 import { Button } from '@/components/ui/button'
-import { getAllPatientTags, mockPatients } from '@/data/patient-mock'
+import { getAllPatientTags, type MockPatient, mockPatients } from '@/data/patient-mock'
 
 export const Route = createFileRoute('/admin/_authenticated/patients')({
   component: AdminPatientsPage,
 })
 
-interface PatientWithStats {
-  _id: string
-  name: string
-  phone: string
-  email?: string
-  tags: string[]
-  lastVisit?: Date
-  nextAppointment?: Date
+interface PatientWithStats extends MockPatient {
   totalVisits: number
-  notes?: string
-  visitHistory: { appointmentId: string; service: string; date: Date; doctorName: string }[]
 }
 
 function AdminPatientsPage() {
@@ -28,12 +19,7 @@ function AdminPatientsPage() {
   const [patients] = useState<PatientWithStats[]>(
     mockPatients.map((p) => ({
       ...p,
-      _id: p._id.toString(),
       totalVisits: p.visitHistory.length,
-      visitHistory: p.visitHistory.map((v) => ({
-        ...v,
-        appointmentId: v.appointmentId.toString(),
-      })),
     })),
   )
 
