@@ -68,7 +68,7 @@ function WebsiteManagement() {
   const { website } = Route.useLoaderData()
   
   const [activeTab, setActiveTab] = useState('general')
-  const [formData, setFormData] = useState<Record<string, any>>(website || {
+  const [formData, setFormData] = useState<Record<string, unknown>>(website || {
     settings: {
       name: { en: '', es: '' },
       theme: {
@@ -236,8 +236,9 @@ function WebsiteManagement() {
                       </label>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs text-gray-500 mb-1">English</label>
+                          <label htmlFor="website-name-en" className="block text-xs text-gray-500 mb-1">English</label>
                           <input
+                            id="website-name-en"
                             type="text"
                             className="w-full border border-gray-300 rounded-md px-3 py-2"
                             value={formData.settings?.name?.en || ''}

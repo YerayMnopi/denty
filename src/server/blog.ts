@@ -107,7 +107,7 @@ async function generateUniqueSlug(clinicId: string, title: string, excludeId?: s
   let counter = 1
 
   while (true) {
-    const query: any = { 
+    const query: Record<string, unknown> = { 
       clinicId: new ObjectId(clinicId), 
       slug 
     }
@@ -197,7 +197,7 @@ export const getBlogPosts = createServerFn()
     const limit = data.limit || 10
     const skip = data.skip || 0
     
-    const query: any = { clinicId: new ObjectId(data.clinicId) }
+    const query: Record<string, unknown> = { clinicId: new ObjectId(data.clinicId) }
     
     if (data.published !== undefined) {
       query.published = data.published
@@ -231,7 +231,7 @@ export const updateBlogPost = createServerFn()
       throw new Error('Blog post not found')
     }
 
-    const updateDoc: any = { updatedAt: new Date() }
+    const updateDoc: Record<string, unknown> = { updatedAt: new Date() }
     
     if (data.updates.title) {
       updateDoc.title = data.updates.title

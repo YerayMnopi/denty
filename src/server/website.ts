@@ -184,7 +184,7 @@ export const updateWebsite = createServerFn()
   .handler(async ({ data }): Promise<SerializedWebsite | null> => {
     const websitesCollection = await getWebsitesCollection()
     
-    const updateDoc: any = { updatedAt: new Date() }
+    const updateDoc: Record<string, unknown> = { updatedAt: new Date() }
     
     if (data.updates.domain !== undefined) {
       updateDoc.domain = data.updates.domain
