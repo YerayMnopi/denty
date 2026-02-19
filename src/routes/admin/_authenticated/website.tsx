@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { AdminLayout } from '@/components/admin/admin-layout'
 import { Button } from '@/components/ui/button'
 import { type MockWebsite, mockWebsites } from '@/data/website-mock'
-import { type Website } from '@/lib/collections'
+import type { Website } from '@/lib/collections'
 
 // Mock server function to get website data
 const getWebsiteData = createServerFn({ method: 'GET' })
@@ -90,51 +90,53 @@ function WebsiteManagement() {
 
   const [activeTab, setActiveTab] = useState('general')
   const [formData, setFormData] = useState<WebsiteFormData>(
-    website ? {
-      settings: website.settings,
-      content: website.content,
-    } : {
-      settings: {
-        name: { en: '', es: '' },
-        theme: {
-          primaryColor: '#2563eb',
-          secondaryColor: '#06b6d4',
-          logo: '',
-          favicon: '',
+    website
+      ? {
+          settings: website.settings,
+          content: website.content,
+        }
+      : {
+          settings: {
+            name: { en: '', es: '' },
+            theme: {
+              primaryColor: '#2563eb',
+              secondaryColor: '#06b6d4',
+              logo: '',
+              favicon: '',
+            },
+            pages: {
+              homepage: true,
+              services: true,
+              team: true,
+              contact: true,
+              blog: true,
+            },
+            seo: {
+              title: { en: '', es: '' },
+              description: { en: '', es: '' },
+              keywords: [] as string[],
+            },
+          },
+          content: {
+            homepage: {
+              hero: { en: '', es: '' },
+              about: { en: '', es: '' },
+              callToAction: { en: '', es: '' },
+            },
+            services: {
+              title: { en: '', es: '' },
+              description: { en: '', es: '' },
+            },
+            team: {
+              title: { en: '', es: '' },
+              description: { en: '', es: '' },
+            },
+            contact: {
+              title: { en: '', es: '' },
+              description: { en: '', es: '' },
+            },
+          },
         },
-        pages: {
-          homepage: true,
-          services: true,
-          team: true,
-          contact: true,
-          blog: true,
-        },
-        seo: {
-          title: { en: '', es: '' },
-          description: { en: '', es: '' },
-          keywords: [] as string[],
-        },
-      },
-      content: {
-        homepage: {
-          hero: { en: '', es: '' },
-          about: { en: '', es: '' },
-          callToAction: { en: '', es: '' },
-        },
-        services: {
-          title: { en: '', es: '' },
-          description: { en: '', es: '' },
-        },
-        team: {
-          title: { en: '', es: '' },
-          description: { en: '', es: '' },
-        },
-        contact: {
-          title: { en: '', es: '' },
-          description: { en: '', es: '' },
-        },
-      },
-    },
   )
 
   const [isSaving, setIsSaving] = useState(false)
