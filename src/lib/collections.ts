@@ -28,6 +28,10 @@ export interface Clinic {
   }[]
   adminEmail: string
   adminPasswordHash: string
+  plan?: 'starter' | 'professional' | 'enterprise'
+  trialStartDate?: Date
+  trialEndDate?: Date
+  onboardingComplete?: boolean
   createdAt: Date
   updatedAt: Date
 }
