@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { AdminLayout } from '@/components/admin/admin-layout'
 import { Button } from '@/components/ui/button'
 import { type MockWebsite, mockWebsites } from '@/data/website-mock'
+import { type Website } from '@/lib/collections'
 
 // Mock server function to get website data
 const getWebsiteData = createServerFn({ method: 'GET' })
@@ -78,12 +79,21 @@ export const Route = createFileRoute('/admin/_authenticated/website')({
   component: WebsiteManagement,
 })
 
+// Type for form data based on Website interface
+type WebsiteFormData = {
+  settings: Website['settings']
+  content: Website['content']
+}
+
 function WebsiteManagement() {
   const { website } = Route.useLoaderData()
 
   const [activeTab, setActiveTab] = useState('general')
-  const [formData, setFormData] = useState<Record<string, unknown>>(
-    website || {
+  const [formData, setFormData] = useState<WebsiteFormData>(
+    website ? {
+      settings: website.settings,
+      content: website.content,
+    } : {
       settings: {
         name: { en: '', es: '' },
         theme: {
@@ -110,6 +120,18 @@ function WebsiteManagement() {
           hero: { en: '', es: '' },
           about: { en: '', es: '' },
           callToAction: { en: '', es: '' },
+        },
+        services: {
+          title: { en: '', es: '' },
+          description: { en: '', es: '' },
+        },
+        team: {
+          title: { en: '', es: '' },
+          description: { en: '', es: '' },
+        },
+        contact: {
+          title: { en: '', es: '' },
+          description: { en: '', es: '' },
         },
       },
     },
