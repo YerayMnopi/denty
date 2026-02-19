@@ -1,59 +1,62 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { notFound } from '@tanstack/react-router'
-import { getMockWebsiteBySubdomain } from '@/data/website-mock'
 import { mockClinics, mockDoctors } from '@/data/mock'
+import { getMockWebsiteBySubdomain } from '@/data/website-mock'
 import { generateContactPage, type WebsiteGenerationContext } from '@/server/website-generator'
 
 // Server function to get clinic contact data
 const getClinicContactData = createServerFn({ method: 'GET' })
   .inputValidator((input: { clinicSlug: string }) => input)
-  .handler(async ({ data }): Promise<{ 
-    html: string 
-    title: string 
-    description: string 
-    schemaMarkup: object
-  }> => {
-    // Get website data by subdomain (clinicSlug)
-    const website = getMockWebsiteBySubdomain(data.clinicSlug)
-    if (!website) {
-      throw notFound()
-    }
+  .handler(
+    async ({
+      data,
+    }): Promise<{
+      html: string
+      title: string
+      description: string
+      schemaMarkup: object
+    }> => {
+      // Get website data by subdomain (clinicSlug)
+      const website = getMockWebsiteBySubdomain(data.clinicSlug)
+      if (!website) {
+        throw notFound()
+      }
 
-    // Get clinic and doctors data (match by subdomain/slug)
-    const clinic = mockClinics.find(c => c.slug === website.subdomain)
-    const doctors = mockDoctors.filter(d => d.clinicSlug === website.subdomain)
-    
-    if (!clinic) {
-      throw notFound()
-    }
+      // Get clinic and doctors data (match by subdomain/slug)
+      const clinic = mockClinics.find((c) => c.slug === website.subdomain)
+      const doctors = mockDoctors.filter((d) => d.clinicSlug === website.subdomain)
 
-    const context = {
-      website,
-      clinic,
-      doctors
-    } as unknown as WebsiteGenerationContext
+      if (!clinic) {
+        throw notFound()
+      }
 
-    // Generate contact page content
-    const pageData = generateContactPage(context, 'en')
-    
-    return {
-      html: pageData.content,
-      title: pageData.title,
-      description: pageData.description,
-      schemaMarkup: pageData.schemaMarkup || {}
-    }
-  })
+      const context = {
+        website,
+        clinic,
+        doctors,
+      } as unknown as WebsiteGenerationContext
+
+      // Generate contact page content
+      const pageData = generateContactPage(context, 'en')
+
+      return {
+        html: pageData.content,
+        title: pageData.title,
+        description: pageData.description,
+        schemaMarkup: pageData.schemaMarkup || {},
+      }
+    },
+  )
 
 export const Route = createFileRoute('/clinic/$clinicSlug/contact')({
   loader: async ({ params }) => {
-    const contactData = await getClinicContactData({ 
-      data: { clinicSlug: params.clinicSlug } 
+    const contactData = await getClinicContactData({
+      data: { clinicSlug: params.clinicSlug },
     })
-    
+
     return {
       contactData,
-      clinicSlug: params.clinicSlug
+      clinicSlug: params.clinicSlug,
     }
   },
   component: ClinicContactPage,
@@ -79,12 +82,14 @@ export const Route = createFileRoute('/clinic/$clinicSlug/contact')({
         content: 'website',
       },
     ],
-    scripts: loaderData?.contactData?.schemaMarkup ? [
-      {
-        type: 'application/ld+json',
-        children: JSON.stringify(loaderData.contactData.schemaMarkup),
-      },
-    ] : [],
+    scripts: loaderData?.contactData?.schemaMarkup
+      ? [
+          {
+            type: 'application/ld+json',
+            children: JSON.stringify(loaderData.contactData.schemaMarkup),
+          },
+        ]
+      : [],
   }),
 })
 
@@ -98,55 +103,55 @@ function ClinicContactPage() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
-              <Link 
-                to="/clinic/$clinicSlug" 
+              <Link
+                to="/clinic/$clinicSlug"
                 params={{ clinicSlug }}
                 className="text-2xl font-bold text-gray-900"
               >
-                {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
               </Link>
             </div>
             <div className="hidden md:flex space-x-8">
-              <Link 
-                to="/clinic/$clinicSlug" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug"
+                params={{ clinicSlug }}
                 className="text-gray-600 hover:text-blue-600 font-medium"
               >
                 Home
               </Link>
-              <Link 
-                to="/clinic/$clinicSlug/services" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug/services"
+                params={{ clinicSlug }}
                 className="text-gray-600 hover:text-blue-600 font-medium"
               >
                 Services
               </Link>
-              <Link 
-                to="/clinic/$clinicSlug/team" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug/team"
+                params={{ clinicSlug }}
                 className="text-gray-600 hover:text-blue-600 font-medium"
               >
                 Team
               </Link>
-              <Link 
-                to="/clinic/$clinicSlug/contact" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug/contact"
+                params={{ clinicSlug }}
                 className="text-gray-900 hover:text-blue-600 font-medium"
               >
                 Contact
               </Link>
-              <Link 
-                to="/clinic/$clinicSlug/blog" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug/blog"
+                params={{ clinicSlug }}
                 className="text-gray-600 hover:text-blue-600 font-medium"
               >
                 Blog
               </Link>
             </div>
             <div className="flex items-center space-x-4">
-              <Link 
-                to="/book/$clinicSlug" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/book/$clinicSlug"
+                params={{ clinicSlug }}
                 className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
               >
                 Book Appointment
@@ -162,9 +167,9 @@ function ClinicContactPage() {
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <Link 
-                  to="/clinic/$clinicSlug" 
-                  params={{ clinicSlug }} 
+                <Link
+                  to="/clinic/$clinicSlug"
+                  params={{ clinicSlug }}
                   className="text-gray-500 hover:text-gray-700"
                 >
                   Home
@@ -172,8 +177,18 @@ function ClinicContactPage() {
               </li>
               <li>
                 <div className="flex items-center">
-                  <svg className="shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <svg
+                    className="shrink-0 h-5 w-5 text-gray-400 mx-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                   <span className="text-gray-900 font-medium">Contact</span>
                 </div>
@@ -186,14 +201,11 @@ function ClinicContactPage() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Generated contact content */}
-        <div 
+        <div
           className="clinic-contact-content"
-          dangerouslySetInnerHTML={{ 
-            __html: contactData.html.replace(
-              /href="\/([^"]*)"/, 
-              `href="/clinic/${clinicSlug}/$1"`
-            )
-          }} 
+          dangerouslySetInnerHTML={{
+            __html: contactData.html.replace(/href="\/([^"]*)"/, `href="/clinic/${clinicSlug}/$1"`),
+          }}
         />
       </main>
 
@@ -203,7 +215,7 @@ function ClinicContactPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
               </h3>
               <p className="text-gray-600">
                 Professional dental care with modern technology and personalized service.
@@ -213,27 +225,27 @@ function ClinicContactPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link 
-                    to="/clinic/$clinicSlug" 
-                    params={{ clinicSlug }} 
+                  <Link
+                    to="/clinic/$clinicSlug"
+                    params={{ clinicSlug }}
                     className="text-gray-600 hover:text-blue-600"
                   >
                     Home
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/clinic/$clinicSlug/services" 
-                    params={{ clinicSlug }} 
+                  <Link
+                    to="/clinic/$clinicSlug/services"
+                    params={{ clinicSlug }}
                     className="text-gray-600 hover:text-blue-600"
                   >
                     Our Services
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/clinic/$clinicSlug/team" 
-                    params={{ clinicSlug }} 
+                  <Link
+                    to="/clinic/$clinicSlug/team"
+                    params={{ clinicSlug }}
                     className="text-gray-600 hover:text-blue-600"
                   >
                     Our Team
@@ -247,8 +259,8 @@ function ClinicContactPage() {
                 For dental emergencies, please call us directly or visit our clinic.
               </p>
               <div className="space-y-2">
-                <a 
-                  href="tel:+34911234567" 
+                <a
+                  href="tel:+34911234567"
                   className="inline-block bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
                 >
                   Emergency Line
@@ -258,16 +270,21 @@ function ClinicContactPage() {
           </div>
           <div className="border-t border-gray-200 mt-8 pt-8 text-center">
             <p className="text-gray-600">
-              © 2024 {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}. All rights reserved.
-              Powered by <Link to="/" className="text-blue-600 hover:text-blue-700">Denty</Link>.
+              © 2024 {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}. All
+              rights reserved. Powered by{' '}
+              <Link to="/" className="text-blue-600 hover:text-blue-700">
+                Denty
+              </Link>
+              .
             </p>
           </div>
         </div>
       </footer>
 
       {/* Styles for contact content */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
           .clinic-contact-content h1 {
             font-size: 2.5rem;
             font-weight: bold;
@@ -421,8 +438,9 @@ function ClinicContactPage() {
             font-style: normal;
             line-height: 1.4;
           }
-        `
-      }} />
+        `,
+        }}
+      />
     </div>
   )
 }

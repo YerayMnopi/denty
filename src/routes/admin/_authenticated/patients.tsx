@@ -4,11 +4,7 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AdminLayout } from '@/components/admin/admin-layout'
 import { Button } from '@/components/ui/button'
-import {
-  getAllPatientTags,
-  mockPatients,
-  type MockPatient,
-} from '@/data/patient-mock'
+import { getAllPatientTags, type MockPatient, mockPatients } from '@/data/patient-mock'
 
 export const Route = createFileRoute('/admin/_authenticated/patients')({
   component: AdminPatientsPage,

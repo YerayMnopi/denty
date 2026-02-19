@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 import { ObjectId } from 'mongodb'
-import { getBlogPostsCollection, getClinicsCollection, type BlogPost } from '@/lib/collections'
+import { type BlogPost, getBlogPostsCollection, getClinicsCollection } from '@/lib/collections'
 
 // ─── Input Types ─────────────────────────────────────────
 
@@ -100,28 +100,32 @@ function generateSlug(title: string): string {
     .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
 }
 
-async function generateUniqueSlug(clinicId: string, title: string, excludeId?: string): Promise<string> {
+async function generateUniqueSlug(
+  clinicId: string,
+  title: string,
+  excludeId?: string,
+): Promise<string> {
   const blogPostsCollection = await getBlogPostsCollection()
-  let baseSlug = generateSlug(title)
+  const baseSlug = generateSlug(title)
   let slug = baseSlug
   let counter = 1
 
   while (true) {
-    const query: Record<string, unknown> = { 
-      clinicId: new ObjectId(clinicId), 
-      slug 
+    const query: Record<string, unknown> = {
+      clinicId: new ObjectId(clinicId),
+      slug,
     }
-    
+
     if (excludeId) {
       query._id = { $ne: new ObjectId(excludeId) }
     }
-    
+
     const existing = await blogPostsCollection.findOne(query)
-    
+
     if (!existing) {
       return slug
     }
-    
+
     slug = `${baseSlug}-${counter}`
     counter++
   }
@@ -133,7 +137,7 @@ export const createBlogPost = createServerFn()
   .inputValidator((input: CreateBlogPostInput) => input)
   .handler(async ({ data }): Promise<SerializedBlogPost> => {
     const blogPostsCollection = await getBlogPostsCollection()
-    
+
     // Validate clinic exists
     const clinicsCollection = await getClinicsCollection()
     const clinic = await clinicsCollection.findOne({ _id: new ObjectId(data.clinicId) })
@@ -146,7 +150,7 @@ export const createBlogPost = createServerFn()
     if (!titleForSlug) {
       throw new Error('Title is required in at least one language')
     }
-    
+
     const slug = await generateUniqueSlug(data.clinicId, titleForSlug)
 
     const blogPost: Omit<BlogPost, '_id'> = {
@@ -160,7 +164,7 @@ export const createBlogPost = createServerFn()
       tags: data.tags,
       published: data.published || false,
       seo: data.seo,
-      publishedAt: (data.published || false) ? new Date() : undefined,
+      publishedAt: data.published || false ? new Date() : undefined,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
@@ -173,9 +177,9 @@ export const getBlogPost = createServerFn()
   .inputValidator((input: { clinicId: string; slug: string }) => input)
   .handler(async ({ data }): Promise<SerializedBlogPost | null> => {
     const blogPostsCollection = await getBlogPostsCollection()
-    const post = await blogPostsCollection.findOne({ 
+    const post = await blogPostsCollection.findOne({
       clinicId: new ObjectId(data.clinicId),
-      slug: data.slug 
+      slug: data.slug,
     })
     return post ? serializeBlogPost(post) : null
   })
@@ -190,19 +194,19 @@ export const getBlogPostById = createServerFn()
 
 export const getBlogPosts = createServerFn()
   .inputValidator((input: GetBlogPostsInput) => input)
-  .handler(async ({ data }): Promise<{ posts: SerializedBlogPost[], total: number }> => {
+  .handler(async ({ data }): Promise<{ posts: SerializedBlogPost[]; total: number }> => {
     const blogPostsCollection = await getBlogPostsCollection()
-    
+
     // Apply defaults
     const limit = data.limit || 10
     const skip = data.skip || 0
-    
+
     const query: Record<string, unknown> = { clinicId: new ObjectId(data.clinicId) }
-    
+
     if (data.published !== undefined) {
       query.published = data.published
     }
-    
+
     if (data.tags && data.tags.length > 0) {
       query.tags = { $in: data.tags }
     }
@@ -214,7 +218,7 @@ export const getBlogPosts = createServerFn()
         .skip(skip)
         .limit(limit)
         .toArray(),
-      blogPostsCollection.countDocuments(query)
+      blogPostsCollection.countDocuments(query),
     ])
 
     return { posts: posts.map(serializeBlogPost), total }
@@ -224,7 +228,7 @@ export const updateBlogPost = createServerFn()
   .inputValidator((input: UpdateBlogPostInput) => input)
   .handler(async ({ data }): Promise<SerializedBlogPost | null> => {
     const blogPostsCollection = await getBlogPostsCollection()
-    
+
     // Get existing post to check for slug changes
     const existingPost = await blogPostsCollection.findOne({ _id: new ObjectId(data.postId) })
     if (!existingPost) {
@@ -232,31 +236,37 @@ export const updateBlogPost = createServerFn()
     }
 
     const updateDoc: Record<string, unknown> = { updatedAt: new Date() }
-    
+
     if (data.updates.title) {
       updateDoc.title = data.updates.title
-      
+
       // Regenerate slug if title changed
-      const newTitleForSlug = data.updates.title.en || data.updates.title.es || Object.values(data.updates.title)[0]
+      const newTitleForSlug =
+        data.updates.title.en || data.updates.title.es || Object.values(data.updates.title)[0]
       if (newTitleForSlug) {
-        const currentTitleForSlug = existingPost.title.en || existingPost.title.es || Object.values(existingPost.title)[0]
+        const currentTitleForSlug =
+          existingPost.title.en || existingPost.title.es || Object.values(existingPost.title)[0]
         if (newTitleForSlug !== currentTitleForSlug) {
-          updateDoc.slug = await generateUniqueSlug(existingPost.clinicId.toString(), newTitleForSlug, data.postId)
+          updateDoc.slug = await generateUniqueSlug(
+            existingPost.clinicId.toString(),
+            newTitleForSlug,
+            data.postId,
+          )
         }
       }
     }
-    
+
     if (data.updates.content) updateDoc.content = data.updates.content
     if (data.updates.excerpt) updateDoc.excerpt = data.updates.excerpt
     if (data.updates.author) updateDoc.author = data.updates.author
     if (data.updates.tags) updateDoc.tags = data.updates.tags
-    
+
     if (data.updates.seo) {
       if (data.updates.seo.title) updateDoc['seo.title'] = data.updates.seo.title
       if (data.updates.seo.description) updateDoc['seo.description'] = data.updates.seo.description
       if (data.updates.seo.keywords) updateDoc['seo.keywords'] = data.updates.seo.keywords
     }
-    
+
     // Handle publishing state change
     if (data.updates.published !== undefined) {
       updateDoc.published = data.updates.published
@@ -272,9 +282,9 @@ export const updateBlogPost = createServerFn()
     const result = await blogPostsCollection.findOneAndUpdate(
       { _id: new ObjectId(data.postId) },
       { $set: updateDoc },
-      { returnDocument: 'after' }
+      { returnDocument: 'after' },
     )
-    
+
     return result ? serializeBlogPost(result) : null
   })
 
@@ -282,7 +292,7 @@ export const deleteBlogPost = createServerFn()
   .inputValidator((input: { postId: string }) => input)
   .handler(async ({ data }): Promise<boolean> => {
     const blogPostsCollection = await getBlogPostsCollection()
-    
+
     const result = await blogPostsCollection.deleteOne({ _id: new ObjectId(data.postId) })
     return result.deletedCount > 0
   })
@@ -291,14 +301,14 @@ export const getBlogPostTags = createServerFn()
   .inputValidator((input: { clinicId: string }) => input)
   .handler(async ({ data }): Promise<string[]> => {
     const blogPostsCollection = await getBlogPostsCollection()
-    
+
     const pipeline = [
       { $match: { clinicId: new ObjectId(data.clinicId) } },
       { $unwind: '$tags' },
       { $group: { _id: '$tags' } },
-      { $sort: { _id: 1 } }
+      { $sort: { _id: 1 } },
     ]
-    
+
     const result = await blogPostsCollection.aggregate<{ _id: string }>(pipeline).toArray()
-    return result.map(item => item._id)
+    return result.map((item) => item._id)
   })

@@ -129,7 +129,7 @@ export const createWebsite = createServerFn()
   .inputValidator((input: CreateWebsiteInput) => input)
   .handler(async ({ data }): Promise<SerializedWebsite> => {
     const websitesCollection = await getWebsitesCollection()
-    
+
     // Validate clinic exists
     const clinicsCollection = await getClinicsCollection()
     const clinic = await clinicsCollection.findOne({ _id: new ObjectId(data.clinicId) })
@@ -138,7 +138,9 @@ export const createWebsite = createServerFn()
     }
 
     // Check if website already exists for this clinic
-    const existingWebsite = await websitesCollection.findOne({ clinicId: new ObjectId(data.clinicId) })
+    const existingWebsite = await websitesCollection.findOne({
+      clinicId: new ObjectId(data.clinicId),
+    })
     if (existingWebsite) {
       throw new Error('Website already exists for this clinic')
     }
@@ -183,13 +185,13 @@ export const updateWebsite = createServerFn()
   .inputValidator((input: UpdateWebsiteInput) => input)
   .handler(async ({ data }): Promise<SerializedWebsite | null> => {
     const websitesCollection = await getWebsitesCollection()
-    
+
     const updateDoc: Record<string, unknown> = { updatedAt: new Date() }
-    
+
     if (data.updates.domain !== undefined) {
       updateDoc.domain = data.updates.domain
     }
-    
+
     if (data.updates.settings) {
       if (data.updates.settings.name) updateDoc['settings.name'] = data.updates.settings.name
       if (data.updates.settings.theme) {
@@ -214,7 +216,7 @@ export const updateWebsite = createServerFn()
         })
       }
     }
-    
+
     if (data.updates.content) {
       Object.entries(data.updates.content).forEach(([section, sectionData]) => {
         if (sectionData) {
@@ -230,9 +232,9 @@ export const updateWebsite = createServerFn()
     const result = await websitesCollection.findOneAndUpdate(
       { _id: new ObjectId(data.websiteId) },
       { $set: updateDoc },
-      { returnDocument: 'after' }
+      { returnDocument: 'after' },
     )
-    
+
     return result ? serializeWebsite(result) : null
   })
 
@@ -240,7 +242,7 @@ export const deleteWebsite = createServerFn()
   .inputValidator((input: { websiteId: string }) => input)
   .handler(async ({ data }): Promise<boolean> => {
     const websitesCollection = await getWebsitesCollection()
-    
+
     const result = await websitesCollection.deleteOne({ _id: new ObjectId(data.websiteId) })
     return result.deletedCount > 0
   })

@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import { ObjectId } from 'mongodb'
+import { describe, expect, it } from 'vitest'
 
 describe('Website Server Functions', () => {
   describe('website data validation', () => {
@@ -59,11 +59,11 @@ describe('Website Server Functions', () => {
       const validColors = ['#000000', '#ffffff', '#ff0000', '#2563eb', '#06b6d4']
       const invalidColors = ['#fff', 'red', '#gggggg', '#12345', 'blue', '#1234567']
 
-      validColors.forEach(color => {
+      validColors.forEach((color) => {
         expect(color).toMatch(/^#[0-9a-fA-F]{6}$/)
       })
 
-      invalidColors.forEach(color => {
+      invalidColors.forEach((color) => {
         expect(color).not.toMatch(/^#[0-9a-fA-F]{6}$/)
       })
     })
@@ -74,12 +74,12 @@ describe('Website Server Functions', () => {
 
       const subdomainRegex = /^[a-z0-9-]+$/
 
-      validSubdomains.forEach(subdomain => {
+      validSubdomains.forEach((subdomain) => {
         expect(subdomain).toMatch(subdomainRegex)
         expect(subdomain.length).toBeGreaterThan(0)
       })
 
-      invalidSubdomains.forEach(subdomain => {
+      invalidSubdomains.forEach((subdomain) => {
         const isValid = subdomain.trim().length > 0 && subdomainRegex.test(subdomain)
         expect(isValid).toBe(false)
       })
@@ -94,13 +94,16 @@ describe('Website Server Functions', () => {
         },
         services: {
           title: { en: 'Our Services', es: 'Nuestros Servicios' },
-          description: { en: 'Professional dental services', es: 'Servicios dentales profesionales' },
-        }
+          description: {
+            en: 'Professional dental services',
+            es: 'Servicios dentales profesionales',
+          },
+        },
       }
 
       // Each content section should have both languages
-      Object.values(content).forEach(section => {
-        Object.values(section).forEach(field => {
+      Object.values(content).forEach((section) => {
+        Object.values(section).forEach((field) => {
           expect(typeof field).toBe('object')
           expect(field.en).toBeTruthy()
           expect(field.es).toBeTruthy()
@@ -113,7 +116,8 @@ describe('Website Server Functions', () => {
     it('should validate SEO title length limits', () => {
       const shortTitle = 'Clinic'
       const optimalTitle = 'Best Dental Clinic in Madrid - Professional Care'
-      const longTitle = 'This is a very long SEO title that exceeds the recommended 60 character limit for search engines and may get truncated in results'
+      const longTitle =
+        'This is a very long SEO title that exceeds the recommended 60 character limit for search engines and may get truncated in results'
 
       expect(shortTitle.length).toBeLessThan(60)
       expect(optimalTitle.length).toBeLessThanOrEqual(60)
@@ -128,8 +132,10 @@ describe('Website Server Functions', () => {
 
     it('should validate SEO description length limits', () => {
       const shortDesc = 'Dental clinic'
-      const optimalDesc = 'Professional dental care with modern technology. Expert dentists providing comprehensive treatments in a comfortable environment.'
-      const longDesc = 'This is a very long meta description that far exceeds the recommended 160 character limit for search engine results pages and will definitely get truncated which is not good for SEO'
+      const optimalDesc =
+        'Professional dental care with modern technology. Expert dentists providing comprehensive treatments in a comfortable environment.'
+      const longDesc =
+        'This is a very long meta description that far exceeds the recommended 160 character limit for search engine results pages and will definitely get truncated which is not good for SEO'
 
       expect(shortDesc.length).toBeLessThan(160)
       expect(optimalDesc.length).toBeLessThanOrEqual(160)
@@ -150,17 +156,19 @@ describe('Website Server Functions', () => {
       expect(Array.isArray(validKeywords)).toBe(true)
       expect(validKeywords.length).toBeGreaterThan(0)
       expect(validKeywords.length).toBeLessThanOrEqual(10)
-      expect(validKeywords.every(keyword => typeof keyword === 'string')).toBe(true)
-      expect(validKeywords.every(keyword => keyword.trim().length > 0)).toBe(true)
+      expect(validKeywords.every((keyword) => typeof keyword === 'string')).toBe(true)
+      expect(validKeywords.every((keyword) => keyword.trim().length > 0)).toBe(true)
 
       expect(tooManyKeywords.length).toBeGreaterThan(10)
       expect(emptyKeywords.length).toBe(0)
 
       // Test validation logic
       const validateKeywords = (keywords: string[]) => {
-        return Array.isArray(keywords) && 
-               keywords.length <= 10 && 
-               keywords.every(k => typeof k === 'string' && k.trim().length > 0)
+        return (
+          Array.isArray(keywords) &&
+          keywords.length <= 10 &&
+          keywords.every((k) => typeof k === 'string' && k.trim().length > 0)
+        )
       }
 
       expect(validateKeywords(validKeywords)).toBe(true)
@@ -176,7 +184,7 @@ describe('Website Server Functions', () => {
       const whitespaceTranslations = { en: '   ', es: '   ' }
 
       const hasValidTranslation = (translations: Record<string, string>) => {
-        return Object.values(translations).some(value => value && value.trim().length > 0)
+        return Object.values(translations).some((value) => value && value.trim().length > 0)
       }
 
       expect(hasValidTranslation(completeTranslations)).toBe(true)
@@ -203,11 +211,11 @@ describe('Website Server Functions', () => {
         team: null, // Should be boolean
       }
 
-      Object.values(validPageConfig).forEach(value => {
+      Object.values(validPageConfig).forEach((value) => {
         expect(typeof value).toBe('boolean')
       })
 
-      Object.values(invalidPageConfig).forEach(value => {
+      Object.values(invalidPageConfig).forEach((value) => {
         expect(typeof value).not.toBe('boolean')
       })
 

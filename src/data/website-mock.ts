@@ -85,29 +85,29 @@ export const mockWebsites: MockWebsite[] = [
     settings: {
       name: {
         en: 'Dental Smile Clinic',
-        es: 'Clínica Dental Sonrisa'
+        es: 'Clínica Dental Sonrisa',
       },
       theme: {
         primaryColor: '#2563eb',
         secondaryColor: '#06b6d4',
         logo: '/logos/clinica-dental-sonrisa.png',
-        favicon: '/favicons/clinica-dental-sonrisa.ico'
+        favicon: '/favicons/clinica-dental-sonrisa.ico',
       },
       pages: {
         homepage: true,
         services: true,
         team: true,
         contact: true,
-        blog: true
+        blog: true,
       },
       seo: {
         title: {
           en: 'Dental Smile Clinic - Professional Dental Care in Madrid',
-          es: 'Clínica Dental Sonrisa - Cuidado Dental Profesional en Madrid'
+          es: 'Clínica Dental Sonrisa - Cuidado Dental Profesional en Madrid',
         },
         description: {
           en: 'Expert dental care in the heart of Madrid. Modern treatments, experienced dentists, and personalized care for the whole family.',
-          es: 'Cuidado dental experto en el corazón de Madrid. Tratamientos modernos, dentistas experimentados y atención personalizada para toda la familia.'
+          es: 'Cuidado dental experto en el corazón de Madrid. Tratamientos modernos, dentistas experimentados y atención personalizada para toda la familia.',
         },
         keywords: [
           'dentist madrid',
@@ -119,58 +119,58 @@ export const mockWebsites: MockWebsite[] = [
           'clínica dental',
           'implantes dentales',
           'ortodoncia',
-          'limpieza dental'
-        ]
-      }
+          'limpieza dental',
+        ],
+      },
     },
     content: {
       homepage: {
         hero: {
           en: 'Your Smile, Our Passion',
-          es: 'Tu Sonrisa, Nuestra Pasión'
+          es: 'Tu Sonrisa, Nuestra Pasión',
         },
         about: {
           en: 'At Dental Smile Clinic, we combine cutting-edge technology with personalized care to deliver exceptional dental treatments. Our experienced team is dedicated to helping you achieve optimal oral health in a comfortable and welcoming environment.',
-          es: 'En Clínica Dental Sonrisa, combinamos tecnología de vanguardia con atención personalizada para brindar tratamientos dentales excepcionales. Nuestro equipo experimentado se dedica a ayudarte a lograr una salud bucal óptima en un ambiente cómodo y acogedor.'
+          es: 'En Clínica Dental Sonrisa, combinamos tecnología de vanguardia con atención personalizada para brindar tratamientos dentales excepcionales. Nuestro equipo experimentado se dedica a ayudarte a lograr una salud bucal óptima en un ambiente cómodo y acogedor.',
         },
         callToAction: {
           en: 'Book Your Appointment Today',
-          es: 'Reserva Tu Cita Hoy'
-        }
+          es: 'Reserva Tu Cita Hoy',
+        },
       },
       services: {
         title: {
           en: 'Our Dental Services',
-          es: 'Nuestros Servicios Dentales'
+          es: 'Nuestros Servicios Dentales',
         },
         description: {
           en: 'We offer a comprehensive range of dental services to meet all your oral health needs, from routine cleanings to complex restorative procedures.',
-          es: 'Ofrecemos una gama completa de servicios dentales para satisfacer todas tus necesidades de salud bucal, desde limpiezas de rutina hasta procedimientos restaurativos complejos.'
-        }
+          es: 'Ofrecemos una gama completa de servicios dentales para satisfacer todas tus necesidades de salud bucal, desde limpiezas de rutina hasta procedimientos restaurativos complejos.',
+        },
       },
       team: {
         title: {
           en: 'Meet Our Expert Team',
-          es: 'Conoce a Nuestro Equipo Experto'
+          es: 'Conoce a Nuestro Equipo Experto',
         },
         description: {
           en: 'Our skilled dental professionals are committed to providing you with the highest quality care using the latest techniques and technologies.',
-          es: 'Nuestros profesionales dentales especializados están comprometidos a brindarte la atención de más alta calidad utilizando las últimas técnicas y tecnologías.'
-        }
+          es: 'Nuestros profesionales dentales especializados están comprometidos a brindarte la atención de más alta calidad utilizando las últimas técnicas y tecnologías.',
+        },
       },
       contact: {
         title: {
           en: 'Get in Touch',
-          es: 'Ponte en Contacto'
+          es: 'Ponte en Contacto',
         },
         description: {
           en: 'Ready to start your journey to better oral health? Contact us today to schedule your appointment or learn more about our services.',
-          es: '¿Listo para comenzar tu camino hacia una mejor salud bucal? Contáctanos hoy para programar tu cita o aprender más sobre nuestros servicios.'
-        }
-      }
+          es: '¿Listo para comenzar tu camino hacia una mejor salud bucal? Contáctanos hoy para programar tu cita o aprender más sobre nuestros servicios.',
+        },
+      },
     },
     createdAt: new Date('2024-01-15T10:00:00Z'),
-    updatedAt: new Date('2024-01-20T15:30:00Z')
+    updatedAt: new Date('2024-01-20T15:30:00Z'),
   },
   {
     _id: mockId(),
@@ -180,29 +180,29 @@ export const mockWebsites: MockWebsite[] = [
     settings: {
       name: {
         en: 'Dental Vita Care',
-        es: 'Dental Vita Care'
+        es: 'Dental Vita Care',
       },
       theme: {
         primaryColor: '#16a34a',
         secondaryColor: '#f59e0b',
         logo: '/logos/dental-vita-care.png',
-        favicon: '/favicons/dental-vita-care.ico'
+        favicon: '/favicons/dental-vita-care.ico',
       },
       pages: {
         homepage: true,
         services: true,
         team: true,
         contact: true,
-        blog: false
+        blog: false,
       },
       seo: {
         title: {
           en: 'Dental Vita Care - Advanced Dental Treatments in Barcelona',
-          es: 'Dental Vita Care - Tratamientos Dentales Avanzados en Barcelona'
+          es: 'Dental Vita Care - Tratamientos Dentales Avanzados en Barcelona',
         },
         description: {
           en: 'Premium dental care in Barcelona with state-of-the-art facilities and personalized treatment plans for optimal oral health.',
-          es: 'Atención dental premium en Barcelona con instalaciones de última generación y planes de tratamiento personalizados para una salud bucal óptima.'
+          es: 'Atención dental premium en Barcelona con instalaciones de última generación y planes de tratamiento personalizados para una salud bucal óptima.',
         },
         keywords: [
           'dental barcelona',
@@ -212,59 +212,59 @@ export const mockWebsites: MockWebsite[] = [
           'dentista barcelona',
           'cuidado dental premium',
           'odontología cosmética',
-          'implantes dentales barcelona'
-        ]
-      }
+          'implantes dentales barcelona',
+        ],
+      },
     },
     content: {
       homepage: {
         hero: {
           en: 'Premium Dental Care for Life',
-          es: 'Cuidado Dental Premium de por Vida'
+          es: 'Cuidado Dental Premium de por Vida',
         },
         about: {
           en: 'Dental Vita Care offers premium dental services with a focus on advanced technology and patient comfort. Our clinic features state-of-the-art equipment and a team of highly qualified dental specialists.',
-          es: 'Dental Vita Care ofrece servicios dentales premium con un enfoque en tecnología avanzada y comodidad del paciente. Nuestra clínica cuenta con equipos de última generación y un equipo de especialistas dentales altamente calificados.'
+          es: 'Dental Vita Care ofrece servicios dentales premium con un enfoque en tecnología avanzada y comodidad del paciente. Nuestra clínica cuenta con equipos de última generación y un equipo de especialistas dentales altamente calificados.',
         },
         callToAction: {
           en: 'Schedule Your Consultation',
-          es: 'Programa Tu Consulta'
-        }
+          es: 'Programa Tu Consulta',
+        },
       },
       services: {
         title: {
           en: 'Premium Dental Services',
-          es: 'Servicios Dentales Premium'
+          es: 'Servicios Dentales Premium',
         },
         description: {
           en: 'Experience the highest standard of dental care with our comprehensive range of advanced treatments and personalized approach.',
-          es: 'Experimenta el más alto estándar de atención dental con nuestra gama completa de tratamientos avanzados y enfoque personalizado.'
-        }
+          es: 'Experimenta el más alto estándar de atención dental con nuestra gama completa de tratamientos avanzados y enfoque personalizado.',
+        },
       },
       team: {
         title: {
           en: 'World-Class Dental Specialists',
-          es: 'Especialistas Dentales de Clase Mundial'
+          es: 'Especialistas Dentales de Clase Mundial',
         },
         description: {
           en: 'Our team consists of internationally trained dental specialists who are passionate about delivering exceptional results and patient satisfaction.',
-          es: 'Nuestro equipo está formado por especialistas dentales entrenados internacionalmente que están apasionados por brindar resultados excepcionales y satisfacción del paciente.'
-        }
+          es: 'Nuestro equipo está formado por especialistas dentales entrenados internacionalmente que están apasionados por brindar resultados excepcionales y satisfacción del paciente.',
+        },
       },
       contact: {
         title: {
           en: 'Visit Our Modern Clinic',
-          es: 'Visita Nuestra Clínica Moderna'
+          es: 'Visita Nuestra Clínica Moderna',
         },
         description: {
           en: 'Located in the heart of Barcelona, our modern facility provides a comfortable and relaxing environment for all your dental needs.',
-          es: 'Ubicada en el corazón de Barcelona, nuestra instalación moderna proporciona un ambiente cómodo y relajante para todas tus necesidades dentales.'
-        }
-      }
+          es: 'Ubicada en el corazón de Barcelona, nuestra instalación moderna proporciona un ambiente cómodo y relajante para todas tus necesidades dentales.',
+        },
+      },
     },
     createdAt: new Date('2024-02-01T09:15:00Z'),
-    updatedAt: new Date('2024-02-05T14:20:00Z')
-  }
+    updatedAt: new Date('2024-02-05T14:20:00Z'),
+  },
 ]
 
 export const mockBlogPosts: MockBlogPost[] = [
@@ -274,7 +274,7 @@ export const mockBlogPosts: MockBlogPost[] = [
     slug: '10-tips-for-better-oral-hygiene',
     title: {
       en: '10 Essential Tips for Better Oral Hygiene',
-      es: '10 Consejos Esenciales para una Mejor Higiene Bucal'
+      es: '10 Consejos Esenciales para una Mejor Higiene Bucal',
     },
     content: {
       en: `# 10 Essential Tips for Better Oral Hygiene
@@ -346,11 +346,11 @@ Visita a tu dentista cada seis meses para limpiezas profesionales y para detecta
 ## 10. Deja de Fumar y Limita el Alcohol
 El tabaco y el consumo excesivo de alcohol aumentan significativamente tu riesgo de enfermedad de las encías, pérdida de dientes y cáncer oral.
 
-Seguir estos simples consejos puede ayudarte a mantener una salud bucal óptima y prevenir muchos problemas dentales comunes. Si tienes preguntas sobre tu rutina de higiene bucal, ¡no dudes en preguntar a nuestro equipo dental durante tu próxima visita!`
+Seguir estos simples consejos puede ayudarte a mantener una salud bucal óptima y prevenir muchos problemas dentales comunes. Si tienes preguntas sobre tu rutina de higiene bucal, ¡no dudes en preguntar a nuestro equipo dental durante tu próxima visita!`,
     },
     excerpt: {
       en: 'Learn the top 10 essential tips for maintaining excellent oral hygiene and keeping your teeth and gums healthy with expert advice from our dental team.',
-      es: 'Aprende los 10 consejos esenciales para mantener una excelente higiene bucal y mantener tus dientes y encías saludables con consejos expertos de nuestro equipo dental.'
+      es: 'Aprende los 10 consejos esenciales para mantener una excelente higiene bucal y mantener tus dientes y encías saludables con consejos expertos de nuestro equipo dental.',
     },
     author: 'Dr. María García',
     authorId: '507f1f77bcf86cd799439021',
@@ -359,17 +359,26 @@ Seguir estos simples consejos puede ayudarte a mantener una salud bucal óptima 
     seo: {
       title: {
         en: '10 Essential Tips for Better Oral Hygiene | Dental Smile Clinic',
-        es: '10 Consejos Esenciales para Mejor Higiene Bucal | Clínica Dental Sonrisa'
+        es: '10 Consejos Esenciales para Mejor Higiene Bucal | Clínica Dental Sonrisa',
       },
       description: {
         en: 'Discover 10 expert tips for maintaining excellent oral hygiene. Professional advice from dental specialists to keep your teeth and gums healthy.',
-        es: 'Descubre 10 consejos expertos para mantener una excelente higiene bucal. Consejos profesionales de especialistas dentales para mantener tus dientes y encías saludables.'
+        es: 'Descubre 10 consejos expertos para mantener una excelente higiene bucal. Consejos profesionales de especialistas dentales para mantener tus dientes y encías saludables.',
       },
-      keywords: ['oral hygiene', 'dental care', 'teeth brushing', 'flossing', 'dental health', 'higiene bucal', 'cuidado dental', 'cepillado dental']
+      keywords: [
+        'oral hygiene',
+        'dental care',
+        'teeth brushing',
+        'flossing',
+        'dental health',
+        'higiene bucal',
+        'cuidado dental',
+        'cepillado dental',
+      ],
     },
     publishedAt: new Date('2024-01-18T10:00:00Z'),
     createdAt: new Date('2024-01-16T14:30:00Z'),
-    updatedAt: new Date('2024-01-17T09:15:00Z')
+    updatedAt: new Date('2024-01-17T09:15:00Z'),
   },
   {
     _id: mockId(),
@@ -377,7 +386,7 @@ Seguir estos simples consejos puede ayudarte a mantener una salud bucal óptima 
     slug: 'dental-implants-complete-guide',
     title: {
       en: 'Dental Implants: A Complete Guide to Permanent Tooth Replacement',
-      es: 'Implantes Dentales: Guía Completa para el Reemplazo Permanente de Dientes'
+      es: 'Implantes Dentales: Guía Completa para el Reemplazo Permanente de Dientes',
     },
     content: {
       en: `# Dental Implants: A Complete Guide to Permanent Tooth Replacement
@@ -493,11 +502,11 @@ Mantén tus implantes:
 
 En Clínica Dental Sonrisa, usamos la última tecnología y técnicas de implantes para asegurar los mejores resultados posibles. Nuestro equipo experimentado ha colocado exitosamente cientos de implantes, ayudando a los pacientes a restaurar sus sonrisas y confianza.
 
-¿Listo para aprender más sobre cómo los implantes dentales pueden transformar tu sonrisa? ¡Contáctanos hoy para programar una consulta!`
+¿Listo para aprender más sobre cómo los implantes dentales pueden transformar tu sonrisa? ¡Contáctanos hoy para programar una consulta!`,
     },
     excerpt: {
       en: 'Everything you need to know about dental implants - the permanent solution for tooth replacement. Learn about the process, benefits, and care.',
-      es: 'Todo lo que necesitas saber sobre los implantes dentales - la solución permanente para el reemplazo de dientes. Aprende sobre el proceso, beneficios y cuidados.'
+      es: 'Todo lo que necesitas saber sobre los implantes dentales - la solución permanente para el reemplazo de dientes. Aprende sobre el proceso, beneficios y cuidados.',
     },
     author: 'Dr. Carlos Rodríguez',
     authorId: '507f1f77bcf86cd799439022',
@@ -506,17 +515,25 @@ En Clínica Dental Sonrisa, usamos la última tecnología y técnicas de implant
     seo: {
       title: {
         en: 'Dental Implants Complete Guide - Permanent Tooth Replacement | Dental Smile Clinic',
-        es: 'Guía Completa de Implantes Dentales - Reemplazo Permanente de Dientes | Clínica Dental Sonrisa'
+        es: 'Guía Completa de Implantes Dentales - Reemplazo Permanente de Dientes | Clínica Dental Sonrisa',
       },
       description: {
         en: 'Learn everything about dental implants - benefits, process, care, and why they are the best solution for permanent tooth replacement.',
-        es: 'Aprende todo sobre implantes dentales - beneficios, proceso, cuidados y por qué son la mejor solución para el reemplazo permanente de dientes.'
+        es: 'Aprende todo sobre implantes dentales - beneficios, proceso, cuidados y por qué son la mejor solución para el reemplazo permanente de dientes.',
       },
-      keywords: ['dental implants', 'tooth replacement', 'titanium implants', 'oral surgery', 'implantes dentales', 'reemplazo dental', 'cirugía oral']
+      keywords: [
+        'dental implants',
+        'tooth replacement',
+        'titanium implants',
+        'oral surgery',
+        'implantes dentales',
+        'reemplazo dental',
+        'cirugía oral',
+      ],
     },
     publishedAt: new Date('2024-01-22T11:30:00Z'),
     createdAt: new Date('2024-01-20T16:45:00Z'),
-    updatedAt: new Date('2024-01-21T10:20:00Z')
+    updatedAt: new Date('2024-01-21T10:20:00Z'),
   },
   {
     _id: mockId(),
@@ -524,7 +541,7 @@ En Clínica Dental Sonrisa, usamos la última tecnología y técnicas de implant
     slug: 'choosing-right-orthodontic-treatment',
     title: {
       en: 'Choosing the Right Orthodontic Treatment: Braces vs. Clear Aligners',
-      es: 'Eligiendo el Tratamiento de Ortodoncia Correcto: Brackets vs. Alineadores Transparentes'
+      es: 'Eligiendo el Tratamiento de Ortodoncia Correcto: Brackets vs. Alineadores Transparentes',
     },
     content: {
       en: `# Choosing the Right Orthodontic Treatment: Braces vs. Clear Aligners
@@ -672,11 +689,11 @@ Independientemente del tratamiento que elijas, usar un retenedor después del tr
 
 En Clínica Dental Sonrisa, ofrecemos tanto brackets tradicionales como tratamientos con alineadores transparentes. Durante tu consulta, evaluaremos tus necesidades específicas y te ayudaremos a elegir la mejor opción para lograr tu sonrisa perfecta.
 
-¿Listo para comenzar tu viaje ortodóncico? ¡Programa una consulta hoy para discutir qué opción de tratamiento es correcta para ti!`
+¿Listo para comenzar tu viaje ortodóncico? ¡Programa una consulta hoy para discutir qué opción de tratamiento es correcta para ti!`,
     },
     excerpt: {
       en: 'Compare traditional braces and clear aligners to find the best orthodontic treatment for your needs. Learn about benefits, costs, and treatment duration.',
-      es: 'Compara brackets tradicionales y alineadores transparentes para encontrar el mejor tratamiento ortodóncico para tus necesidades. Aprende sobre beneficios, costos y duración.'
+      es: 'Compara brackets tradicionales y alineadores transparentes para encontrar el mejor tratamiento ortodóncico para tus necesidades. Aprende sobre beneficios, costos y duración.',
     },
     author: 'Dra. Ana López',
     authorId: '507f1f77bcf86cd799439023',
@@ -685,34 +702,41 @@ En Clínica Dental Sonrisa, ofrecemos tanto brackets tradicionales como tratamie
     seo: {
       title: {
         en: 'Braces vs Clear Aligners: Complete Orthodontic Treatment Guide | Dental Smile Clinic',
-        es: 'Brackets vs Alineadores Transparentes: Guía Completa de Tratamiento Ortodóncico | Clínica Dental Sonrisa'
+        es: 'Brackets vs Alineadores Transparentes: Guía Completa de Tratamiento Ortodóncico | Clínica Dental Sonrisa',
       },
       description: {
         en: 'Compare traditional braces and clear aligners. Learn which orthodontic treatment is right for you with expert guidance from dental professionals.',
-        es: 'Compara brackets tradicionales y alineadores transparentes. Aprende qué tratamiento ortodóncico es correcto para ti con guía experta de profesionales dentales.'
+        es: 'Compara brackets tradicionales y alineadores transparentes. Aprende qué tratamiento ortodóncico es correcto para ti con guía experta de profesionales dentales.',
       },
-      keywords: ['orthodontics', 'braces', 'clear aligners', 'teeth straightening', 'invisalign', 'ortodoncia', 'brackets', 'alineadores transparentes']
+      keywords: [
+        'orthodontics',
+        'braces',
+        'clear aligners',
+        'teeth straightening',
+        'invisalign',
+        'ortodoncia',
+        'brackets',
+        'alineadores transparentes',
+      ],
     },
     publishedAt: undefined,
     createdAt: new Date('2024-01-25T13:15:00Z'),
-    updatedAt: new Date('2024-01-26T08:45:00Z')
-  }
+    updatedAt: new Date('2024-01-26T08:45:00Z'),
+  },
 ]
 
 export function getMockWebsiteByClinicId(clinicId: string): MockWebsite | undefined {
-  return mockWebsites.find(website => website.clinicId === clinicId)
+  return mockWebsites.find((website) => website.clinicId === clinicId)
 }
 
 export function getMockWebsiteBySubdomain(subdomain: string): MockWebsite | undefined {
-  return mockWebsites.find(website => website.subdomain === subdomain)
+  return mockWebsites.find((website) => website.subdomain === subdomain)
 }
 
 export function getMockBlogPostsByClinicId(clinicId: string): MockBlogPost[] {
-  return mockBlogPosts.filter(post => post.clinicId === clinicId)
+  return mockBlogPosts.filter((post) => post.clinicId === clinicId)
 }
 
 export function getMockBlogPostBySlug(clinicId: string, slug: string): MockBlogPost | undefined {
-  return mockBlogPosts.find(post =>
-    post.clinicId === clinicId && post.slug === slug
-  )
+  return mockBlogPosts.find((post) => post.clinicId === clinicId && post.slug === slug)
 }

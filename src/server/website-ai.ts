@@ -1,10 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
-import { z } from 'zod'
 import OpenAI from 'openai'
+import { z } from 'zod'
 import type { Clinic, Doctor } from '@/lib/collections'
 
 // Mock OpenAI integration - replace with actual implementation
-const openai = process.env.OPENAI_API_KEY 
+const openai = process.env.OPENAI_API_KEY
   ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
   : null
 
@@ -26,7 +26,9 @@ const generateServiceDescriptionInputValidator = z.object({
     specialties: z.array(z.string()).optional(),
   }),
   language: z.enum(['en', 'es']).default('en'),
-  tone: z.enum(['professional', 'friendly', 'authoritative', 'conversational']).default('professional'),
+  tone: z
+    .enum(['professional', 'friendly', 'authoritative', 'conversational'])
+    .default('professional'),
   length: z.enum(['short', 'medium', 'long']).default('medium'),
 })
 
@@ -38,7 +40,9 @@ const generateBlogPostInputValidator = z.object({
     location: z.string().optional(),
   }),
   language: z.enum(['en', 'es']).default('en'),
-  tone: z.enum(['professional', 'friendly', 'authoritative', 'conversational']).default('professional'),
+  tone: z
+    .enum(['professional', 'friendly', 'authoritative', 'conversational'])
+    .default('professional'),
   length: z.enum(['short', 'medium', 'long']).default('medium'),
   includeCallToAction: z.boolean().default(true),
 })
@@ -57,32 +61,37 @@ const mockServiceDescriptions = {
   en: {
     'dental-cleaning': {
       short: 'Professional dental cleaning to remove plaque and maintain oral health.',
-      medium: 'Our professional dental cleaning service removes plaque, tartar, and stains to keep your teeth healthy and bright. Regular cleanings prevent gum disease and maintain optimal oral hygiene.',
-      long: 'Experience a thorough professional dental cleaning that goes beyond what you can achieve at home. Our skilled hygienists use advanced techniques to remove plaque, tartar, and surface stains, leaving your teeth feeling fresh and looking their best. Regular dental cleanings are essential for preventing gum disease, tooth decay, and maintaining overall oral health. We recommend cleanings every six months for optimal results.'
+      medium:
+        'Our professional dental cleaning service removes plaque, tartar, and stains to keep your teeth healthy and bright. Regular cleanings prevent gum disease and maintain optimal oral hygiene.',
+      long: 'Experience a thorough professional dental cleaning that goes beyond what you can achieve at home. Our skilled hygienists use advanced techniques to remove plaque, tartar, and surface stains, leaving your teeth feeling fresh and looking their best. Regular dental cleanings are essential for preventing gum disease, tooth decay, and maintaining overall oral health. We recommend cleanings every six months for optimal results.',
     },
     'dental-implants': {
       short: 'Permanent tooth replacement solution using titanium implants.',
-      medium: 'Restore your smile with dental implants - a permanent, natural-looking solution for missing teeth. Our titanium implants integrate with your jawbone for superior stability and comfort.',
-      long: 'Dental implants represent the gold standard in tooth replacement technology. Using biocompatible titanium posts that integrate with your jawbone, we create a permanent foundation for natural-looking crowns. Unlike dentures or bridges, implants preserve surrounding teeth and provide the closest experience to natural teeth in terms of function and appearance. The procedure is performed with precision and care to ensure optimal healing and long-term success.'
+      medium:
+        'Restore your smile with dental implants - a permanent, natural-looking solution for missing teeth. Our titanium implants integrate with your jawbone for superior stability and comfort.',
+      long: 'Dental implants represent the gold standard in tooth replacement technology. Using biocompatible titanium posts that integrate with your jawbone, we create a permanent foundation for natural-looking crowns. Unlike dentures or bridges, implants preserve surrounding teeth and provide the closest experience to natural teeth in terms of function and appearance. The procedure is performed with precision and care to ensure optimal healing and long-term success.',
     },
-    'orthodontics': {
+    orthodontics: {
       short: 'Straighten your teeth with modern orthodontic solutions.',
-      medium: 'Achieve the perfect smile with our orthodontic treatments, including traditional braces and clear aligners. We create personalized treatment plans for patients of all ages.',
-      long: 'Transform your smile with our comprehensive orthodontic services. Whether you choose traditional metal braces, clear ceramic braces, or invisible aligners, we provide personalized treatment plans tailored to your specific needs and lifestyle. Our experienced orthodontists use the latest techniques to correct misaligned teeth, improve bite function, and enhance your overall oral health. Treatment options are available for children, teens, and adults, making it never too late to achieve the smile you\'ve always wanted.'
-    }
+      medium:
+        'Achieve the perfect smile with our orthodontic treatments, including traditional braces and clear aligners. We create personalized treatment plans for patients of all ages.',
+      long: "Transform your smile with our comprehensive orthodontic services. Whether you choose traditional metal braces, clear ceramic braces, or invisible aligners, we provide personalized treatment plans tailored to your specific needs and lifestyle. Our experienced orthodontists use the latest techniques to correct misaligned teeth, improve bite function, and enhance your overall oral health. Treatment options are available for children, teens, and adults, making it never too late to achieve the smile you've always wanted.",
+    },
   },
   es: {
     'dental-cleaning': {
       short: 'Limpieza dental profesional para eliminar placa y mantener la salud bucal.',
-      medium: 'Nuestro servicio de limpieza dental profesional elimina la placa, el sarro y las manchas para mantener tus dientes sanos y brillantes. Las limpiezas regulares previenen la enfermedad de las encías.',
-      long: 'Experimenta una limpieza dental profesional completa que va más allá de lo que puedes lograr en casa. Nuestros higienistas especializados utilizan técnicas avanzadas para eliminar la placa, el sarro y las manchas superficiales, dejando tus dientes frescos y con su mejor aspecto. Las limpiezas dentales regulares son esenciales para prevenir enfermedades de las encías, caries y mantener la salud bucal general.'
+      medium:
+        'Nuestro servicio de limpieza dental profesional elimina la placa, el sarro y las manchas para mantener tus dientes sanos y brillantes. Las limpiezas regulares previenen la enfermedad de las encías.',
+      long: 'Experimenta una limpieza dental profesional completa que va más allá de lo que puedes lograr en casa. Nuestros higienistas especializados utilizan técnicas avanzadas para eliminar la placa, el sarro y las manchas superficiales, dejando tus dientes frescos y con su mejor aspecto. Las limpiezas dentales regulares son esenciales para prevenir enfermedades de las encías, caries y mantener la salud bucal general.',
     },
     'dental-implants': {
       short: 'Solución permanente de reemplazo dental usando implantes de titanio.',
-      medium: 'Restaura tu sonrisa con implantes dentales: una solución permanente y de aspecto natural para dientes perdidos. Nuestros implantes de titanio se integran con tu hueso maxilar.',
-      long: 'Los implantes dentales representan el estándar de oro en tecnología de reemplazo dental. Utilizando postes de titanio biocompatible que se integran con tu hueso maxilar, creamos una base permanente para coronas de aspecto natural. A diferencia de las dentaduras o puentes, los implantes preservan los dientes circundantes y proporcionan la experiencia más cercana a los dientes naturales.'
-    }
-  }
+      medium:
+        'Restaura tu sonrisa con implantes dentales: una solución permanente y de aspecto natural para dientes perdidos. Nuestros implantes de titanio se integran con tu hueso maxilar.',
+      long: 'Los implantes dentales representan el estándar de oro en tecnología de reemplazo dental. Utilizando postes de titanio biocompatible que se integran con tu hueso maxilar, creamos una base permanente para coronas de aspecto natural. A diferencia de las dentaduras o puentes, los implantes preservan los dientes circundantes y proporcionan la experiencia más cercana a los dientes naturales.',
+    },
+  },
 }
 
 const mockBlogPosts = {
@@ -126,10 +135,11 @@ A diet rich in vitamins and minerals supports healthy teeth and gums.
       `,
       seo: {
         title: 'Complete Guide to Better Dental Hygiene - Expert Tips',
-        description: 'Discover 10 essential tips for maintaining excellent oral hygiene. Expert advice from dental professionals.',
-        keywords: ['dental hygiene', 'oral care', 'teeth brushing', 'dental tips', 'oral health']
-      }
-    }
+        description:
+          'Discover 10 essential tips for maintaining excellent oral hygiene. Expert advice from dental professionals.',
+        keywords: ['dental hygiene', 'oral care', 'teeth brushing', 'dental tips', 'oral health'],
+      },
+    },
   },
   es: {
     'dental-hygiene-tips': {
@@ -171,42 +181,50 @@ Una dieta rica en vitaminas y minerales apoya dientes y encías saludables.
       `,
       seo: {
         title: 'Guía Completa para Mejor Higiene Dental - Consejos Expertos',
-        description: 'Descubre 10 consejos esenciales para mantener una excelente higiene bucal. Consejos expertos de profesionales dentales.',
-        keywords: ['higiene dental', 'cuidado bucal', 'cepillado dental', 'consejos dentales', 'salud bucal']
-      }
-    }
-  }
+        description:
+          'Descubre 10 consejos esenciales para mantener una excelente higiene bucal. Consejos expertos de profesionales dentales.',
+        keywords: [
+          'higiene dental',
+          'cuidado bucal',
+          'cepillado dental',
+          'consejos dentales',
+          'salud bucal',
+        ],
+      },
+    },
+  },
 }
 
 // ─── AI-Powered Content Generation Functions ─────────────
 
-async function generateContentWithAI(prompt: string, context: any): Promise<string> {
+async function generateContentWithAI(prompt: string, _context: any): Promise<string> {
   if (!openai) {
     // Return mock content if no OpenAI key
-    return "Mock AI-generated content. Configure OPENAI_API_KEY to use real AI generation."
+    return 'Mock AI-generated content. Configure OPENAI_API_KEY to use real AI generation.'
   }
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: 'gpt-4',
       messages: [
         {
-          role: "system",
-          content: "You are a professional dental content writer. Create engaging, accurate, and SEO-friendly content for dental clinics."
+          role: 'system',
+          content:
+            'You are a professional dental content writer. Create engaging, accurate, and SEO-friendly content for dental clinics.',
         },
         {
-          role: "user",
-          content: prompt
-        }
+          role: 'user',
+          content: prompt,
+        },
       ],
       max_tokens: 1000,
       temperature: 0.7,
     })
 
-    return completion.choices[0]?.message?.content || "Error generating content"
+    return completion.choices[0]?.message?.content || 'Error generating content'
   } catch (error) {
     console.error('OpenAI API error:', error)
-    return "Error generating content with AI. Please try again."
+    return 'Error generating content with AI. Please try again.'
   }
 }
 
@@ -220,11 +238,11 @@ export const generateServiceDescription = createServerFn({ method: 'POST' })
     // Try to find mock content first
     const serviceKey = serviceName.toLowerCase().replace(/\s+/g, '-')
     const mockContent = mockServiceDescriptions[language]?.[serviceKey]?.[length]
-    
+
     if (mockContent) {
       return {
         content: mockContent,
-        source: 'mock'
+        source: 'mock',
       }
     }
 
@@ -242,10 +260,10 @@ ${length === 'long' ? 'Provide a comprehensive paragraph with benefits and proce
     `
 
     const aiContent = await generateContentWithAI(prompt, data)
-    
+
     return {
       content: aiContent,
-      source: openai ? 'ai' : 'mock'
+      source: openai ? 'ai' : 'mock',
     }
   })
 
@@ -257,24 +275,29 @@ export const generateBlogPost = createServerFn({ method: 'POST' })
     // Try to find mock content first
     const topicKey = topic.toLowerCase().replace(/\s+/g, '-')
     const mockPost = mockBlogPosts[language]?.[topicKey]
-    
+
     if (mockPost) {
       let content = mockPost.content
-      
+
       if (includeCallToAction) {
-        const cta = language === 'es' 
-          ? `\n\n---\n\n¿Necesitas atención dental profesional? En ${clinicContext.name} estamos aquí para ayudarte. [Reserva tu cita hoy](${clinicContext.name.toLowerCase().replace(/\s+/g, '-')}.denty.es/book).`
-          : `\n\n---\n\nNeed professional dental care? At ${clinicContext.name}, we're here to help. [Book your appointment today](${clinicContext.name.toLowerCase().replace(/\s+/g, '-')}.denty.es/book).`
-        
+        const cta =
+          language === 'es'
+            ? `\n\n---\n\n¿Necesitas atención dental profesional? En ${clinicContext.name} estamos aquí para ayudarte. [Reserva tu cita hoy](${clinicContext.name.toLowerCase().replace(/\s+/g, '-')}.denty.es/book).`
+            : `\n\n---\n\nNeed professional dental care? At ${clinicContext.name}, we're here to help. [Book your appointment today](${clinicContext.name.toLowerCase().replace(/\s+/g, '-')}.denty.es/book).`
+
         content += cta
       }
-      
+
       return {
         title: mockPost.title,
         content: content,
-        excerpt: mockPost.content.split('\n').find(line => line.length > 50)?.substring(0, 150) + '...' || '',
+        excerpt:
+          `${mockPost.content
+            .split('\n')
+            .find((line) => line.length > 50)
+            ?.substring(0, 150)}...` || '',
         seo: mockPost.seo,
-        source: 'mock'
+        source: 'mock',
       }
     }
 
@@ -298,27 +321,31 @@ Format the response as markdown.
     `
 
     const aiContent = await generateContentWithAI(prompt, data)
-    
+
     // Extract title from AI content (assuming it starts with # Title)
     const titleMatch = aiContent.match(/^#\s*(.+)$/m)
     const title = titleMatch ? titleMatch[1] : topic
-    
+
     // Generate excerpt from first paragraph
-    const excerpt = aiContent.split('\n').find(line => line.length > 50)?.substring(0, 150) + '...' || ''
-    
+    const excerpt =
+      `${aiContent
+        .split('\n')
+        .find((line) => line.length > 50)
+        ?.substring(0, 150)}...` || ''
+
     // Generate SEO metadata
     const seo = {
       title: `${title} | ${clinicContext.name}`,
       description: excerpt,
-      keywords: topic.split(' ').concat(['dental', 'dentist', 'oral health'])
+      keywords: topic.split(' ').concat(['dental', 'dentist', 'oral health']),
     }
-    
+
     return {
       title,
       content: aiContent,
       excerpt,
       seo,
-      source: openai ? 'ai' : 'mock'
+      source: openai ? 'ai' : 'mock',
     }
   })
 
@@ -328,26 +355,27 @@ export const suggestSEOKeywords = createServerFn({ method: 'POST' })
     const { clinicName, services, location, language, targetAudience } = data
 
     // Base keywords
-    const baseKeywords = language === 'es' 
-      ? ['dentista', 'clínica dental', 'salud bucal', 'cuidado dental']
-      : ['dentist', 'dental clinic', 'oral health', 'dental care']
+    const baseKeywords =
+      language === 'es'
+        ? ['dentista', 'clínica dental', 'salud bucal', 'cuidado dental']
+        : ['dentist', 'dental clinic', 'oral health', 'dental care']
 
     // Location-based keywords
-    const locationKeywords = location 
-      ? (language === 'es' 
-          ? [`dentista ${location}`, `clínica dental ${location}`, `dentista en ${location}`]
-          : [`dentist ${location}`, `dental clinic ${location}`, `dentist in ${location}`])
+    const locationKeywords = location
+      ? language === 'es'
+        ? [`dentista ${location}`, `clínica dental ${location}`, `dentista en ${location}`]
+        : [`dentist ${location}`, `dental clinic ${location}`, `dentist in ${location}`]
       : []
 
     // Service-based keywords
-    const serviceKeywords = services.flatMap(service => {
+    const serviceKeywords = services.flatMap((service) => {
       const translations = {
-        'cleaning': language === 'es' ? 'limpieza dental' : 'dental cleaning',
-        'implants': language === 'es' ? 'implantes dentales' : 'dental implants',
-        'orthodontics': language === 'es' ? 'ortodoncia' : 'orthodontics',
-        'whitening': language === 'es' ? 'blanqueamiento dental' : 'teeth whitening',
+        cleaning: language === 'es' ? 'limpieza dental' : 'dental cleaning',
+        implants: language === 'es' ? 'implantes dentales' : 'dental implants',
+        orthodontics: language === 'es' ? 'ortodoncia' : 'orthodontics',
+        whitening: language === 'es' ? 'blanqueamiento dental' : 'teeth whitening',
       }
-      
+
       const serviceTranslation = translations[service.toLowerCase()] || service
       return [
         serviceTranslation,
@@ -357,10 +385,10 @@ export const suggestSEOKeywords = createServerFn({ method: 'POST' })
     })
 
     // Target audience keywords
-    const audienceKeywords = targetAudience 
-      ? (language === 'es' 
-          ? [`dentista para ${targetAudience}`, `cuidado dental ${targetAudience}`]
-          : [`dentist for ${targetAudience}`, `${targetAudience} dental care`])
+    const audienceKeywords = targetAudience
+      ? language === 'es'
+        ? [`dentista para ${targetAudience}`, `cuidado dental ${targetAudience}`]
+        : [`dentist for ${targetAudience}`, `${targetAudience} dental care`]
       : []
 
     // Combine all keywords and remove duplicates
@@ -376,22 +404,26 @@ export const suggestSEOKeywords = createServerFn({ method: 'POST' })
 
     return {
       keywords: uniqueKeywords,
-      source: 'generated'
+      source: 'generated',
     }
   })
 
 export const generatePageContent = createServerFn({ method: 'POST' })
-  .inputValidator(z.object({
-    pageType: z.enum(['homepage', 'about', 'services', 'contact']),
-    clinicContext: z.object({
-      name: z.string(),
-      services: z.array(z.string()),
-      location: z.string().optional(),
-      description: z.string().optional(),
+  .inputValidator(
+    z.object({
+      pageType: z.enum(['homepage', 'about', 'services', 'contact']),
+      clinicContext: z.object({
+        name: z.string(),
+        services: z.array(z.string()),
+        location: z.string().optional(),
+        description: z.string().optional(),
+      }),
+      language: z.enum(['en', 'es']).default('en'),
+      tone: z
+        .enum(['professional', 'friendly', 'authoritative', 'conversational'])
+        .default('professional'),
     }),
-    language: z.enum(['en', 'es']).default('en'),
-    tone: z.enum(['professional', 'friendly', 'authoritative', 'conversational']).default('professional'),
-  }))
+  )
   .handler(async ({ data }) => {
     const { pageType, clinicContext, language, tone } = data
 
@@ -407,9 +439,9 @@ Include relevant headings and structure the content appropriately.
     `
 
     const content = await generateContentWithAI(prompt, data)
-    
+
     return {
       content,
-      source: openai ? 'ai' : 'mock'
+      source: openai ? 'ai' : 'mock',
     }
   })

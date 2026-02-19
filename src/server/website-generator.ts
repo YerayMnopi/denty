@@ -1,6 +1,10 @@
 import { ObjectId } from 'mongodb'
-import type { Clinic, Doctor, Website, BlogPost } from '@/lib/collections'
-import { getClinicsCollection, getDoctorsCollection, getWebsitesCollection } from '@/lib/collections'
+import type { BlogPost, Clinic, Doctor, Website } from '@/lib/collections'
+import {
+  getClinicsCollection,
+  getDoctorsCollection,
+  getWebsitesCollection,
+} from '@/lib/collections'
 
 // ─── Types ───────────────────────────────────────────────
 
@@ -31,10 +35,10 @@ export function generateSchemaMarkup(context: WebsiteGenerationContext): {
   const localBusiness = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    '@id': `https://${context.website.domain || context.website.subdomain + '.denty.es'}`,
+    '@id': `https://${context.website.domain || `${context.website.subdomain}.denty.es`}`,
     name: clinic.name,
     description: clinic.description.en || clinic.description.es,
-    url: `https://${context.website.domain || context.website.subdomain + '.denty.es'}`,
+    url: `https://${context.website.domain || `${context.website.subdomain}.denty.es`}`,
     telephone: clinic.phone,
     email: clinic.email,
     address: {
@@ -43,12 +47,14 @@ export function generateSchemaMarkup(context: WebsiteGenerationContext): {
       addressLocality: clinic.address.city,
       postalCode: clinic.address.zip,
     },
-    geo: clinic.address.coordinates ? {
-      '@type': 'GeoCoordinates',
-      latitude: clinic.address.coordinates[1],
-      longitude: clinic.address.coordinates[0],
-    } : undefined,
-    openingHours: clinic.workingHours.map(wh => {
+    geo: clinic.address.coordinates
+      ? {
+          '@type': 'GeoCoordinates',
+          latitude: clinic.address.coordinates[1],
+          longitude: clinic.address.coordinates[0],
+        }
+      : undefined,
+    openingHours: clinic.workingHours.map((wh) => {
       const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       return `${days[wh.day]} ${wh.open}-${wh.close}`
     }),
@@ -56,8 +62,8 @@ export function generateSchemaMarkup(context: WebsiteGenerationContext): {
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.8',
-      reviewCount: '127'
-    }
+      reviewCount: '127',
+    },
   }
 
   const dentist = {
@@ -78,8 +84,8 @@ export function generateSchemaMarkup(context: WebsiteGenerationContext): {
         description: `Professional ${service.name.en || service.name.es} service`,
         price: service.price,
         priceCurrency: 'EUR',
-      }))
-    }
+      })),
+    },
   }
 
   const medicalOrganization = {
@@ -96,9 +102,9 @@ export function generateSchemaMarkup(context: WebsiteGenerationContext): {
       credentialCategory: 'Professional License',
       recognizedBy: {
         '@type': 'Organization',
-        name: 'Spanish Dental Council'
-      }
-    }
+        name: 'Spanish Dental Council',
+      },
+    },
   }
 
   return { localBusiness, dentist, medicalOrganization }
@@ -106,13 +112,16 @@ export function generateSchemaMarkup(context: WebsiteGenerationContext): {
 
 // ─── Page Generators ─────────────────────────────────────
 
-export function generateHomepage(context: WebsiteGenerationContext, language: string = 'en'): GeneratedPageData {
+export function generateHomepage(
+  context: WebsiteGenerationContext,
+  language: string = 'en',
+): GeneratedPageData {
   const { website, clinic, doctors } = context
   const lang = language as 'en' | 'es'
-  
+
   const seoTitle = website.settings.seo.title[lang] || clinic.name
   const seoDescription = website.settings.seo.description[lang] || clinic.description[lang]
-  
+
   const heroContent = website.content.homepage.hero[lang] || `Welcome to ${clinic.name}`
   const aboutContent = website.content.homepage.about[lang] || clinic.description[lang]
   const ctaContent = website.content.homepage.callToAction[lang] || 'Book Your Appointment Today'
@@ -135,26 +144,34 @@ export function generateHomepage(context: WebsiteGenerationContext, language: st
     <div class="services-preview">
       <h2>Our Services</h2>
       <div class="services-grid">
-        ${clinic.services.map(service => `
+        ${clinic.services
+          .map(
+            (service) => `
           <div class="service-card">
             <h3>${service.name[lang] || service.name.en || service.name.es}</h3>
             <p>Duration: ${service.duration} minutes</p>
             ${service.price ? `<p>From €${service.price}</p>` : ''}
           </div>
-        `).join('')}
+        `,
+          )
+          .join('')}
       </div>
     </div>
     
     <div class="doctors-preview">
       <h2>Our Team</h2>
       <div class="doctors-grid">
-        ${doctors.map(doctor => `
+        ${doctors
+          .map(
+            (doctor) => `
           <div class="doctor-card">
             ${doctor.photo ? `<img src="${doctor.photo}" alt="${doctor.name}" />` : ''}
             <h3>${doctor.name}</h3>
             <p>${doctor.specialization[lang] || doctor.specialization.en || doctor.specialization.es}</p>
           </div>
-        `).join('')}
+        `,
+          )
+          .join('')}
       </div>
     </div>
     
@@ -175,24 +192,30 @@ export function generateHomepage(context: WebsiteGenerationContext, language: st
     description: seoDescription,
     keywords: website.settings.seo.keywords,
     content,
-    schemaMarkup: schemaMarkup.localBusiness
+    schemaMarkup: schemaMarkup.localBusiness,
   }
 }
 
-export function generateServicesPage(context: WebsiteGenerationContext, language: string = 'en'): GeneratedPageData {
+export function generateServicesPage(
+  context: WebsiteGenerationContext,
+  language: string = 'en',
+): GeneratedPageData {
   const { website, clinic } = context
   const lang = language as 'en' | 'es'
-  
+
   const pageTitle = website.content.services.title[lang] || 'Our Services'
-  const pageDescription = website.content.services.description[lang] || `Comprehensive dental services at ${clinic.name}`
-  
+  const pageDescription =
+    website.content.services.description[lang] || `Comprehensive dental services at ${clinic.name}`
+
   const content = `
     <div class="services-page">
       <h1>${pageTitle}</h1>
       <p class="page-description">${pageDescription}</p>
       
       <div class="services-list">
-        ${clinic.services.map(service => `
+        ${clinic.services
+          .map(
+            (service) => `
           <div class="service-detail">
             <h2>${service.name[lang] || service.name.en || service.name.es}</h2>
             <div class="service-meta">
@@ -203,7 +226,9 @@ export function generateServicesPage(context: WebsiteGenerationContext, language
               <a href="/book?service=${encodeURIComponent(service.name[lang] || service.name.en || service.name.es)}" class="btn btn-primary">Book Now</a>
             </div>
           </div>
-        `).join('')}
+        `,
+          )
+          .join('')}
       </div>
       
       <div class="services-cta">
@@ -221,24 +246,30 @@ export function generateServicesPage(context: WebsiteGenerationContext, language
     description: pageDescription,
     keywords: [...website.settings.seo.keywords, 'dental services', 'dentist services'],
     content,
-    schemaMarkup: schemaMarkup.dentist
+    schemaMarkup: schemaMarkup.dentist,
   }
 }
 
-export function generateTeamPage(context: WebsiteGenerationContext, language: string = 'en'): GeneratedPageData {
+export function generateTeamPage(
+  context: WebsiteGenerationContext,
+  language: string = 'en',
+): GeneratedPageData {
   const { website, clinic, doctors } = context
   const lang = language as 'en' | 'es'
-  
+
   const pageTitle = website.content.team.title[lang] || 'Our Team'
-  const pageDescription = website.content.team.description[lang] || `Meet the professional team at ${clinic.name}`
-  
+  const pageDescription =
+    website.content.team.description[lang] || `Meet the professional team at ${clinic.name}`
+
   const content = `
     <div class="team-page">
       <h1>${pageTitle}</h1>
       <p class="page-description">${pageDescription}</p>
       
       <div class="doctors-grid">
-        ${doctors.map(doctor => `
+        ${doctors
+          .map(
+            (doctor) => `
           <div class="doctor-profile">
             ${doctor.photo ? `<img src="${doctor.photo}" alt="${doctor.name}" class="doctor-photo" />` : ''}
             <h2>${doctor.name}</h2>
@@ -249,17 +280,25 @@ export function generateTeamPage(context: WebsiteGenerationContext, language: st
             <div class="doctor-services">
               <h3>Specializes in:</h3>
               <ul>
-                ${doctor.services.map(serviceId => {
-                  const service = clinic.services.find(s => s.name.en === serviceId || s.name.es === serviceId)
-                  return service ? `<li>${service.name[lang] || service.name.en || service.name.es}</li>` : ''
-                }).join('')}
+                ${doctor.services
+                  .map((serviceId) => {
+                    const service = clinic.services.find(
+                      (s) => s.name.en === serviceId || s.name.es === serviceId,
+                    )
+                    return service
+                      ? `<li>${service.name[lang] || service.name.en || service.name.es}</li>`
+                      : ''
+                  })
+                  .join('')}
               </ul>
             </div>
             <div class="doctor-actions">
               <a href="/book?doctor=${doctor.slug}" class="btn btn-primary">Book with ${doctor.name}</a>
             </div>
           </div>
-        `).join('')}
+        `,
+          )
+          .join('')}
       </div>
     </div>
   `
@@ -269,17 +308,21 @@ export function generateTeamPage(context: WebsiteGenerationContext, language: st
     description: pageDescription,
     keywords: [...website.settings.seo.keywords, 'dental team', 'dentist', 'dental professionals'],
     content,
-    schemaMarkup: generateSchemaMarkup(context).medicalOrganization
+    schemaMarkup: generateSchemaMarkup(context).medicalOrganization,
   }
 }
 
-export function generateContactPage(context: WebsiteGenerationContext, language: string = 'en'): GeneratedPageData {
+export function generateContactPage(
+  context: WebsiteGenerationContext,
+  language: string = 'en',
+): GeneratedPageData {
   const { website, clinic } = context
   const lang = language as 'en' | 'es'
-  
+
   const pageTitle = website.content.contact.title[lang] || 'Contact Us'
-  const pageDescription = website.content.contact.description[lang] || `Get in touch with ${clinic.name}`
-  
+  const pageDescription =
+    website.content.contact.description[lang] || `Get in touch with ${clinic.name}`
+
   const content = `
     <div class="contact-page">
       <h1>${pageTitle}</h1>
@@ -309,10 +352,20 @@ export function generateContactPage(context: WebsiteGenerationContext, language:
           <div class="working-hours">
             <h3>Working Hours</h3>
             <ul>
-              ${clinic.workingHours.map(wh => {
-                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-                return `<li>${days[wh.day]}: ${wh.open} - ${wh.close}</li>`
-              }).join('')}
+              ${clinic.workingHours
+                .map((wh) => {
+                  const days = [
+                    'Sunday',
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday',
+                  ]
+                  return `<li>${days[wh.day]}: ${wh.open} - ${wh.close}</li>`
+                })
+                .join('')}
             </ul>
           </div>
         </div>
@@ -328,7 +381,9 @@ export function generateContactPage(context: WebsiteGenerationContext, language:
         </div>
       </div>
       
-      ${clinic.address.coordinates ? `
+      ${
+        clinic.address.coordinates
+          ? `
         <div class="map-section">
           <h2>Find Us</h2>
           <div class="map-placeholder">
@@ -336,22 +391,33 @@ export function generateContactPage(context: WebsiteGenerationContext, language:
             <p>Map showing location at ${clinic.address.street}, ${clinic.address.city}</p>
           </div>
         </div>
-      ` : ''}
+      `
+          : ''
+      }
     </div>
   `
 
   return {
     title: `${pageTitle} | ${clinic.name}`,
     description: pageDescription,
-    keywords: [...website.settings.seo.keywords, 'contact', 'location', 'hours', 'phone', 'appointment'],
+    keywords: [
+      ...website.settings.seo.keywords,
+      'contact',
+      'location',
+      'hours',
+      'phone',
+      'appointment',
+    ],
     content,
-    schemaMarkup: generateSchemaMarkup(context).localBusiness
+    schemaMarkup: generateSchemaMarkup(context).localBusiness,
   }
 }
 
 // ─── Main Generation Function ────────────────────────────
 
-export async function generateWebsiteData(clinicId: string): Promise<WebsiteGenerationContext | null> {
+export async function generateWebsiteData(
+  clinicId: string,
+): Promise<WebsiteGenerationContext | null> {
   const clinicsCollection = await getClinicsCollection()
   const doctorsCollection = await getDoctorsCollection()
   const websitesCollection = await getWebsitesCollection()
@@ -359,7 +425,7 @@ export async function generateWebsiteData(clinicId: string): Promise<WebsiteGene
   const [clinic, doctors, website] = await Promise.all([
     clinicsCollection.findOne({ _id: new ObjectId(clinicId) }),
     doctorsCollection.find({ clinicId: new ObjectId(clinicId) }).toArray(),
-    websitesCollection.findOne({ clinicId: new ObjectId(clinicId) })
+    websitesCollection.findOne({ clinicId: new ObjectId(clinicId) }),
   ])
 
   if (!clinic || !website) {
@@ -369,6 +435,6 @@ export async function generateWebsiteData(clinicId: string): Promise<WebsiteGene
   return {
     website,
     clinic,
-    doctors
+    doctors,
   }
 }

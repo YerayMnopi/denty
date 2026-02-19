@@ -1,65 +1,71 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { notFound } from '@tanstack/react-router'
-import { getMockWebsiteBySubdomain, getMockBlogPostBySlug, getMockBlogPostsByClinicId, type MockBlogPost } from '@/data/website-mock'
 import { mockClinics } from '@/data/mock'
+import {
+  getMockBlogPostBySlug,
+  getMockBlogPostsByClinicId,
+  getMockWebsiteBySubdomain,
+  type MockBlogPost,
+} from '@/data/website-mock'
 
 // Server function to get blog post data
 const getBlogPostData = createServerFn({ method: 'GET' })
-  .inputValidator((input: { 
-    clinicSlug: string
-    postSlug: string
-  }) => input)
-  .handler(async ({ data }): Promise<{
-    post: MockBlogPost
-    clinic: { name: string, slug: string }
-    relatedPosts: MockBlogPost[]
-  }> => {
-    // Get website data by subdomain (clinicSlug)
-    const website = getMockWebsiteBySubdomain(data.clinicSlug)
-    if (!website) {
-      throw notFound()
-    }
+  .inputValidator((input: { clinicSlug: string; postSlug: string }) => input)
+  .handler(
+    async ({
+      data,
+    }): Promise<{
+      post: MockBlogPost
+      clinic: { name: string; slug: string }
+      relatedPosts: MockBlogPost[]
+    }> => {
+      // Get website data by subdomain (clinicSlug)
+      const website = getMockWebsiteBySubdomain(data.clinicSlug)
+      if (!website) {
+        throw notFound()
+      }
 
-    // Get clinic data (match by subdomain/slug)
-    const clinic = mockClinics.find(c => c.slug === website.subdomain)
-    if (!clinic) {
-      throw notFound()
-    }
+      // Get clinic data (match by subdomain/slug)
+      const clinic = mockClinics.find((c) => c.slug === website.subdomain)
+      if (!clinic) {
+        throw notFound()
+      }
 
-    // Get the specific blog post
-    const post = getMockBlogPostBySlug(website.clinicId, data.postSlug)
-    if (!post || !post.published) {
-      throw notFound()
-    }
+      // Get the specific blog post
+      const post = getMockBlogPostBySlug(website.clinicId, data.postSlug)
+      if (!post || !post.published) {
+        throw notFound()
+      }
 
-    // Get related posts (other posts with similar tags)
-    const allPosts = getMockBlogPostsByClinicId(website.clinicId)
-      .filter(p => p.published && p._id !== post._id)
-    
-    const relatedPosts = allPosts
-      .filter(p => p.tags.some(tag => post.tags.includes(tag)))
-      .slice(0, 3)
+      // Get related posts (other posts with similar tags)
+      const allPosts = getMockBlogPostsByClinicId(website.clinicId).filter(
+        (p) => p.published && p._id !== post._id,
+      )
 
-    return {
-      post,
-      clinic: { name: clinic.name, slug: data.clinicSlug },
-      relatedPosts
-    }
-  })
+      const relatedPosts = allPosts
+        .filter((p) => p.tags.some((tag) => post.tags.includes(tag)))
+        .slice(0, 3)
+
+      return {
+        post,
+        clinic: { name: clinic.name, slug: data.clinicSlug },
+        relatedPosts,
+      }
+    },
+  )
 
 export const Route = createFileRoute('/clinic/$clinicSlug/blog/$postSlug')({
   loader: async ({ params }) => {
-    const postData = await getBlogPostData({ 
-      data: { 
+    const postData = await getBlogPostData({
+      data: {
         clinicSlug: params.clinicSlug,
-        postSlug: params.postSlug
-      } 
+        postSlug: params.postSlug,
+      },
     })
-    
+
     return {
       ...postData,
-      clinicSlug: params.clinicSlug
+      clinicSlug: params.clinicSlug,
     }
   },
   component: ClinicBlogPost,
@@ -71,7 +77,10 @@ export const Route = createFileRoute('/clinic/$clinicSlug/blog/$postSlug')({
     return {
       meta: [
         {
-          title: post.seo.title.en || post.title.en || `${Object.values(post.title)[0]} | ${clinic.name}`,
+          title:
+            post.seo.title.en ||
+            post.title.en ||
+            `${Object.values(post.title)[0]} | ${clinic.name}`,
         },
         {
           name: 'description',
@@ -135,7 +144,7 @@ function ClinicBlogPost() {
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     }).format(new Date(date))
   }
 
@@ -147,7 +156,10 @@ function ClinicBlogPost() {
       .replace(/^### (.*$)/gm, '<h3>$1</h3>')
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-blue-600 hover:text-blue-800 underline">$1</a>')
+      .replace(
+        /\[(.*?)\]\((.*?)\)/g,
+        '<a href="$2" class="text-blue-600 hover:text-blue-800 underline">$1</a>',
+      )
       .replace(/\n\n/g, '</p><p>')
       .replace(/\n/g, '<br>')
       .replace(/^(.*)$/gm, '<p>$1</p>')
@@ -157,7 +169,9 @@ function ClinicBlogPost() {
       .replace(/<p><br>/g, '<p>')
   }
 
-  const contentHTML = formatContentToHTML(post.content.en || post.content.es || Object.values(post.content)[0])
+  const contentHTML = formatContentToHTML(
+    post.content.en || post.content.es || Object.values(post.content)[0],
+  )
 
   return (
     <div className="min-h-screen bg-white">
@@ -166,55 +180,55 @@ function ClinicBlogPost() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
-              <Link 
-                to="/clinic/$clinicSlug" 
+              <Link
+                to="/clinic/$clinicSlug"
                 params={{ clinicSlug }}
                 className="text-2xl font-bold text-gray-900"
               >
-                {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
               </Link>
             </div>
             <div className="hidden md:flex space-x-8">
-              <Link 
-                to="/clinic/$clinicSlug" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug"
+                params={{ clinicSlug }}
                 className="text-gray-600 hover:text-blue-600 font-medium"
               >
                 Home
               </Link>
-              <Link 
-                to="/clinic/$clinicSlug/services" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug/services"
+                params={{ clinicSlug }}
                 className="text-gray-600 hover:text-blue-600 font-medium"
               >
                 Services
               </Link>
-              <Link 
-                to="/clinic/$clinicSlug/team" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug/team"
+                params={{ clinicSlug }}
                 className="text-gray-600 hover:text-blue-600 font-medium"
               >
                 Team
               </Link>
-              <Link 
-                to="/clinic/$clinicSlug/contact" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug/contact"
+                params={{ clinicSlug }}
                 className="text-gray-600 hover:text-blue-600 font-medium"
               >
                 Contact
               </Link>
-              <Link 
-                to="/clinic/$clinicSlug/blog" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug/blog"
+                params={{ clinicSlug }}
                 className="text-gray-900 hover:text-blue-600 font-medium"
               >
                 Blog
               </Link>
             </div>
             <div className="flex items-center space-x-4">
-              <Link 
-                to="/book/$clinicSlug" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/book/$clinicSlug"
+                params={{ clinicSlug }}
                 className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
               >
                 Book Appointment
@@ -230,9 +244,9 @@ function ClinicBlogPost() {
           <nav className="flex" aria-label="Breadcrumb">
             <ol className="flex items-center space-x-4">
               <li>
-                <Link 
-                  to="/clinic/$clinicSlug" 
-                  params={{ clinicSlug }} 
+                <Link
+                  to="/clinic/$clinicSlug"
+                  params={{ clinicSlug }}
                   className="text-gray-500 hover:text-gray-700"
                 >
                   Home
@@ -240,12 +254,22 @@ function ClinicBlogPost() {
               </li>
               <li>
                 <div className="flex items-center">
-                  <svg className="shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <svg
+                    className="shrink-0 h-5 w-5 text-gray-400 mx-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
-                  <Link 
-                    to="/clinic/$clinicSlug/blog" 
-                    params={{ clinicSlug }} 
+                  <Link
+                    to="/clinic/$clinicSlug/blog"
+                    params={{ clinicSlug }}
                     className="text-gray-500 hover:text-gray-700"
                   >
                     Blog
@@ -254,8 +278,18 @@ function ClinicBlogPost() {
               </li>
               <li>
                 <div className="flex items-center">
-                  <svg className="shrink-0 h-5 w-5 text-gray-400 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <svg
+                    className="shrink-0 h-5 w-5 text-gray-400 mx-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                   <span className="text-gray-900 font-medium line-clamp-1">
                     {post.title.en || post.title.es || Object.values(post.title)[0]}
@@ -272,20 +306,20 @@ function ClinicBlogPost() {
         {/* Article Header */}
         <header className="mb-8">
           <div className="flex flex-wrap gap-2 mb-4">
-            {post.tags.map(tag => (
-              <span 
-                key={tag} 
+            {post.tags.map((tag) => (
+              <span
+                key={tag}
                 className="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full"
               >
-                {tag.replace(/\b\w/g, l => l.toUpperCase())}
+                {tag.replace(/\b\w/g, (l) => l.toUpperCase())}
               </span>
             ))}
           </div>
-          
+
           <h1 className="text-4xl font-bold text-gray-900 mb-6">
             {post.title.en || post.title.es || Object.values(post.title)[0]}
           </h1>
-          
+
           <div className="flex items-center text-gray-600 mb-6">
             <div className="flex items-center">
               <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold mr-3">
@@ -309,7 +343,7 @@ function ClinicBlogPost() {
         </header>
 
         {/* Article Content */}
-        <div 
+        <div
           className="prose prose-lg prose-blue max-w-none"
           dangerouslySetInnerHTML={{ __html: contentHTML }}
         />
@@ -321,16 +355,16 @@ function ClinicBlogPost() {
             Our experienced team at {clinic.name} is here to help you maintain optimal oral health.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              to="/book/$clinicSlug" 
-              params={{ clinicSlug }} 
+            <Link
+              to="/book/$clinicSlug"
+              params={{ clinicSlug }}
               className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
             >
               Book Appointment
             </Link>
-            <Link 
-              to="/clinic/$clinicSlug/contact" 
-              params={{ clinicSlug }} 
+            <Link
+              to="/clinic/$clinicSlug/contact"
+              params={{ clinicSlug }}
               className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
             >
               Contact Us
@@ -347,9 +381,9 @@ function ClinicBlogPost() {
               You Might Also Like
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {relatedPosts.map(relatedPost => (
-                <article 
-                  key={relatedPost._id} 
+              {relatedPosts.map((relatedPost) => (
+                <article
+                  key={relatedPost._id}
                   className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                 >
                   <div className="p-6">
@@ -359,19 +393,23 @@ function ClinicBlogPost() {
                       <span>{formatDate(relatedPost.publishedAt || relatedPost.createdAt)}</span>
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
-                      <Link 
-                        to="/clinic/$clinicSlug/blog/$postSlug" 
+                      <Link
+                        to="/clinic/$clinicSlug/blog/$postSlug"
                         params={{ clinicSlug, postSlug: relatedPost.slug }}
                         className="hover:text-blue-600 transition-colors"
                       >
-                        {relatedPost.title.en || relatedPost.title.es || Object.values(relatedPost.title)[0]}
+                        {relatedPost.title.en ||
+                          relatedPost.title.es ||
+                          Object.values(relatedPost.title)[0]}
                       </Link>
                     </h3>
                     <p className="text-gray-600 mb-4 line-clamp-3">
-                      {relatedPost.excerpt.en || relatedPost.excerpt.es || Object.values(relatedPost.excerpt)[0]}
+                      {relatedPost.excerpt.en ||
+                        relatedPost.excerpt.es ||
+                        Object.values(relatedPost.excerpt)[0]}
                     </p>
-                    <Link 
-                      to="/clinic/$clinicSlug/blog/$postSlug" 
+                    <Link
+                      to="/clinic/$clinicSlug/blog/$postSlug"
                       params={{ clinicSlug, postSlug: relatedPost.slug }}
                       className="text-blue-600 hover:text-blue-800 font-medium"
                     >
@@ -381,15 +419,20 @@ function ClinicBlogPost() {
                 </article>
               ))}
             </div>
-            
+
             <div className="text-center mt-12">
-              <Link 
-                to="/clinic/$clinicSlug/blog" 
+              <Link
+                to="/clinic/$clinicSlug/blog"
                 params={{ clinicSlug }}
                 className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
                 View All Blog Posts
               </Link>
@@ -404,7 +447,7 @@ function ClinicBlogPost() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
               </h3>
               <p className="text-gray-600">
                 Professional dental care with modern technology and personalized service.
@@ -414,27 +457,27 @@ function ClinicBlogPost() {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link 
-                    to="/clinic/$clinicSlug" 
-                    params={{ clinicSlug }} 
+                  <Link
+                    to="/clinic/$clinicSlug"
+                    params={{ clinicSlug }}
                     className="text-gray-600 hover:text-blue-600"
                   >
                     Home
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/clinic/$clinicSlug/services" 
-                    params={{ clinicSlug }} 
+                  <Link
+                    to="/clinic/$clinicSlug/services"
+                    params={{ clinicSlug }}
                     className="text-gray-600 hover:text-blue-600"
                   >
                     Our Services
                   </Link>
                 </li>
                 <li>
-                  <Link 
-                    to="/clinic/$clinicSlug/team" 
-                    params={{ clinicSlug }} 
+                  <Link
+                    to="/clinic/$clinicSlug/team"
+                    params={{ clinicSlug }}
                     className="text-gray-600 hover:text-blue-600"
                   >
                     Our Team
@@ -447,9 +490,9 @@ function ClinicBlogPost() {
               <p className="text-gray-600 mb-4">
                 Stay updated with the latest dental health tips and news.
               </p>
-              <Link 
-                to="/clinic/$clinicSlug/contact" 
-                params={{ clinicSlug }} 
+              <Link
+                to="/clinic/$clinicSlug/contact"
+                params={{ clinicSlug }}
                 className="inline-block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
               >
                 Contact Us
@@ -458,16 +501,21 @@ function ClinicBlogPost() {
           </div>
           <div className="border-t border-gray-200 mt-8 pt-8 text-center">
             <p className="text-gray-600">
-              © 2024 {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}. All rights reserved.
-              Powered by <Link to="/" className="text-blue-600 hover:text-blue-700">Denty</Link>.
+              © 2024 {clinicSlug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}. All
+              rights reserved. Powered by{' '}
+              <Link to="/" className="text-blue-600 hover:text-blue-700">
+                Denty
+              </Link>
+              .
             </p>
           </div>
         </div>
       </footer>
 
       {/* Custom Styles */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
           .prose {
             color: #374151;
             line-height: 1.75;
@@ -532,8 +580,9 @@ function ClinicBlogPost() {
             -webkit-box-orient: vertical;
             overflow: hidden;
           }
-        `
-      }} />
+        `,
+        }}
+      />
     </div>
   )
 }

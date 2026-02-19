@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
 import { ObjectId } from 'mongodb'
+import { describe, expect, it } from 'vitest'
 
 describe('Blog Server Functions', () => {
   describe('slug generation logic', () => {
@@ -9,7 +9,10 @@ describe('Blog Server Functions', () => {
         { title: 'Dental Care Tips!', expected: 'dental-care-tips' },
         { title: 'My Amazing Blog Post', expected: 'my-amazing-blog-post' },
         { title: 'Cómo Cuidar Tus Dientes', expected: 'como-cuidar-tus-dientes' },
-        { title: 'Implantes Dentales: Guía Completa', expected: 'implantes-dentales-guia-completa' },
+        {
+          title: 'Implantes Dentales: Guía Completa',
+          expected: 'implantes-dentales-guia-completa',
+        },
       ]
 
       titleToSlugTests.forEach(({ title, expected }) => {
@@ -28,9 +31,15 @@ describe('Blog Server Functions', () => {
 
     it('should handle special characters and accents correctly', () => {
       const specialTitles = [
-        { title: 'Niños & Adolescentes: Cuidado Dental', expected: 'ninos-adolescentes-cuidado-dental' },
+        {
+          title: 'Niños & Adolescentes: Cuidado Dental',
+          expected: 'ninos-adolescentes-cuidado-dental',
+        },
         { title: 'Bruxismo - Problemas y Soluciones', expected: 'bruxismo-problemas-y-soluciones' },
-        { title: 'El 90% de las Caries son Prevenibles', expected: 'el-90-de-las-caries-son-prevenibles' },
+        {
+          title: 'El 90% de las Caries son Prevenibles',
+          expected: 'el-90-de-las-caries-son-prevenibles',
+        },
         { title: '¿Cuándo visitar al dentista?', expected: 'cuando-visitar-al-dentista' },
       ]
 
@@ -51,11 +60,11 @@ describe('Blog Server Functions', () => {
     it('should handle slug collision logic', () => {
       const baseSlug = 'dental-care-tips'
       const existingSlugs = ['dental-care-tips', 'dental-care-tips-1', 'dental-care-tips-2']
-      
+
       // Logic to find next available slug
       let counter = 1
       let uniqueSlug = `${baseSlug}-${counter}`
-      
+
       while (existingSlugs.includes(uniqueSlug)) {
         counter++
         uniqueSlug = `${baseSlug}-${counter}`
@@ -70,7 +79,7 @@ describe('Blog Server Functions', () => {
         'dental-health-tips-2024',
         'orthodontics-guide',
         'post-1',
-        'cuidado-dental'
+        'cuidado-dental',
       ]
 
       const invalidSlugs = [
@@ -80,17 +89,17 @@ describe('Blog Server Functions', () => {
         'post@with#symbols',
         '',
         '   ',
-        'POST-IN-CAPS'
+        'POST-IN-CAPS',
       ]
 
       const slugRegex = /^[a-z0-9-]+$/
 
-      validSlugs.forEach(slug => {
+      validSlugs.forEach((slug) => {
         expect(slug).toMatch(slugRegex)
         expect(slug.length).toBeGreaterThan(0)
       })
 
-      invalidSlugs.forEach(slug => {
+      invalidSlugs.forEach((slug) => {
         const isValid = slug.trim().length > 0 && slugRegex.test(slug)
         expect(isValid).toBe(false)
       })
@@ -112,8 +121,8 @@ describe('Blog Server Functions', () => {
         seo: {
           title: { en: 'SEO Title', es: 'Título SEO' },
           description: { en: 'SEO Description', es: 'Descripción SEO' },
-          keywords: ['keyword1', 'keyword2', 'keyword3']
-        }
+          keywords: ['keyword1', 'keyword2', 'keyword3'],
+        },
       }
 
       expect(validBlogPost.clinicId).toBeInstanceOf(ObjectId)
@@ -125,28 +134,24 @@ describe('Blog Server Functions', () => {
     })
 
     it('should require title in at least one language', () => {
-      const invalidTitles = [
-        {},
-        { en: '', es: '' },
-        { en: '   ', es: '   ' }
-      ]
+      const invalidTitles = [{}, { en: '', es: '' }, { en: '   ', es: '   ' }]
 
       const validTitles = [
         { en: 'Valid Title' },
         { es: 'Título Válido' },
         { en: 'English', es: 'Español' },
-        { en: 'English Only', es: '' }
+        { en: 'English Only', es: '' },
       ]
 
       const hasValidTitle = (title: Record<string, string>) => {
-        return Object.values(title).some(t => t && t.trim().length > 0)
+        return Object.values(title).some((t) => t && t.trim().length > 0)
       }
 
-      invalidTitles.forEach(title => {
+      invalidTitles.forEach((title) => {
         expect(hasValidTitle(title)).toBe(false)
       })
 
-      validTitles.forEach(title => {
+      validTitles.forEach((title) => {
         expect(hasValidTitle(title)).toBe(true)
       })
     })
@@ -155,27 +160,27 @@ describe('Blog Server Functions', () => {
       const validContent = {
         title: { en: 'English Title', es: 'Título Español' },
         content: { en: '# English Content', es: '# Contenido Español' },
-        excerpt: { en: 'English excerpt', es: 'Extracto español' }
+        excerpt: { en: 'English excerpt', es: 'Extracto español' },
       }
 
       const invalidContent = {
         title: 'should be object',
         content: { en: 'Valid' },
-        excerpt: null
+        excerpt: null,
       }
       // Suppress unused variable warning
       void invalidContent
 
       // Valid content should have multilingual structure
-      Object.values(validContent).forEach(field => {
+      Object.values(validContent).forEach((field) => {
         expect(typeof field).toBe('object')
         expect(field).not.toBeNull()
         expect(Array.isArray(field)).toBe(false)
       })
 
       // Should have at least one language with content
-      Object.values(validContent).forEach(field => {
-        const hasContent = Object.values(field).some(v => v && v.trim().length > 0)
+      Object.values(validContent).forEach((field) => {
+        const hasContent = Object.values(field).some((v) => v && v.trim().length > 0)
         expect(hasContent).toBe(true)
       })
     })
@@ -185,7 +190,7 @@ describe('Blog Server Functions', () => {
         ['dental-health'],
         ['tips', 'prevention', 'oral-care'],
         ['orthodontics', 'braces', 'teeth-alignment'],
-        [] // Empty array is valid
+        [], // Empty array is valid
       ]
 
       const invalidTagSets = [
@@ -193,16 +198,16 @@ describe('Blog Server Functions', () => {
         [''], // Empty strings not allowed
         ['tag with spaces'], // Spaces not recommended
         [123], // Non-string values
-        ['TAG-IN-CAPS'] // Should be lowercase
+        ['TAG-IN-CAPS'], // Should be lowercase
       ]
       // Suppress unused variable warning
       void invalidTagSets
 
-      validTagSets.forEach(tags => {
+      validTagSets.forEach((tags) => {
         expect(Array.isArray(tags)).toBe(true)
         if (tags.length > 0) {
-          expect(tags.every(tag => typeof tag === 'string' && tag.trim().length > 0)).toBe(true)
-          expect(tags.every(tag => tag === tag.toLowerCase())).toBe(true)
+          expect(tags.every((tag) => typeof tag === 'string' && tag.trim().length > 0)).toBe(true)
+          expect(tags.every((tag) => tag === tag.toLowerCase())).toBe(true)
         }
       })
     })
@@ -210,7 +215,10 @@ describe('Blog Server Functions', () => {
     it('should validate publishing state logic', () => {
       const unpublishedPost = { published: false, publishedAt: undefined }
       const publishedPost = { published: true, publishedAt: new Date() }
-      let publishingPost: { published: boolean; publishedAt?: Date } = { published: true, publishedAt: undefined } // Being published now
+      const publishingPost: { published: boolean; publishedAt?: Date } = {
+        published: true,
+        publishedAt: undefined,
+      } // Being published now
 
       expect(unpublishedPost.published).toBe(false)
       expect(unpublishedPost.publishedAt).toBeUndefined()
@@ -230,7 +238,8 @@ describe('Blog Server Functions', () => {
     it('should validate SEO title length', () => {
       const shortTitle = 'Short SEO Title'
       const optimalTitle = 'This is an optimal length SEO title for dental blog'
-      const longTitle = 'This is a very long SEO title that exceeds the recommended 60 character limit for search engines and will be truncated'
+      const longTitle =
+        'This is a very long SEO title that exceeds the recommended 60 character limit for search engines and will be truncated'
 
       expect(shortTitle.length).toBeLessThan(60)
       expect(optimalTitle.length).toBeLessThanOrEqual(60)
@@ -248,8 +257,10 @@ describe('Blog Server Functions', () => {
 
     it('should validate SEO description length', () => {
       const shortDesc = 'Short description'
-      const optimalDesc = 'This is an optimal length meta description that provides enough information about the dental blog post while staying within search engine limits'
-      const longDesc = 'This is a very long meta description that far exceeds the recommended 160 character limit for search engine results pages and will definitely get truncated in search results which is not good for SEO and user experience overall'
+      const optimalDesc =
+        'This is an optimal length meta description that provides enough information about the dental blog post while staying within search engine limits'
+      const longDesc =
+        'This is a very long meta description that far exceeds the recommended 160 character limit for search engine results pages and will definitely get truncated in search results which is not good for SEO and user experience overall'
 
       expect(shortDesc.length).toBeLessThan(160)
       expect(optimalDesc.length).toBeLessThanOrEqual(160)
@@ -273,7 +284,7 @@ describe('Blog Server Functions', () => {
 
       expect(Array.isArray(validKeywords)).toBe(true)
       expect(validKeywords.length).toBeLessThanOrEqual(10)
-      expect(validKeywords.every(k => typeof k === 'string' && k.length > 0)).toBe(true)
+      expect(validKeywords.every((k) => typeof k === 'string' && k.length > 0)).toBe(true)
 
       expect(tooManyKeywords.length).toBeGreaterThan(10)
       expect(emptyKeywords.length).toBe(0)
@@ -284,10 +295,12 @@ describe('Blog Server Functions', () => {
 
       // Validation function
       const isValidKeywordsArray = (keywords: string[]) => {
-        return Array.isArray(keywords) && 
-               keywords.length <= 10 &&
-               keywords.every(k => typeof k === 'string' && k.trim().length > 0) &&
-               keywords.length === new Set(keywords).size // No duplicates
+        return (
+          Array.isArray(keywords) &&
+          keywords.length <= 10 &&
+          keywords.every((k) => typeof k === 'string' && k.trim().length > 0) &&
+          keywords.length === new Set(keywords).size
+        ) // No duplicates
       }
 
       expect(isValidKeywordsArray(validKeywords)).toBe(true)
@@ -335,9 +348,9 @@ This is the second paragraph with more detailed content that should not be inclu
 And here is even more content that definitely should not be in the excerpt.`
 
       // Extract first paragraph as excerpt
-      const lines = longContent.split('\n').filter(line => line.trim())
-      const titleLine = lines.find(line => line.startsWith('#'))
-      const contentLines = lines.filter(line => !line.startsWith('#'))
+      const lines = longContent.split('\n').filter((line) => line.trim())
+      const titleLine = lines.find((line) => line.startsWith('#'))
+      const contentLines = lines.filter((line) => !line.startsWith('#'))
       const firstParagraph = contentLines[0]
 
       expect(titleLine).toBe('# Title')
@@ -347,10 +360,11 @@ And here is even more content that definitely should not be in the excerpt.`
 
     it('should validate content has minimum length', () => {
       const shortContent = 'Too short'
-      const adequateContent = 'This is a blog post with adequate content length that provides value to readers and contains enough information to be considered a proper blog post with useful dental health information.'
-      
+      const adequateContent =
+        'This is a blog post with adequate content length that provides value to readers and contains enough information to be considered a proper blog post with useful dental health information.'
+
       const hasMinimumContent = (content: string) => {
-        const textOnly = content.replace(/[#*`>\-]/g, '').trim()
+        const textOnly = content.replace(/[#*`>-]/g, '').trim()
         return textOnly.length >= 100
       }
 
@@ -366,45 +380,45 @@ And here is even more content that definitely should not be in the excerpt.`
         tags: ['dental-health', 'tips'],
         published: true,
         publishedAt: new Date('2024-01-15'),
-        createdAt: new Date('2024-01-10')
+        createdAt: new Date('2024-01-10'),
       },
       {
         title: 'Post 2',
         tags: ['orthodontics'],
         published: false,
         publishedAt: undefined,
-        createdAt: new Date('2024-01-20')
+        createdAt: new Date('2024-01-20'),
       },
       {
         title: 'Post 3',
         tags: ['prevention', 'tips'],
         published: true,
         publishedAt: new Date('2024-01-25'),
-        createdAt: new Date('2024-01-22')
-      }
+        createdAt: new Date('2024-01-22'),
+      },
     ]
 
     it('should filter by published status', () => {
-      const publishedPosts = samplePosts.filter(post => post.published === true)
-      const unpublishedPosts = samplePosts.filter(post => post.published === false)
+      const publishedPosts = samplePosts.filter((post) => post.published === true)
+      const unpublishedPosts = samplePosts.filter((post) => post.published === false)
 
       expect(publishedPosts).toHaveLength(2)
       expect(unpublishedPosts).toHaveLength(1)
-      expect(publishedPosts.every(post => post.published)).toBe(true)
-      expect(unpublishedPosts.every(post => !post.published)).toBe(true)
+      expect(publishedPosts.every((post) => post.published)).toBe(true)
+      expect(unpublishedPosts.every((post) => !post.published)).toBe(true)
     })
 
     it('should filter by tags', () => {
-      const tipsTagPosts = samplePosts.filter(post => post.tags.includes('tips'))
-      const orthodonticsTagPosts = samplePosts.filter(post => post.tags.includes('orthodontics'))
+      const tipsTagPosts = samplePosts.filter((post) => post.tags.includes('tips'))
+      const orthodonticsTagPosts = samplePosts.filter((post) => post.tags.includes('orthodontics'))
 
       expect(tipsTagPosts).toHaveLength(2)
       expect(orthodonticsTagPosts).toHaveLength(1)
-      expect(tipsTagPosts.every(post => post.tags.includes('tips'))).toBe(true)
+      expect(tipsTagPosts.every((post) => post.tags.includes('tips'))).toBe(true)
     })
 
     it('should sort by publishedAt descending, then createdAt', () => {
-      const publishedPosts = samplePosts.filter(post => post.published)
+      const publishedPosts = samplePosts.filter((post) => post.published)
       const sorted = publishedPosts.sort((a, b) => {
         // Sort by publishedAt descending, then createdAt descending
         const aDate = a.publishedAt || a.createdAt
@@ -414,7 +428,7 @@ And here is even more content that definitely should not be in the excerpt.`
 
       expect(sorted[0].title).toBe('Post 3') // Latest published
       expect(sorted[1].title).toBe('Post 1') // Earlier published
-      expect(sorted[0].publishedAt!.getTime()).toBeGreaterThan(sorted[1].publishedAt!.getTime())
+      expect(sorted[0].publishedAt?.getTime()).toBeGreaterThan(sorted[1].publishedAt?.getTime())
     })
 
     it('should implement pagination logic', () => {
@@ -436,36 +450,35 @@ And here is even more content that definitely should not be in the excerpt.`
       const posts = [
         { tags: ['dental-health', 'tips'] },
         { tags: ['orthodontics', 'tips'] },
-        { tags: ['prevention', 'dental-health'] }
+        { tags: ['prevention', 'dental-health'] },
       ]
 
       // Flatten and get unique tags
-      const allTags = posts.flatMap(post => post.tags)
+      const allTags = posts.flatMap((post) => post.tags)
       const uniqueTags = [...new Set(allTags)].sort()
 
       expect(uniqueTags).toEqual(['dental-health', 'orthodontics', 'prevention', 'tips'])
       expect(uniqueTags.length).toBe(4)
 
       // Count tag occurrences
-      const tagCounts = allTags.reduce((acc, tag) => {
-        acc[tag] = (acc[tag] || 0) + 1
-        return acc
-      }, {} as Record<string, number>)
+      const tagCounts = allTags.reduce(
+        (acc, tag) => {
+          acc[tag] = (acc[tag] || 0) + 1
+          return acc
+        },
+        {} as Record<string, number>,
+      )
 
       expect(tagCounts['dental-health']).toBe(2)
-      expect(tagCounts['tips']).toBe(2)
-      expect(tagCounts['orthodontics']).toBe(1)
-      expect(tagCounts['prevention']).toBe(1)
+      expect(tagCounts.tips).toBe(2)
+      expect(tagCounts.orthodontics).toBe(1)
+      expect(tagCounts.prevention).toBe(1)
     })
 
     it('should handle empty tags arrays', () => {
-      const postsWithEmptyTags = [
-        { tags: [] },
-        { tags: ['dental-health'] },
-        { tags: [] }
-      ]
+      const postsWithEmptyTags = [{ tags: [] }, { tags: ['dental-health'] }, { tags: [] }]
 
-      const allTags = postsWithEmptyTags.flatMap(post => post.tags)
+      const allTags = postsWithEmptyTags.flatMap((post) => post.tags)
       const uniqueTags = [...new Set(allTags)]
 
       expect(allTags).toHaveLength(1)
