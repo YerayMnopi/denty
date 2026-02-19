@@ -54,7 +54,7 @@ export function HeroSearch() {
           type: 'clinic',
           label: clinic.name,
           sublabel: clinic.city,
-          href: `/clinics/${clinic.slug}`,
+          href: `/clinic/${clinic.slug}`,
         })
       }
     }

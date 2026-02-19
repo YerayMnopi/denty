@@ -1,10 +1,6 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { mockClinics, mockDoctors } from '@/data/mock'
-import { getMockWebsiteBySubdomain } from '@/data/website-mock'
-import { generateServicesPage, type WebsiteGenerationContext } from '@/server/website-generator'
 
-// Server function to get clinic services data
 const getClinicServicesData = createServerFn({ method: 'GET' })
   .inputValidator((input: { clinicSlug: string }) => input)
   .handler(
@@ -16,28 +12,26 @@ const getClinicServicesData = createServerFn({ method: 'GET' })
       description: string
       schemaMarkup: object
     }> => {
-      // Get website data by subdomain (clinicSlug)
+      const { mockClinics, mockDoctors } = await import('@/data/mock')
+      const { getMockWebsiteBySubdomain } = await import('@/data/website-mock')
+      const { generateServicesPage } = await import('@/server/website-generator')
+      const { adaptMockToGenerationContext } = await import('@/server/adapt-mock-clinic')
+
       const website = getMockWebsiteBySubdomain(data.clinicSlug)
       if (!website) {
         throw notFound()
       }
 
-      // Get clinic and doctors data (match by subdomain/slug)
-      const clinic = mockClinics.find((c) => c.slug === website.subdomain)
-      const doctors = mockDoctors.filter((d) => d.clinicSlug === website.subdomain)
+      const mockClinic = mockClinics.find((c) => c.slug === website.subdomain)
+      const mockDocs = mockDoctors.filter((d) => d.clinicSlug === website.subdomain)
 
-      if (!clinic) {
+      if (!mockClinic) {
         throw notFound()
       }
 
-      const context = {
-        website,
-        clinic,
-        doctors,
-      } as unknown as WebsiteGenerationContext
+      const context = adaptMockToGenerationContext(mockClinic, mockDocs, website)
 
-      // Generate services page content
-      const pageData = generateServicesPage(context, 'en')
+      const pageData = generateServicesPage(context as any, 'en')
 
       return {
         html: pageData.content,

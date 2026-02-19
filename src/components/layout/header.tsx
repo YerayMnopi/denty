@@ -23,7 +23,7 @@ export function Header() {
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-6 md:flex">
           <Link
-            to="/clinics"
+            to="/clinic"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             activeProps={{ className: 'text-sm font-medium text-foreground' }}
           >
@@ -63,7 +63,7 @@ export function Header() {
         <div className="border-t md:hidden">
           <nav className="flex flex-col gap-2 px-4 py-4">
             <Link
-              to="/clinics"
+              to="/clinic"
               onClick={() => setMobileOpen(false)}
               className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >

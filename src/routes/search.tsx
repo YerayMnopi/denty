@@ -104,7 +104,7 @@ function SearchPage() {
             {clinicResults.map((clinic) => (
               <Link
                 key={clinic.slug}
-                to="/clinics/$clinicSlug"
+                to="/clinic/$clinicSlug"
                 params={{ clinicSlug: clinic.slug }}
                 className="group rounded-xl border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-md"
               >

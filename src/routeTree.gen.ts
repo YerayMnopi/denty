@@ -13,10 +13,9 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TreatmentsIndexRouteImport } from './routes/treatments/index'
 import { Route as DoctorsIndexRouteImport } from './routes/doctors/index'
-import { Route as ClinicsIndexRouteImport } from './routes/clinics/index'
+import { Route as ClinicIndexRouteImport } from './routes/clinic/index'
 import { Route as TreatmentsTreatmentSlugRouteImport } from './routes/treatments/$treatmentSlug'
 import { Route as DoctorsDoctorSlugRouteImport } from './routes/doctors/$doctorSlug'
-import { Route as ClinicsClinicSlugRouteImport } from './routes/clinics/$clinicSlug'
 import { Route as BookClinicSlugRouteImport } from './routes/book/$clinicSlug'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminAuthenticatedRouteImport } from './routes/admin/_authenticated'
@@ -53,9 +52,9 @@ const DoctorsIndexRoute = DoctorsIndexRouteImport.update({
   path: '/doctors/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ClinicsIndexRoute = ClinicsIndexRouteImport.update({
-  id: '/clinics/',
-  path: '/clinics/',
+const ClinicIndexRoute = ClinicIndexRouteImport.update({
+  id: '/clinic/',
+  path: '/clinic/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TreatmentsTreatmentSlugRoute = TreatmentsTreatmentSlugRouteImport.update({
@@ -66,11 +65,6 @@ const TreatmentsTreatmentSlugRoute = TreatmentsTreatmentSlugRouteImport.update({
 const DoctorsDoctorSlugRoute = DoctorsDoctorSlugRouteImport.update({
   id: '/doctors/$doctorSlug',
   path: '/doctors/$doctorSlug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ClinicsClinicSlugRoute = ClinicsClinicSlugRouteImport.update({
-  id: '/clinics/$clinicSlug',
-  path: '/clinics/$clinicSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookClinicSlugRoute = BookClinicSlugRouteImport.update({
@@ -164,10 +158,9 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminAuthenticatedRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/book/$clinicSlug': typeof BookClinicSlugRoute
-  '/clinics/$clinicSlug': typeof ClinicsClinicSlugRoute
   '/doctors/$doctorSlug': typeof DoctorsDoctorSlugRoute
   '/treatments/$treatmentSlug': typeof TreatmentsTreatmentSlugRoute
-  '/clinics/': typeof ClinicsIndexRoute
+  '/clinic/': typeof ClinicIndexRoute
   '/doctors/': typeof DoctorsIndexRoute
   '/treatments/': typeof TreatmentsIndexRoute
   '/admin/appointments': typeof AdminAuthenticatedAppointmentsRoute
@@ -189,10 +182,9 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminAuthenticatedRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/book/$clinicSlug': typeof BookClinicSlugRoute
-  '/clinics/$clinicSlug': typeof ClinicsClinicSlugRoute
   '/doctors/$doctorSlug': typeof DoctorsDoctorSlugRoute
   '/treatments/$treatmentSlug': typeof TreatmentsTreatmentSlugRoute
-  '/clinics': typeof ClinicsIndexRoute
+  '/clinic': typeof ClinicIndexRoute
   '/doctors': typeof DoctorsIndexRoute
   '/treatments': typeof TreatmentsIndexRoute
   '/admin/appointments': typeof AdminAuthenticatedAppointmentsRoute
@@ -215,10 +207,9 @@ export interface FileRoutesById {
   '/admin/_authenticated': typeof AdminAuthenticatedRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/book/$clinicSlug': typeof BookClinicSlugRoute
-  '/clinics/$clinicSlug': typeof ClinicsClinicSlugRoute
   '/doctors/$doctorSlug': typeof DoctorsDoctorSlugRoute
   '/treatments/$treatmentSlug': typeof TreatmentsTreatmentSlugRoute
-  '/clinics/': typeof ClinicsIndexRoute
+  '/clinic/': typeof ClinicIndexRoute
   '/doctors/': typeof DoctorsIndexRoute
   '/treatments/': typeof TreatmentsIndexRoute
   '/admin/_authenticated/appointments': typeof AdminAuthenticatedAppointmentsRoute
@@ -242,10 +233,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/login'
     | '/book/$clinicSlug'
-    | '/clinics/$clinicSlug'
     | '/doctors/$doctorSlug'
     | '/treatments/$treatmentSlug'
-    | '/clinics/'
+    | '/clinic/'
     | '/doctors/'
     | '/treatments/'
     | '/admin/appointments'
@@ -267,10 +257,9 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/login'
     | '/book/$clinicSlug'
-    | '/clinics/$clinicSlug'
     | '/doctors/$doctorSlug'
     | '/treatments/$treatmentSlug'
-    | '/clinics'
+    | '/clinic'
     | '/doctors'
     | '/treatments'
     | '/admin/appointments'
@@ -292,10 +281,9 @@ export interface FileRouteTypes {
     | '/admin/_authenticated'
     | '/admin/login'
     | '/book/$clinicSlug'
-    | '/clinics/$clinicSlug'
     | '/doctors/$doctorSlug'
     | '/treatments/$treatmentSlug'
-    | '/clinics/'
+    | '/clinic/'
     | '/doctors/'
     | '/treatments/'
     | '/admin/_authenticated/appointments'
@@ -318,10 +306,9 @@ export interface RootRouteChildren {
   AdminAuthenticatedRoute: typeof AdminAuthenticatedRouteWithChildren
   AdminLoginRoute: typeof AdminLoginRoute
   BookClinicSlugRoute: typeof BookClinicSlugRoute
-  ClinicsClinicSlugRoute: typeof ClinicsClinicSlugRoute
   DoctorsDoctorSlugRoute: typeof DoctorsDoctorSlugRoute
   TreatmentsTreatmentSlugRoute: typeof TreatmentsTreatmentSlugRoute
-  ClinicsIndexRoute: typeof ClinicsIndexRoute
+  ClinicIndexRoute: typeof ClinicIndexRoute
   DoctorsIndexRoute: typeof DoctorsIndexRoute
   TreatmentsIndexRoute: typeof TreatmentsIndexRoute
   ClinicClinicSlugContactRoute: typeof ClinicClinicSlugContactRoute
@@ -362,11 +349,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DoctorsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/clinics/': {
-      id: '/clinics/'
-      path: '/clinics'
-      fullPath: '/clinics/'
-      preLoaderRoute: typeof ClinicsIndexRouteImport
+    '/clinic/': {
+      id: '/clinic/'
+      path: '/clinic'
+      fullPath: '/clinic/'
+      preLoaderRoute: typeof ClinicIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/treatments/$treatmentSlug': {
@@ -381,13 +368,6 @@ declare module '@tanstack/react-router' {
       path: '/doctors/$doctorSlug'
       fullPath: '/doctors/$doctorSlug'
       preLoaderRoute: typeof DoctorsDoctorSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/clinics/$clinicSlug': {
-      id: '/clinics/$clinicSlug'
-      path: '/clinics/$clinicSlug'
-      fullPath: '/clinics/$clinicSlug'
-      preLoaderRoute: typeof ClinicsClinicSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book/$clinicSlug': {
@@ -525,10 +505,9 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAuthenticatedRoute: AdminAuthenticatedRouteWithChildren,
   AdminLoginRoute: AdminLoginRoute,
   BookClinicSlugRoute: BookClinicSlugRoute,
-  ClinicsClinicSlugRoute: ClinicsClinicSlugRoute,
   DoctorsDoctorSlugRoute: DoctorsDoctorSlugRoute,
   TreatmentsTreatmentSlugRoute: TreatmentsTreatmentSlugRoute,
-  ClinicsIndexRoute: ClinicsIndexRoute,
+  ClinicIndexRoute: ClinicIndexRoute,
   DoctorsIndexRoute: DoctorsIndexRoute,
   TreatmentsIndexRoute: TreatmentsIndexRoute,
   ClinicClinicSlugContactRoute: ClinicClinicSlugContactRoute,

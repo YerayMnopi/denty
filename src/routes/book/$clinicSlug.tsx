@@ -99,7 +99,7 @@ function BookingPage() {
       <div className="mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">{t('common.noResults')}</h1>
         <Button asChild variant="outline" className="mt-6">
-          <Link to="/clinics">
+          <Link to="/clinic">
             <ArrowLeft className="mr-2 h-4 w-4" />
             {t('common.back')}
           </Link>
@@ -152,7 +152,7 @@ function BookingPage() {
       {/* Header */}
       <div className="mb-6">
         <Link
-          to="/clinics/$clinicSlug"
+          to="/clinic/$clinicSlug"
           params={{ clinicSlug }}
           className="inline-flex items-center text-muted-foreground text-sm hover:text-foreground"
         >
@@ -424,7 +424,7 @@ function BookingPage() {
           </div>
 
           <Button asChild className="mt-6">
-            <Link to="/clinics/$clinicSlug" params={{ clinicSlug }}>
+            <Link to="/clinic/$clinicSlug" params={{ clinicSlug }}>
               {t('booking.backToClinic')}
             </Link>
           </Button>

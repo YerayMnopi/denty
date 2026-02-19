@@ -1,43 +1,35 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { mockClinics } from '@/data/mock'
-import {
-  getMockBlogPostBySlug,
-  getMockBlogPostsByClinicId,
-  getMockWebsiteBySubdomain,
-  type MockBlogPost,
-} from '@/data/website-mock'
 
-// Server function to get blog post data
 const getBlogPostData = createServerFn({ method: 'GET' })
   .inputValidator((input: { clinicSlug: string; postSlug: string }) => input)
   .handler(
     async ({
       data,
     }): Promise<{
-      post: MockBlogPost
+      post: any
       clinic: { name: string; slug: string }
-      relatedPosts: MockBlogPost[]
+      relatedPosts: Array<any>
     }> => {
-      // Get website data by subdomain (clinicSlug)
+      const { mockClinics } = await import('@/data/mock')
+      const { getMockBlogPostBySlug, getMockBlogPostsByClinicId, getMockWebsiteBySubdomain } =
+        await import('@/data/website-mock')
+
       const website = getMockWebsiteBySubdomain(data.clinicSlug)
       if (!website) {
         throw notFound()
       }
 
-      // Get clinic data (match by subdomain/slug)
       const clinic = mockClinics.find((c) => c.slug === website.subdomain)
       if (!clinic) {
         throw notFound()
       }
 
-      // Get the specific blog post
       const post = getMockBlogPostBySlug(website.clinicId, data.postSlug)
       if (!post || !post.published) {
         throw notFound()
       }
 
-      // Get related posts (other posts with similar tags)
       const allPosts = getMockBlogPostsByClinicId(website.clinicId).filter(
         (p) => p.published && p._id !== post._id,
       )
