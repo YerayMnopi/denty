@@ -79,20 +79,27 @@ const getClinicBlogData = createServerFn({ method: 'GET' })
 
 export const Route = createFileRoute('/clinic/$clinicSlug/blog/')({
   validateSearch: blogSearchSchema,
-  loader: async ({ params, search }) => {
+  loader: async (context) => {
+    const { params } = context
+    // Get search params from the URL - TanStack Start approach
+    const url = new URL(context.location.href)
+    const page = Number(url.searchParams.get('page')) || undefined
+    const limit = Number(url.searchParams.get('limit')) || undefined
+    const tag = url.searchParams.get('tag') || undefined
+
     const blogData = await getClinicBlogData({
       data: {
         clinicSlug: params.clinicSlug,
-        page: search.page,
-        limit: search.limit,
-        tag: search.tag,
+        page,
+        limit,
+        tag,
       },
     })
 
     return {
       ...blogData,
       clinicSlug: params.clinicSlug,
-      searchParams: search,
+      searchParams: { page, limit, tag },
     }
   },
   component: ClinicBlogIndex,
@@ -126,8 +133,7 @@ export const Route = createFileRoute('/clinic/$clinicSlug/blog/')({
 })
 
 function ClinicBlogIndex() {
-  const { posts, totalPosts, currentPage, totalPages, clinic, tags, clinicSlug, searchParams } =
-    Route.useLoaderData()
+  const { posts, currentPage, totalPages, tags, clinicSlug, searchParams } = Route.useLoaderData()
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {

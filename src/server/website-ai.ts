@@ -237,7 +237,9 @@ export const generateServiceDescription = createServerFn({ method: 'POST' })
 
     // Try to find mock content first
     const serviceKey = serviceName.toLowerCase().replace(/\s+/g, '-')
-    const mockContent = mockServiceDescriptions[language]?.[serviceKey]?.[length]
+    const mockContent = (
+      mockServiceDescriptions as Record<string, Record<string, Record<string, string>>>
+    )[language]?.[serviceKey]?.[length]
 
     if (mockContent) {
       return {
@@ -274,7 +276,7 @@ export const generateBlogPost = createServerFn({ method: 'POST' })
 
     // Try to find mock content first
     const topicKey = topic.toLowerCase().replace(/\s+/g, '-')
-    const mockPost = mockBlogPosts[language]?.[topicKey]
+    const mockPost = (mockBlogPosts as Record<string, Record<string, any>>)[language]?.[topicKey]
 
     if (mockPost) {
       let content = mockPost.content
@@ -294,7 +296,7 @@ export const generateBlogPost = createServerFn({ method: 'POST' })
         excerpt:
           `${mockPost.content
             .split('\n')
-            .find((line) => line.length > 50)
+            .find((line: string) => line.length > 50)
             ?.substring(0, 150)}...` || '',
         seo: mockPost.seo,
         source: 'mock',
@@ -376,7 +378,8 @@ export const suggestSEOKeywords = createServerFn({ method: 'POST' })
         whitening: language === 'es' ? 'blanqueamiento dental' : 'teeth whitening',
       }
 
-      const serviceTranslation = translations[service.toLowerCase()] || service
+      const serviceTranslation =
+        (translations as Record<string, string>)[service.toLowerCase()] || service
       return [
         serviceTranslation,
         `${serviceTranslation} ${location}`.trim(),

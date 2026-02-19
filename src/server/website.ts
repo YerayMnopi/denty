@@ -161,7 +161,7 @@ export const createWebsite = createServerFn()
       updatedAt: new Date(),
     }
 
-    const result = await websitesCollection.insertOne(website)
+    const result = await websitesCollection.insertOne(website as any)
     return serializeWebsite({ ...website, _id: result.insertedId })
   })
 

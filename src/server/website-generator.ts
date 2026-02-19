@@ -30,7 +30,7 @@ export function generateSchemaMarkup(context: WebsiteGenerationContext): {
   dentist: object
   medicalOrganization: object
 } {
-  const { clinic, doctors } = context
+  const { clinic } = context
 
   const localBusiness = {
     '@context': 'https://schema.org',

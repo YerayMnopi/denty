@@ -134,9 +134,12 @@ describe('Blog Server Functions', () => {
     })
 
     it('should require title in at least one language', () => {
-      const invalidTitles = [{}, { en: '', es: '' }, { en: '   ', es: '   ' }]
+      const invalidTitles: Record<string, string>[] = [
+        { en: '', es: '' },
+        { en: '   ', es: '   ' },
+      ]
 
-      const validTitles = [
+      const validTitles: Record<string, string>[] = [
         { en: 'Valid Title' },
         { es: 'Título Válido' },
         { en: 'English', es: 'Español' },
@@ -428,7 +431,9 @@ And here is even more content that definitely should not be in the excerpt.`
 
       expect(sorted[0].title).toBe('Post 3') // Latest published
       expect(sorted[1].title).toBe('Post 1') // Earlier published
-      expect(sorted[0].publishedAt?.getTime()).toBeGreaterThan(sorted[1].publishedAt?.getTime())
+      expect(sorted[0].publishedAt?.getTime()).toBeGreaterThan(
+        sorted[1].publishedAt?.getTime() ?? 0,
+      )
     })
 
     it('should implement pagination logic', () => {

@@ -169,7 +169,7 @@ export const createBlogPost = createServerFn()
       updatedAt: new Date(),
     }
 
-    const result = await blogPostsCollection.insertOne(blogPost)
+    const result = await blogPostsCollection.insertOne(blogPost as BlogPost)
     return serializeBlogPost({ ...blogPost, _id: result.insertedId })
   })
 
