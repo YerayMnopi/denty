@@ -47,14 +47,6 @@ function OnboardingPage() {
     scrollToBottom()
   }, [scrollToBottom])
 
-  useEffect(() => {
-    // Start onboarding session
-    startOnboarding()
-  }, [
-    // Start onboarding session
-    startOnboarding,
-  ])
-
   const startOnboarding = async () => {
     try {
       const data = await startOnboardingFn()
@@ -75,6 +67,11 @@ function OnboardingPage() {
       console.error('Error starting onboarding:', error)
     }
   }
+
+  useEffect(() => {
+    startOnboarding()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startOnboarding])
 
   const sendMessage = async () => {
     if (!inputValue.trim() || !sessionId || isLoading) return
