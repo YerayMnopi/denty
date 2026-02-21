@@ -47,14 +47,30 @@ function OnboardingPage() {
     scrollToBottom()
   }, [messages])
 
-  const startOnboarding = async () => {
-    try {
-      const data = await startOnboardingFn()
+  useEffect(() => {
+    let cancelled = false
 
-      if (data.success) {
-        setSessionId(data.sessionId!)
-        setProgress(data.progress!)
-        // Add welcome message
+    async function initOnboarding() {
+      try {
+        const data = await startOnboardingFn()
+
+        if (cancelled) return
+
+        if (data.success) {
+          setSessionId(data.sessionId!)
+          setProgress(data.progress!)
+          setMessages([
+            {
+              role: 'assistant',
+              content: t('onboarding.messages.welcome'),
+              timestamp: new Date(),
+            },
+          ])
+        }
+      } catch (error) {
+        if (cancelled) return
+        console.error('Error starting onboarding:', error)
+        setSessionId('local-' + Date.now())
         setMessages([
           {
             role: 'assistant',
@@ -63,24 +79,14 @@ function OnboardingPage() {
           },
         ])
       }
-    } catch (error) {
-      console.error('Error starting onboarding:', error)
-      // Still show welcome message even if server fails
-      setSessionId('local-' + Date.now())
-      setMessages([
-        {
-          role: 'assistant',
-          content: t('onboarding.messages.welcome'),
-          timestamp: new Date(),
-        },
-      ])
     }
-  }
 
-  useEffect(() => {
-    startOnboarding()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startOnboarding])
+    initOnboarding()
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const sendMessage = async () => {
     if (!inputValue.trim() || !sessionId || isLoading) return
