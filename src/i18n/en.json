@@ -45,6 +45,88 @@
     "exploreDoctors": "Explore Doctors",
     "searchPlaceholder": "Search clinics, doctors, or treatments..."
   },
+  "pricing": {
+    "title": "Plans for your clinic",
+    "subtitle": "Choose the plan that best fits your dental clinic's needs",
+    "popular": "Most Popular",
+    "period": "month",
+    "starter": {
+      "name": "Starter",
+      "features": [
+        "Unlimited online bookings",
+        "Automatic WhatsApp reminders",
+        "Basic admin panel",
+        "Basic website",
+        "Email support"
+      ]
+    },
+    "professional": {
+      "name": "Professional",
+      "features": [
+        "Everything in Starter",
+        "Advanced patient management",
+        "Automated recall campaigns",
+        "Custom website with blog",
+        "Social media integration",
+        "Reports and analytics",
+        "Priority support"
+      ]
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "features": [
+        "Everything in Professional",
+        "Multiple locations",
+        "Custom API",
+        "Management system integration",
+        "Custom branding",
+        "Dedicated account manager",
+        "24/7 support"
+      ]
+    }
+  },
+  "trial": {
+    "title": "Ready to get started?",
+    "subtitle": "Set up your clinic in minutes with our smart assistant. No complicated forms, just a conversation.",
+    "cta": "Try Denty free for 30 days",
+    "terms": "No credit card required. Cancel anytime."
+  },
+  "onboarding": {
+    "title": "Set up my clinic",
+    "subtitle": "Denty will help you configure your clinic step by step",
+    "progress": {
+      "clinicName": "Clinic name",
+      "email": "Admin email",
+      "password": "Password",
+      "phone": "Phone",
+      "address": "Address",
+      "services": "Services",
+      "workingHours": "Working hours",
+      "doctors": "Medical team",
+      "complete": "Ready!"
+    },
+    "messages": {
+      "welcome": "Hi! I'm Denty 🦷 Let's set up your clinic. What's it called?",
+      "askEmail": "Perfect, {{clinicName}}. Now I need an email to create your administrator account.",
+      "askPassword": "Great. Now create a secure password to access the admin panel.",
+      "askPhone": "Excellent. What's the main phone number for the clinic?",
+      "askAddress": "Where is {{clinicName}} located?",
+      "askServices": "What services does {{clinicName}} offer? For example: cleanings, fillings, orthodontics...",
+      "askWorkingHours": "What are {{clinicName}}'s operating hours? For example: Monday to Friday 9:00-18:00",
+      "askDoctors": "How many doctors work at {{clinicName}} and what are their specialties?",
+      "completing": "Perfect! I have all the information. I'm setting up your clinic...",
+      "completed": "🎉 {{clinicName}} is now configured! We'll redirect you to the admin panel in a few seconds."
+    },
+    "placeholder": "Type your answer...",
+    "send": "Send",
+    "error": "Something went wrong. Please try again.",
+    "passwordWeak": "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, and a number.",
+    "securePassword": "This field is secure — your password goes directly to the server, never to the AI.",
+    "secureEmail": "This field is secure — sent directly to the server.",
+    "passwordPlaceholder": "Create a secure password",
+    "emailPlaceholder": "your@email.com",
+    "listening": "Listening..."
+  },
   "clinic": {
     "workingHours": "Working Hours",
     "ourDoctors": "Our Doctors",
