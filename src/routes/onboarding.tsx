@@ -45,7 +45,7 @@ function OnboardingPage() {
 
   useEffect(() => {
     scrollToBottom()
-  }, [scrollToBottom])
+  }, [messages])
 
   const startOnboarding = async () => {
     try {
@@ -65,6 +65,15 @@ function OnboardingPage() {
       }
     } catch (error) {
       console.error('Error starting onboarding:', error)
+      // Still show welcome message even if server fails
+      setSessionId('local-' + Date.now())
+      setMessages([
+        {
+          role: 'assistant',
+          content: t('onboarding.messages.welcome'),
+          timestamp: new Date(),
+        },
+      ])
     }
   }
 
