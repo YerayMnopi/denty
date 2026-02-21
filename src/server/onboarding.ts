@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb'
 import OpenAI from 'openai'
 import type { OnboardingSession } from '@/lib/collections'
 import { getOnboardingSessionsCollection } from '@/lib/collections'
+import { autoLoginAfterOnboarding } from './auth'
 import { createClinicFromOnboarding, type OnboardingData } from './registration'
 
 const openai = new OpenAI({
@@ -159,9 +160,16 @@ export async function processOnboardingMessage(
     // Calculate progress
     const progress = calculateProgress(session)
 
+    // If onboarding just completed, add a proper completion message
+    let finalMessage = result.message
+    if (progress.currentStep === 'complete') {
+      finalMessage =
+        '🎉 ¡Tu clínica está lista! Hemos configurado todo. Te estamos redirigiendo al panel de administración...'
+    }
+
     return {
       success: true,
-      message: result.message,
+      message: finalMessage,
       progress,
     }
   } catch (error) {
@@ -421,6 +429,8 @@ export const processOnboardingMessageFn = createServerFn({ method: 'POST' })
 
           const clinicResult = await createClinicFromOnboarding(onboardingData)
           if (clinicResult.success) {
+            // Auto-login the new admin
+            await autoLoginAfterOnboarding(onboardingData.email)
             // Clean up onboarding session
             await collection.deleteOne({ sessionId: data.sessionId })
           }
