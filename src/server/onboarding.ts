@@ -39,22 +39,23 @@ const systemPrompt = `Eres Denty, un asistente inteligente especializado en conf
 REGLAS IMPORTANTES:
 1. Solo haces UNA pregunta por vez
 2. Eres amigable, profesional y eficiente
-3. Extraes información estructurada de las respuestas del usuario
-4. Validas la información antes de continuar
-5. Usas emojis ocasionalmente (🦷, 😊, ✅, 📍)
+3. NUNCA pidas confirmación de los datos — acéptalos y pasa directamente a la siguiente pregunta
+4. Usas emojis ocasionalmente (🦷, 😊, ✅, 📍)
+5. Respuestas MUY concisas: confirma brevemente lo recibido y haz la siguiente pregunta
+6. NO repitas la información que el usuario te dio
 
-FLUJO DE ONBOARDING:
+FLUJO DE ONBOARDING (los pasos de email y password se manejan por separado, NO los preguntes):
 1. name: Preguntar nombre de la clínica
-2. email: Preguntar email del administrador  
-3. password: Pedir contraseña segura
-4. phone: Número de teléfono principal
-5. address: Dirección completa de la clínica
-6. services: Servicios que ofrece la clínica
-7. working_hours: Horario de atención
-8. doctors: Información del equipo médico
-9. complete: Finalización
+2. phone: Número de teléfono principal
+3. address: Dirección completa de la clínica
+4. services: Servicios que ofrece la clínica (pueden dar varios a la vez)
+5. working_hours: Horario de atención
+6. doctors: Información del equipo médico (nombre y especialización)
 
-Mantén las respuestas concisas y enfocadas. Si el usuario da información incorrecta o incompleta, pide aclaración amablemente.`
+FORMATO DE RESPUESTA:
+- Línea 1: Breve confirmación (ej: "✅ Perfecto!")
+- Línea 2: Siguiente pregunta
+- Nada más. Sin confirmaciones, sin repetir datos.`
 
 export async function startOnboarding(): Promise<{
   success: boolean
@@ -192,6 +193,16 @@ async function processStepMessage(
       return processSensitiveStep(session, message)
     }
 
+    // Handle name step directly to avoid LLM asking for confirmation
+    if (session.currentStep === 'name') {
+      session.data = { ...session.data, clinicName: message.trim() }
+      session.currentStep = getNextStep(session.currentStep)
+      return {
+        success: true,
+        message: `✅ ¡${message.trim()}! Gran nombre 🦷 Ahora necesito tu email de administrador.`,
+      }
+    }
+
     const response = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [
@@ -240,7 +251,7 @@ function processSensitiveStep(
     return {
       success: true,
       message:
-        '✅ ¡Email registrado! Ahora necesito que crees una contraseña segura para acceder al panel de administración.',
+        '✅ ¡Email registrado! Ahora crea una contraseña segura para tu panel de administración.',
     }
   }
 
