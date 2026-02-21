@@ -124,7 +124,8 @@
     "securePassword": "This field is secure — your password goes directly to the server, never to the AI.",
     "secureEmail": "This field is secure — sent directly to the server.",
     "passwordPlaceholder": "Create a secure password",
-    "emailPlaceholder": "your@email.com"
+    "emailPlaceholder": "your@email.com",
+    "listening": "Listening..."
   },
   "clinic": {
     "workingHours": "Working Hours",

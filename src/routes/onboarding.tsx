@@ -1,5 +1,5 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { Check, Loader2, Send } from 'lucide-react'
+import { Check, Loader2, Mic, MicOff, Send } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
@@ -38,6 +38,47 @@ function OnboardingPage() {
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [progress, setProgress] = useState<OnboardingProgress | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [isListening, setIsListening] = useState(false)
+  const recognitionRef = useRef<any>(null)
+
+  const startListening = () => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    if (!SpeechRecognition) return
+
+    const recognition = new SpeechRecognition()
+    recognition.lang = 'es-ES'
+    recognition.continuous = false
+    recognition.interimResults = true
+
+    recognition.onresult = (event: any) => {
+      const transcript = Array.from(event.results)
+        .map((r: any) => r[0].transcript)
+        .join('')
+      setInputValue(transcript)
+    }
+
+    recognition.onend = () => setIsListening(false)
+    recognition.onerror = () => setIsListening(false)
+
+    recognitionRef.current = recognition
+    recognition.start()
+    setIsListening(true)
+  }
+
+  const stopListening = () => {
+    recognitionRef.current?.stop()
+    setIsListening(false)
+  }
+
+  const toggleListening = () => {
+    if (isListening) stopListening()
+    else startListening()
+  }
+
+  const hasSpeechRecognition =
+    typeof window !== 'undefined' &&
+    ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -288,11 +329,24 @@ function OnboardingPage() {
                 <Input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder={t('onboarding.placeholder')}
+                  placeholder={
+                    isListening ? t('onboarding.listening') : t('onboarding.placeholder')
+                  }
                   disabled={isLoading || progress?.currentStep === 'complete'}
                   className="flex-1"
                   autoFocus
                 />
+                {hasSpeechRecognition && (
+                  <Button
+                    type="button"
+                    onClick={toggleListening}
+                    disabled={isLoading || progress?.currentStep === 'complete'}
+                    size="icon"
+                    variant={isListening ? 'destructive' : 'outline'}
+                  >
+                    {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                  </Button>
+                )}
                 <Button
                   type="submit"
                   disabled={!inputValue.trim() || isLoading || progress?.currentStep === 'complete'}
