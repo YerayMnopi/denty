@@ -120,7 +120,11 @@
     "placeholder": "Escribe tu respuesta...",
     "send": "Enviar",
     "error": "Algo salió mal. Inténtalo de nuevo.",
-    "passwordWeak": "La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula y un número."
+    "passwordWeak": "La contraseña debe tener al menos 8 caracteres, incluir una mayúscula, una minúscula y un número.",
+    "securePassword": "Este campo es seguro — tu contraseña se envía directamente al servidor, nunca a la IA.",
+    "secureEmail": "Este campo es seguro — se envía directamente al servidor.",
+    "passwordPlaceholder": "Crea una contraseña segura",
+    "emailPlaceholder": "tu@email.com"
   },
   "clinic": {
     "workingHours": "Horario de Atención",

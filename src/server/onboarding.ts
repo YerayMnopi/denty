@@ -99,6 +99,7 @@ export async function startOnboarding(): Promise<{
 export async function processOnboardingMessage(
   sessionId: string,
   message: string,
+  sensitive?: boolean,
 ): Promise<{
   success: boolean
   message?: string
@@ -119,14 +120,14 @@ export async function processOnboardingMessage(
     // Add user message to session
     const userMessage = {
       role: 'user' as const,
-      content: message,
+      content: sensitive ? (session.currentStep === 'password' ? '••••••••' : message) : message,
       timestamp: new Date(),
     }
 
     session.messages.push(userMessage)
 
     // Process the message based on current step
-    const result = await processStepMessage(session, message)
+    const result = await processStepMessage(session, message, sensitive)
 
     if (!result.success) {
       return result
@@ -175,8 +176,14 @@ export async function processOnboardingMessage(
 async function processStepMessage(
   session: OnboardingSession,
   message: string,
+  sensitive?: boolean,
 ): Promise<{ success: boolean; message?: string; error?: string }> {
   try {
+    // Handle sensitive steps (email/password) WITHOUT sending to LLM
+    if (sensitive || session.currentStep === 'email' || session.currentStep === 'password') {
+      return processSensitiveStep(session, message)
+    }
+
     const response = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [
@@ -209,6 +216,52 @@ async function processStepMessage(
     console.error('Error in processStepMessage:', error)
     return { success: false, error: 'Failed to process step' }
   }
+}
+
+function processSensitiveStep(
+  session: OnboardingSession,
+  value: string,
+): { success: boolean; message?: string; error?: string } {
+  if (session.currentStep === 'email') {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(value.trim())) {
+      return { success: true, message: 'Hmm, ese email no parece válido. ¿Puedes revisarlo? 📧' }
+    }
+    session.data = { ...session.data, email: value.trim() }
+    session.currentStep = getNextStep(session.currentStep)
+    return {
+      success: true,
+      message:
+        '✅ ¡Email registrado! Ahora necesito que crees una contraseña segura para acceder al panel de administración.',
+    }
+  }
+
+  if (session.currentStep === 'password') {
+    if (value.length < 8) {
+      return {
+        success: true,
+        message: 'La contraseña debe tener al menos 8 caracteres. Inténtalo de nuevo 🔐',
+      }
+    }
+    if (!/[A-Z]/.test(value)) {
+      return { success: true, message: 'Necesita al menos una letra mayúscula. ¡Casi! 💪' }
+    }
+    if (!/[a-z]/.test(value)) {
+      return { success: true, message: 'Necesita al menos una letra minúscula.' }
+    }
+    if (!/[0-9]/.test(value)) {
+      return { success: true, message: 'Añade al menos un número para mayor seguridad 🔢' }
+    }
+    session.data = { ...session.data, password: value }
+    session.currentStep = getNextStep(session.currentStep)
+    return {
+      success: true,
+      message:
+        '🔒 ¡Contraseña guardada de forma segura! ¿Cuál es el teléfono principal de la clínica?',
+    }
+  }
+
+  return { success: false, error: 'Unknown sensitive step' }
 }
 
 async function extractDataFromResponse(
@@ -337,7 +390,7 @@ export const startOnboardingFn = createServerFn({ method: 'POST' }).handler(
 )
 
 export const processOnboardingMessageFn = createServerFn({ method: 'POST' })
-  .inputValidator((input: { sessionId: string; message: string }) => input)
+  .inputValidator((input: { sessionId: string; message: string; sensitive?: boolean }) => input)
   .handler(
     async ({
       data,
@@ -347,7 +400,7 @@ export const processOnboardingMessageFn = createServerFn({ method: 'POST' })
       progress?: OnboardingProgress
       error?: string
     }> => {
-      const result = await processOnboardingMessage(data.sessionId, data.message)
+      const result = await processOnboardingMessage(data.sessionId, data.message, data.sensitive)
 
       // Check if onboarding is complete and create clinic
       if (result.success && result.progress?.currentStep === 'complete') {

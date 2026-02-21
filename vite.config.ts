@@ -8,15 +8,9 @@ import type { Plugin } from 'vite'
 import { defineConfig } from 'vite'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
-const emptyModule = fileURLToPath(
-  new URL('./src/lib/empty-module.ts', import.meta.url),
-)
-const mongodbStub = fileURLToPath(
-  new URL('./src/lib/mongodb-stub.ts', import.meta.url),
-)
-const openaiStub = fileURLToPath(
-  new URL('./src/lib/openai-stub.ts', import.meta.url),
-)
+const emptyModule = fileURLToPath(new URL('./src/lib/empty-module.ts', import.meta.url))
+const mongodbStub = fileURLToPath(new URL('./src/lib/mongodb-stub.ts', import.meta.url))
+const openaiStub = fileURLToPath(new URL('./src/lib/openai-stub.ts', import.meta.url))
 
 const mongodbOptionalDeps = [
   'mongodb-client-encryption',
@@ -36,9 +30,7 @@ const clientStubs: Record<string, string> = {
   mongodb: mongodbStub,
   bson: emptyModule,
   openai: openaiStub,
-  ...Object.fromEntries(
-    mongodbOptionalDeps.map((dep) => [dep, emptyModule]),
-  ),
+  ...Object.fromEntries(mongodbOptionalDeps.map((dep) => [dep, emptyModule])),
 }
 
 /**

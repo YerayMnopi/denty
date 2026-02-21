@@ -120,7 +120,11 @@
     "placeholder": "Type your answer...",
     "send": "Send",
     "error": "Something went wrong. Please try again.",
-    "passwordWeak": "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, and a number."
+    "passwordWeak": "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, and a number.",
+    "securePassword": "This field is secure — your password goes directly to the server, never to the AI.",
+    "secureEmail": "This field is secure — sent directly to the server.",
+    "passwordPlaceholder": "Create a secure password",
+    "emailPlaceholder": "your@email.com"
   },
   "clinic": {
     "workingHours": "Working Hours",

@@ -45,7 +45,7 @@ function OnboardingPage() {
 
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+  }, [scrollToBottom])
 
   useEffect(() => {
     let cancelled = false
@@ -70,7 +70,7 @@ function OnboardingPage() {
       } catch (error) {
         if (cancelled) return
         console.error('Error starting onboarding:', error)
-        setSessionId('local-' + Date.now())
+        setSessionId(`local-${Date.now()}`)
         setMessages([
           {
             role: 'assistant',
@@ -86,24 +86,30 @@ function OnboardingPage() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [t])
 
   const sendMessage = async () => {
     if (!inputValue.trim() || !sessionId || isLoading) return
 
+    const isSensitive = progress?.currentStep === 'email' || progress?.currentStep === 'password'
     const userMessage: Message = {
       role: 'user',
-      content: inputValue,
+      content: isSensitive
+        ? progress?.currentStep === 'password'
+          ? '••••••••'
+          : inputValue
+        : inputValue,
       timestamp: new Date(),
     }
 
     setMessages((prev) => [...prev, userMessage])
+    const messageToSend = inputValue
     setInputValue('')
     setIsLoading(true)
 
     try {
       const data = await processOnboardingMessageFn({
-        data: { sessionId, message: inputValue },
+        data: { sessionId, message: messageToSend, sensitive: isSensitive },
       })
 
       if (data.success) {
@@ -245,27 +251,61 @@ function OnboardingPage() {
 
           {/* Input */}
           <div className="border-t p-4">
-            <form onSubmit={handleSubmit} className="flex gap-2">
-              <Input
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder={t('onboarding.placeholder')}
-                disabled={isLoading || progress?.currentStep === 'complete'}
-                className="flex-1"
-                autoFocus
-              />
-              <Button
-                type="submit"
-                disabled={!inputValue.trim() || isLoading || progress?.currentStep === 'complete'}
-                size="icon"
-              >
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Send className="h-4 w-4" />
-                )}
-              </Button>
-            </form>
+            {progress?.currentStep === 'email' || progress?.currentStep === 'password' ? (
+              <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                <p className="text-xs text-muted-foreground">
+                  🔒{' '}
+                  {progress.currentStep === 'password'
+                    ? t('onboarding.securePassword')
+                    : t('onboarding.secureEmail')}
+                </p>
+                <div className="flex gap-2">
+                  <Input
+                    type={progress.currentStep === 'password' ? 'password' : 'email'}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder={
+                      progress.currentStep === 'password'
+                        ? t('onboarding.passwordPlaceholder')
+                        : t('onboarding.emailPlaceholder')
+                    }
+                    disabled={isLoading}
+                    className="flex-1"
+                    autoFocus
+                    autoComplete={progress.currentStep === 'password' ? 'new-password' : 'email'}
+                  />
+                  <Button type="submit" disabled={!inputValue.trim() || isLoading} size="icon">
+                    {isLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Send className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={handleSubmit} className="flex gap-2">
+                <Input
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder={t('onboarding.placeholder')}
+                  disabled={isLoading || progress?.currentStep === 'complete'}
+                  className="flex-1"
+                  autoFocus
+                />
+                <Button
+                  type="submit"
+                  disabled={!inputValue.trim() || isLoading || progress?.currentStep === 'complete'}
+                  size="icon"
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
+                </Button>
+              </form>
+            )}
           </div>
         </div>
 
