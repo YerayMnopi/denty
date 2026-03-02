@@ -191,7 +191,7 @@
 - 📍 **Dirección:** Av. de Europa, 2, 28943
 - 📞 **Teléfono:** +34 916 15 15 00
 - ✉️ **Email:** nan
-- 🌐 **Web:** nan
+- 🌐 **Web:** https://ortodentist.es
 - ⭐ **Puntuación:** 4.6
 
 **Clínica DentalCora**
@@ -247,9 +247,10 @@
 
 **I+DENT Imasdent Getafe**
 - 📍 **Dirección:** C. Madrid, 4, 28901
-- 📞 **Teléfono:** +34 689 21 71 30
-- ✉️ **Email:** nan
-- 🌐 **Web:** nan
+- 📞 **Teléfono:** +34 689 217 130
+- ✉️ **Email:** info.getafe@imasdent.es
+- 🌐 **Web:** https://imasdent.es
+- 📱 **WhatsApp:** 689 217 130
 - ⭐ **Puntuación:** 4.8
 
 **Mundo Dental**
@@ -641,16 +642,17 @@
 - ⭐ **Puntuación:** 4.8
 
 **Dental Company Valdemoro**
-- 📍 **Dirección:** nan
+- 📍 **Dirección:** Avda. del Mar Mediterráneo, 115, 28341
 - 📞 **Teléfono:** nan
 - ✉️ **Email:** nan
-- 🌐 **Web:** dentalcompany.es/clinica-dental-valdemoro/
+- 🌐 **Web:** https://dentalcompany.es/clinica-dental-valdemoro/
 - ⭐ **Puntuación:** nan
 
 **Innova Dental Valdemoro**
-- 📍 **Dirección:** nan
-- 📞 **Teléfono:** nan
-- ✉️ **Email:** nan
+- 📍 **Dirección:** Calle General Martitegui 37, 28342
+- 📞 **Teléfono:** +34 918 657 146
+- ✉️ **Email:** info@clinicadentalvaldemoro.com
 - 🌐 **Web:** www.clinicadentalvaldemoro.com
+- 📱 **WhatsApp:** 609 852 680
 - ⭐ **Puntuación:** nan
 
