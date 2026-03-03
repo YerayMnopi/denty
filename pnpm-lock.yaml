@@ -41,6 +41,12 @@ importers:
       '@tanstack/router-plugin':
         specifier: ^1.161.1
         version: 1.161.1(@tanstack/react-router@1.161.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(vite@7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0))
+      '@types/bcrypt':
+        specifier: ^6.0.0
+        version: 6.0.0
+      bcrypt:
+        specifier: ^6.0.0
+        version: 6.0.0
       bcryptjs:
         specifier: ^3.0.3
         version: 3.0.3
@@ -70,7 +76,7 @@ importers:
         version: nitro-nightly@3.0.1-20260212-205859-0f4c665f(jiti@2.6.1)(lru-cache@11.2.6)(mongodb@7.1.0)(rollup@4.57.1)(vite@7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0))
       openai:
         specifier: ^6.22.0
-        version: 6.22.0(ws@8.19.0)(zod@3.25.76)
+        version: 6.22.0(ws@8.19.0)(zod@4.3.6)
       radix-ui:
         specifier: ^1.4.3
         version: 1.4.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -98,6 +104,9 @@ importers:
       vite-tsconfig-paths:
         specifier: ^6.0.2
         version: 6.1.1(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.21.0))
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@biomejs/biome':
         specifier: 2.3.15
@@ -2023,6 +2032,9 @@ packages:
   '@types/babel__traverse@7.28.0':
     resolution: {integrity: sha512-8PvcXf70gTDZBgt9ptxJ8elBeBjcLOAcOtoO/mPJjtji1+CdGbHgm77om1GrsPxsiE+uXIpNSK64UYaIwQXd4Q==}
 
+  '@types/bcrypt@6.0.0':
+    resolution: {integrity: sha512-/oJGukuH3D2+D+3H4JWLaAsJ/ji86dhRidzZ/Od7H/i8g+aCmvkeCc6Ni/f9uxGLSQVCRZkX2/lqEFG2BvWtlQ==}
+
   '@types/bcryptjs@2.4.6':
     resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
 
@@ -2169,6 +2181,10 @@ packages:
   baseline-browser-mapping@2.9.19:
     resolution: {integrity: sha512-ipDqC8FrAl/76p2SSWKSI+H9tFwm7vYqXQrItCuiVPt26Km0jS+NzSsBWAaBusvSbQcfJG+JitdMm+wZAgTYqg==}
     hasBin: true
+
+  bcrypt@6.0.0:
+    resolution: {integrity: sha512-cU8v/EGSrnH+HnxV2z0J7/blxH8gq7Xh2JFT6Aroax7UohdmiJJlxApMxtKfuI7z68NvvVcmR78k2LbT6efhRg==}
+    engines: {node: '>= 18'}
 
   bcryptjs@3.0.3:
     resolution: {integrity: sha512-GlF5wPWnSa/X5LKM1o0wz0suXIINz1iHRLvTS+sLyi7XPbe5ycmYI3DlZqVGZZtDgl4DmasFg7gOB3JYbphV5g==}
@@ -2856,6 +2872,14 @@ packages:
         optional: true
       xml2js:
         optional: true
+
+  node-addon-api@8.5.0:
+    resolution: {integrity: sha512-/bRZty2mXUIFY/xU5HLvveNHlswNJej+RnxBjOMkidWfwZzgTbPG1E3K5TOxRLOR+5hX7bSofy8yf1hZevMS8A==}
+    engines: {node: ^18 || ^20 || >= 21}
+
+  node-gyp-build@4.8.4:
+    resolution: {integrity: sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==}
+    hasBin: true
 
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
@@ -3585,6 +3609,9 @@ packages:
 
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
 snapshots:
 
@@ -5435,6 +5462,10 @@ snapshots:
     dependencies:
       '@babel/types': 7.29.0
 
+  '@types/bcrypt@6.0.0':
+    dependencies:
+      '@types/node': 22.19.11
+
   '@types/bcryptjs@2.4.6': {}
 
   '@types/chai@5.2.3':
@@ -5601,6 +5632,11 @@ snapshots:
   balanced-match@1.0.2: {}
 
   baseline-browser-mapping@2.9.19: {}
+
+  bcrypt@6.0.0:
+    dependencies:
+      node-addon-api: 8.5.0
+      node-gyp-build: 4.8.4
 
   bcryptjs@3.0.3: {}
 
@@ -6265,6 +6301,10 @@ snapshots:
       - sqlite3
       - uploadthing
 
+  node-addon-api@8.5.0: {}
+
+  node-gyp-build@4.8.4: {}
+
   node-releases@2.0.27: {}
 
   normalize-path@3.0.0: {}
@@ -6277,10 +6317,10 @@ snapshots:
 
   ohash@2.0.11: {}
 
-  openai@6.22.0(ws@8.19.0)(zod@3.25.76):
+  openai@6.22.0(ws@8.19.0)(zod@4.3.6):
     optionalDependencies:
       ws: 8.19.0
-      zod: 3.25.76
+      zod: 4.3.6
 
   package-json-from-dist@1.0.1: {}
 
@@ -6920,3 +6960,5 @@ snapshots:
   yallist@3.1.1: {}
 
   zod@3.25.76: {}
+
+  zod@4.3.6: {}

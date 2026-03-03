@@ -261,7 +261,7 @@ function ClinicBlogIndex() {
               >
                 All Posts
               </Link>
-              {tags.map((tag) => (
+              {tags.map((tag: string) => (
                 <Link
                   key={tag}
                   to="/clinic/$clinicSlug/blog"
@@ -308,7 +308,7 @@ function ClinicBlogIndex() {
                       {post.excerpt.en || post.excerpt.es || Object.values(post.excerpt)[0]}
                     </p>
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {post.tags.slice(0, 3).map((tag) => (
+                      {post.tags.slice(0, 3).map((tag: string) => (
                         <span
                           key={tag}
                           className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded"
