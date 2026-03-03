@@ -318,5 +318,87 @@
       "subscribeTitle": "Suscríbete a Nuestro Blog",
       "subscribeDescription": "Mantente actualizado con los últimos consejos de salud dental y noticias."
     }
+  },
+  "pricing": {
+    "title": "Planes Flexibles para Tu Clínica",
+    "subtitle": "Escoge el plan que mejor se adapte a las necesidades de tu clínica. Todos incluyen 30 días de prueba gratuita.",
+    "popular": "Popular",
+    "starter": {
+      "name": "Starter",
+      "description": "Perfecto para clínicas pequeñas",
+      "feature1": "Reservas online ilimitadas",
+      "feature2": "Chat WhatsApp integrado",
+      "feature3": "Web profesional incluida",
+      "feature4": "Recordatorios automáticos"
+    },
+    "professional": {
+      "name": "Professional",
+      "description": "Ideal para clínicas en crecimiento",
+      "feature1": "Todo de Starter",
+      "feature2": "CRM de pacientes avanzado",
+      "feature3": "Gestión redes sociales",
+      "feature4": "Campañas de reactivación",
+      "feature5": "Analíticas detalladas"
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "description": "Para clínicas establecidas",
+      "feature1": "Todo de Professional",
+      "feature2": "Múltiples ubicaciones",
+      "feature3": "Integración sistemas externos",
+      "feature4": "Soporte prioritario 24/7",
+      "feature5": "Entrenamiento personalizado",
+      "feature6": "API acceso completo"
+    }
+  },
+  "registration": {
+    "title": "Registra Tu Clínica",
+    "subtitle": "Comienza tu prueba gratuita de 30 días hoy mismo",
+    "tryDentyFree": "Prueba Denty gratis 30 días",
+    "registerClinic": "Registrar mi clínica",
+    "startTrial": "Comenzar prueba gratuita",
+    "createAccount": "Crear cuenta",
+    "clinicName": "Nombre de la clínica",
+    "clinicNamePlaceholder": "Ej: Clínica Dental Sonrisa",
+    "ownerName": "Nombre del propietario/director",
+    "ownerNamePlaceholder": "Ej: Dr. Juan García",
+    "confirmPassword": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Repite tu contraseña",
+    "passwordPlaceholder": "Mínimo 6 caracteres",
+    "trialInfo": "30 días gratis • Sin tarjeta de crédito • Cancela cuando quieras",
+    "checkingEmail": "Verificando disponibilidad...",
+    "validation": {
+      "clinicNameRequired": "El nombre de la clínica es obligatorio",
+      "ownerNameRequired": "El nombre del propietario es obligatorio",
+      "emailRequired": "El email es obligatorio",
+      "emailInvalid": "El formato del email no es válido",
+      "emailTaken": "Este email ya está registrado",
+      "passwordRequired": "La contraseña es obligatoria",
+      "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+      "passwordsDoNotMatch": "Las contraseñas no coinciden",
+      "phoneRequired": "El teléfono es obligatorio"
+    }
+  },
+  "onboarding": {
+    "title": "Configuración de tu clínica",
+    "subtitle": "Vamos a configurar tu clínica paso a paso",
+    "welcome": "¡Hola! Soy Denty, tu nuevo asistente digital para {{clinicName}}. Te ayudo a configurar todo para que puedas empezar a recibir pacientes cuanto antes.",
+    "progress": "Progreso",
+    "stepsComplete": "pasos completados",
+    "messagePlaceholder": "Escribe tu respuesta aquí...",
+    "send": "Enviar"
+  },
+  "trial": {
+    "status": "Estado de la prueba",
+    "daysRemaining": "{{days}} días restantes",
+    "expired": "Prueba expirada",
+    "active": "Prueba activa",
+    "upgrade": "Actualizar plan",
+    "features": {
+      "booking": "Reservas online",
+      "crm": "Gestión de pacientes",
+      "website": "Web profesional",
+      "socialMedia": "Redes sociales"
+    }
   }
 }

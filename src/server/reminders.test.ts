@@ -37,7 +37,7 @@ describe('Reminder Functions', () => {
         ok: true,
         text: vi.fn().mockResolvedValue('{"success": true}'),
       }
-      vi.mocked(fetch).mockResolvedValue(mockResponse as any)
+      vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as unknown as Response)
 
       const result = await sendAppointmentReminder(mockReminderData, '24h')
 
@@ -60,7 +60,7 @@ describe('Reminder Functions', () => {
         ok: true,
         text: vi.fn().mockResolvedValue('{"success": true}'),
       }
-      vi.mocked(fetch).mockResolvedValue(mockResponse as any)
+      vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as unknown as Response)
 
       const result = await sendAppointmentReminder(mockReminderData, '1h')
 
@@ -78,7 +78,7 @@ describe('Reminder Functions', () => {
         status: 400,
         text: vi.fn().mockResolvedValue('Bad Request'),
       }
-      vi.mocked(fetch).mockResolvedValue(mockResponse as any)
+      vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as unknown as Response)
 
       const result = await sendAppointmentReminder(mockReminderData, '24h')
 
@@ -99,7 +99,7 @@ describe('Reminder Functions', () => {
         ok: true,
         text: vi.fn().mockResolvedValue('{"success": true}'),
       }
-      vi.mocked(fetch).mockResolvedValue(mockResponse as any)
+      vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as Response)
 
       const dataWithFormattedPhone = {
         ...mockReminderData,
@@ -120,7 +120,7 @@ describe('Reminder Functions', () => {
         ok: true,
         text: vi.fn().mockResolvedValue('{"success": true}'),
       }
-      vi.mocked(fetch).mockResolvedValue(mockResponse as any)
+      vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as Response)
 
       const result = await sendPostVisitFollowUp(mockReminderData)
 
@@ -156,7 +156,7 @@ describe('Reminder Functions', () => {
         ok: true,
         text: vi.fn().mockResolvedValue('{"success": true}'),
       }
-      vi.mocked(fetch).mockResolvedValue(mockResponse as any)
+      vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as Response)
 
       const result = await sendRecallCampaign(mockRecallData)
 
@@ -175,7 +175,7 @@ describe('Reminder Functions', () => {
         ok: true,
         text: vi.fn().mockResolvedValue('{"success": true}'),
       }
-      vi.mocked(fetch).mockResolvedValue(mockResponse as any)
+      vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as Response)
 
       await sendRecallCampaign(mockRecallData)
 
@@ -192,7 +192,7 @@ describe('Reminder Functions', () => {
         ok: true,
         text: vi.fn().mockResolvedValue('{"success": true}'),
       }
-      vi.mocked(fetch).mockResolvedValue(mockResponse as any)
+      vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as Response)
 
       await sendAppointmentReminder(mockReminderData, '24h')
 
@@ -215,7 +215,7 @@ describe('Reminder Functions', () => {
         ok: true,
         text: vi.fn().mockResolvedValue('{"success": true}'),
       }
-      vi.mocked(fetch).mockResolvedValue(mockResponse as any)
+      vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as Response)
 
       await sendAppointmentReminder(mockReminderData, '1h')
 
@@ -254,7 +254,7 @@ describe('Reminder Functions', () => {
         ok: true,
         text: vi.fn().mockResolvedValue('{"success": true}'),
       }
-      vi.mocked(fetch).mockResolvedValue(mockResponse as any)
+      vi.mocked(fetch).mockResolvedValue(mockResponse as unknown as Response)
 
       await sendAppointmentReminder(dataWithoutPhone, '24h')
 

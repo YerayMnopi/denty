@@ -318,5 +318,87 @@
       "subscribeTitle": "Subscribe to Our Blog",
       "subscribeDescription": "Stay updated with the latest dental health tips and news."
     }
+  },
+  "pricing": {
+    "title": "Flexible Plans for Your Clinic",
+    "subtitle": "Choose the plan that best fits your clinic's needs. All plans include a 30-day free trial.",
+    "popular": "Popular",
+    "starter": {
+      "name": "Starter",
+      "description": "Perfect for small clinics",
+      "feature1": "Unlimited online bookings",
+      "feature2": "WhatsApp chat integration",
+      "feature3": "Professional website included",
+      "feature4": "Automatic reminders"
+    },
+    "professional": {
+      "name": "Professional",
+      "description": "Ideal for growing clinics",
+      "feature1": "Everything in Starter",
+      "feature2": "Advanced patient CRM",
+      "feature3": "Social media management",
+      "feature4": "Reactivation campaigns",
+      "feature5": "Detailed analytics"
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "description": "For established clinics",
+      "feature1": "Everything in Professional",
+      "feature2": "Multiple locations",
+      "feature3": "External systems integration",
+      "feature4": "Priority 24/7 support",
+      "feature5": "Personalized training",
+      "feature6": "Full API access"
+    }
+  },
+  "registration": {
+    "title": "Register Your Clinic",
+    "subtitle": "Start your 30-day free trial today",
+    "tryDentyFree": "Try Denty free for 30 days",
+    "registerClinic": "Register my clinic",
+    "startTrial": "Start free trial",
+    "createAccount": "Create account",
+    "clinicName": "Clinic name",
+    "clinicNamePlaceholder": "e.g: Smile Dental Clinic",
+    "ownerName": "Owner/Director name",
+    "ownerNamePlaceholder": "e.g: Dr. John Smith",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Repeat your password",
+    "passwordPlaceholder": "Minimum 6 characters",
+    "trialInfo": "30 days free • No credit card required • Cancel anytime",
+    "checkingEmail": "Checking availability...",
+    "validation": {
+      "clinicNameRequired": "Clinic name is required",
+      "ownerNameRequired": "Owner name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email format is invalid",
+      "emailTaken": "This email is already registered",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "phoneRequired": "Phone number is required"
+    }
+  },
+  "onboarding": {
+    "title": "Clinic Setup",
+    "subtitle": "Let's set up your clinic step by step",
+    "welcome": "Hello! I'm Denty, your new digital assistant for {{clinicName}}. I'll help you set everything up so you can start receiving patients as soon as possible.",
+    "progress": "Progress",
+    "stepsComplete": "steps completed",
+    "messagePlaceholder": "Type your response here...",
+    "send": "Send"
+  },
+  "trial": {
+    "status": "Trial status",
+    "daysRemaining": "{{days}} days remaining",
+    "expired": "Trial expired",
+    "active": "Trial active",
+    "upgrade": "Upgrade plan",
+    "features": {
+      "booking": "Online bookings",
+      "crm": "Patient management",
+      "website": "Professional website",
+      "socialMedia": "Social media"
+    }
   }
 }

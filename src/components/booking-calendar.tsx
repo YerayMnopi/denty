@@ -48,15 +48,19 @@ export function BookingCalendar({
 
   const { data: slots, isLoading: slotsLoading } = useQuery({
     queryKey: ['availableSlots', clinicSlug, doctorSlug, selectedDate, serviceDuration],
-    queryFn: () =>
-      getAvailableSlots({
+    queryFn: () => {
+      if (!selectedDate) {
+        throw new Error('Selected date is required')
+      }
+      return getAvailableSlots({
         data: {
           clinicSlug,
           doctorSlug,
-          date: selectedDate!,
+          date: selectedDate,
           serviceDuration,
         },
-      }),
+      })
+    },
     enabled: !!selectedDate && !!doctorSlug,
   })
 

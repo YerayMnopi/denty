@@ -210,9 +210,9 @@ export function HeroSearch() {
                   <div className="px-5 pb-1 pt-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     {labelForType(type as SearchResult['type'])}
                   </div>
-                  {items.map((result, i) => (
+                  {items.map((result) => (
                     <Link
-                      key={`${type}-${i}`}
+                      key={`${type}-${result.href}`}
                       to={result.href}
                       onClick={handleResultClick}
                       className="flex items-center gap-3 px-5 py-2.5 text-left transition-colors hover:bg-accent"
