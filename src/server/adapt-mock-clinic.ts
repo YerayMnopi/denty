@@ -1,5 +1,5 @@
-import type { MockClinic, MockDoctor } from '@/data/mock'
 import { ObjectId } from 'mongodb'
+import type { MockClinic, MockDoctor } from '@/data/mock'
 
 /**
  * Adapts raw MockClinic + MockDoctor data into the shape expected by
